@@ -1,0 +1,19 @@
+{
+  "protocolId": "paper-only-v1",
+  "readableRoots": [
+    "fixtures/paper-only-v2/inputs"
+  ],
+  "deniedPaths": [
+    "fixtures/paper-only-v2/gold",
+    "fixtures/paper-only-v2/protocol/answers",
+    "work/incoming",
+    "work/annotation",
+    "work/corpus-candidate",
+    "work/scaffold",
+    "docs/mvp/GOLDSET-REVIEW.md",
+    "docs/mvp/phases",
+    "artifacts/eval"
+  ],
+  "enforcement": "every model-side file read is checked against the resolved absolute path; a single out-of-root read fails P5-01",
+  "note": "Directory separation alone is not evidence of isolation; the guard must see the actual accessed path."
+}

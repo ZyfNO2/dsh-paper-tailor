@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "ruleSetId": "phase2-order-rules-v1",
+  "note": "Order rules behind TaskProfile.slots[].orderRuleRef. The rule is deliberately about the BINDING, not about module names: the profile must never hardcode 'A before B'. experiments/stitch-cpu-v1/recipe-builder.ts hardcodes module-aspp-v1 before module-se-v1; this profile does not, because PHASE2-SPEC section 5 says a new profile builds from module ids + bindings.",
+  "rules": {
+    "order:phase2.features.pre_pool.v1": {
+      "slotId": "features.pre_pool",
+      "kind": "declared-sequence",
+      "rule": "The binding's orderedModuleIds array IS the execution order. The compiled recipe applies the modules in exactly that array order, with no sorting, no name-based reordering and no implicit insertion position.",
+      "maxModules": 3,
+      "constraints": [
+        {
+          "id": "unique-module-id",
+          "rule": "one module id may appear at most once in orderedModuleIds",
+          "enforcedBy": "compileRecipe",
+          "errorCode": "INCOMPATIBLE_BINDING"
+        },
+        {
+          "id": "declared-modules-only",
+          "rule": "every module id must resolve to a pinned module source supplied by the host; a request cannot introduce a module by path",
+          "enforcedBy": "compileRecipe",
+          "errorCode": "NOT_FOUND"
+        },
+        {
+          "id": "no-reorder-by-name",
+          "rule": "the profile must not reorder modules by their display name or by a hardcoded A/B pair",
+          "enforcedBy": "compileRecipe (the implementation of this rule is that no name comparison exists in the code path)",
+          "errorCode": null
+        },
+        {
+          "id": "variant-prefix",
+          "rule": "a variant name selects a PREFIX of the ordered list: 'baseline' selects none, 'a' the first, 'ab' the first two, 'abc' the first three. A variant whose length disagrees with the recipe's module count is refused.",
+          "enforcedBy": "compileRecipe + LightweightRunner.assertVariantModuleAgreement",
+          "errorCode": "INCOMPATIBLE_BINDING"
+        },
+        {
+          "id": "shape-preserving-chain",
+          "rule": "every module in the chain preserves [B, 8, H, W] float32, so the order affects the values but never the downstream tensor contract",
+          "enforcedBy": "verifyRun (module output contract) + slot schema",
+          "errorCode": "INVALID_RESULT"
+        },
+        {
+          "id": "no-implicit-position",
+          "rule": "an unknown slot id is refused; it is never coerced onto features.pre_pool",
+          "enforcedBy": "compileRecipe slot lookup",
+          "errorCode": "INCOMPATIBLE_BINDING"
+        }
+      ],
+      "notClaimed": [
+        "Ordering is not claimed to be optimal or commutative. ASPP (multi-scale context) and SE (channel recalibration) do not commute in general; the profile records the declared order as a fact of the binding and lets the combination check decide whether the observed order matches it."
+      ]
+    }
+  }
+}

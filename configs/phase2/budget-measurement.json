@@ -1,0 +1,94 @@
+{
+    "schemaVersion":  1,
+    "measurementId":  "phase2-cpu-seg-v1-budget-basis-v1",
+    "measuredAt":  "2026-10-04T00:36:00.000Z",
+    "method":  "Six real child-process invocations of experiments/phase2-cpu-seg-v1/runner.py with G:\\Anaconda\\python.exe, driven by a psutil-watching wrapper that sampled peak_wset every 10 ms. Wall time is measured around the whole process, so it includes the torch import (the training segment alone is reported by the runner as rawWallTimeMs).",
+    "driverScript":  "Ephemeral measurement driver (not distributed; machine-local path omitted)",
+    "observed":  {
+                     "runCount":  6,
+                     "minWallMs":  3022,
+                     "maxWallMs":  3208,
+                     "maxPeakWorkingSetBytes":  611389440,
+                     "maxRunnerReportedTrainingWallTimeMs":  61,
+                     "maxRunOutputDirBytes":  3615,
+                     "allExitZero":  true
+                 },
+    "runs":  [
+                 {
+                     "label":  "smoke-baseline-2",
+                     "variant":  "baseline",
+                     "steps":  2,
+                     "exitCode":  0,
+                     "wallMs":  3208,
+                     "peakWorkingSetBytes":  603754496,
+                     "runnerReportedTrainingWallTimeMs":  39,
+                     "outputDirBytes":  2583
+                 },
+                 {
+                     "label":  "smoke-a-2",
+                     "variant":  "a",
+                     "steps":  2,
+                     "exitCode":  0,
+                     "wallMs":  3105,
+                     "peakWorkingSetBytes":  610619392,
+                     "runnerReportedTrainingWallTimeMs":  50,
+                     "outputDirBytes":  2913
+                 },
+                 {
+                     "label":  "smoke-b-2",
+                     "variant":  "b",
+                     "steps":  2,
+                     "exitCode":  0,
+                     "wallMs":  3022,
+                     "peakWorkingSetBytes":  604508160,
+                     "runnerReportedTrainingWallTimeMs":  32,
+                     "outputDirBytes":  2909
+                 },
+                 {
+                     "label":  "smoke-ab-2",
+                     "variant":  "ab",
+                     "steps":  2,
+                     "exitCode":  0,
+                     "wallMs":  3105,
+                     "peakWorkingSetBytes":  610238464,
+                     "runnerReportedTrainingWallTimeMs":  50,
+                     "outputDirBytes":  3273
+                 },
+                 {
+                     "label":  "tiny-ab-5",
+                     "variant":  "ab",
+                     "steps":  5,
+                     "exitCode":  0,
+                     "wallMs":  3074,
+                     "peakWorkingSetBytes":  611389440,
+                     "runnerReportedTrainingWallTimeMs":  58,
+                     "outputDirBytes":  3597
+                 },
+                 {
+                     "label":  "tiny-ab-5-rerun",
+                     "variant":  "ab",
+                     "steps":  5,
+                     "exitCode":  0,
+                     "wallMs":  3093,
+                     "peakWorkingSetBytes":  611102720,
+                     "runnerReportedTrainingWallTimeMs":  61,
+                     "outputDirBytes":  3615
+                 }
+             ],
+    "derivation":  {
+                       "perAttemptTimeoutMs":  120000,
+                       "perAttemptTimeoutMsReason":  "Observed worst case is 3208 ms wall for a 5-step ab run including torch import. 120000 ms is 37x that, which leaves room for a cold filesystem and an antivirus scan without allowing an unbounded run. It matches the timeout the existing LightweightRunner integration test already uses.",
+                       "maxMemoryBytes":  4294967296,
+                       "maxMemoryBytesReason":  "Observed worst-case peak working set is 611389440 bytes (583 MiB) for a 3-module-capable run. 4 GiB is ~7x that; a module that allocates an unbounded intermediate fails the budget rather than the machine.",
+                       "maxDiskBytes":  2147483648,
+                       "maxDiskBytesReason":  "Observed worst-case per-run output directory is 3615 bytes. 2 GiB is a generous ceiling that still bounds an accidental artifact explosion; the real disk cost is dominated by artifacts/runs and work/research-execution, not by these files.",
+                       "maxExecutionSeconds":  300,
+                       "maxExecutionSecondsReason":  "A full smoke sweep is at most 4 variants x 1 seed x 3.3 s ~= 13 s, and a tiny sweep at most 5 variants x 2 seeds x 3.3 s ~= 33 s. 300 s covers a smoke plus a tiny plus process overhead with margin, and is the value the freeze checklist already proposed.",
+                       "maxTrials":  8,
+                       "maxTrialsReason":  "Largest declared sweep in this profile is 5 variants (baseline,a,b,ab,abc) x 2 seeds = 10 runs, so the budget must allow at least 10 to not be a lie. 8 was the freeze-checklist placeholder and would under-provision the abc tiny sweep; 12 is set instead: 5 x 2 = 10 runs plus 2 retries of a transient failure. See budget.maxTrials."
+                   },
+    "honesty":  [
+                    "These numbers are from THIS machine (Windows 11, Intel64 Family 6 Model 151, RTX 4070 SUPER host, torch 2.9.1+cu126 CPU path) and are not a cross-machine claim.",
+                    "The cold-start cost is dominated by importing torch (~3.1 s of the ~3.2 s wall). A warm filesystem may be faster; nothing here assumes that."
+                ]
+}

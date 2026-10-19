@@ -1,0 +1,38 @@
+{
+  "id": "phase2-cpu-seg-v1",
+  "version": 1,
+  "taskKind": "segmentation",
+  "runnerRef": "runner:phase2-cpu-seg-v1",
+  "compilerRef": "compiler:phase2-cpu-seg-v1",
+  "verifierRef": "verifier:phase2-cpu-seg-v1",
+  "slots": [
+    {
+      "slotId": "features.pre_pool",
+      "kind": "feature",
+      "inputSchemaRef": "schema:phase2.features.pre_pool.input.v1",
+      "outputSchemaRef": "schema:phase2.features.pre_pool.output.v1",
+      "allowedModuleKinds": [
+        "parameterized_feature",
+        "parameter_free_operator"
+      ],
+      "orderRuleRef": "order:phase2.features.pre_pool.v1"
+    }
+  ],
+  "capabilities": [
+    "task:segmentation",
+    "device:cpu",
+    "dtype:float32",
+    "stage:smoke",
+    "stage:tiny",
+    "variant:baseline",
+    "variant:a",
+    "variant:b",
+    "variant:ab",
+    "variant:abc",
+    "modules:max3",
+    "source-contract:v1"
+  ],
+  "isolationPolicyRef": "configs/phase2/isolation-policy.json",
+  "maxModules": 3,
+  "sourceContractMax": 1
+}

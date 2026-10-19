@@ -1,0 +1,154 @@
+﻿# Evolver plugin bundle 鈥?portable template.
+#
+# HOW PATHS WORK HERE
+# -------------------
+# This file is a DSH *bundle patch layer*: a top-level YAML array of loader patch
+# entries, applied after the profile's own layer. Two portability rules apply, and
+# both are enforced by the host, not by convention:
+#
+#   1. A plugin `name` that is relative (`./x.ts`, `../x.ts`) is rewritten to a
+#      `file://` URL anchored at THIS FILE's directory
+#      (`anchorInsertedPluginNames` in dsh-app-boot). So `./../evolver/src/...`
+#      resolves inside whatever tree this file lives in 鈥?no absolute path, and no
+#      dependence on the process working directory.
+#
+#   2. Directory-valued config entries are repo-relative strings. Every adapter
+#      resolves them against an explicit root: `path.resolve(repoRoot, value)`.
+#      A relative value therefore means "inside this repository" regardless of
+#      where the tree was checked out or renamed to.
+#
+# WHY FILE URLs AT ALL (and not the package name `@dsh/evolver`)
+# --------------------------------------------------------------
+# `packages/evolver`'s `main` is `./src/index.ts` and it is loaded through Node's
+# type stripping (`node --experimental-strip-types`). Node refuses to strip types
+# for a file under `node_modules`
+# ("Stripping types is currently unsupported for files under node_modules"), so a
+# profile-installed copy of the package cannot start at all 鈥?the Loader entry
+# exists and every `evolver_*` tool is silently missing, which reads like a host
+# bug rather than a packaging one. Pointing the entry at the source file in this
+# tree keeps the known type-stripping behaviour and is why the release stays a
+# DSH host extension rather than a standalone runtime.
+#
+# This cannot be patched from a later layer: `applyEntryPatches` skips any
+# non-insert patch whose `name` disagrees with the entry it targets, so the module
+# specifier has to be written in the layer that inserts the entry.
+#
+# WHAT IS DELIBERATELY ABSENT
+# ---------------------------
+# - `liveRoute` (provider/model/reasoningEffort) and `pythonPath`: personal model
+#   routes and local interpreter paths belong in a gitignored local overlay, not
+#   in a published template. Without `liveRoute` the research tools fall back to
+#   the port the caller injects, and a missing model configuration surfaces as a
+#   real MODEL_UNAVAILABLE error rather than a fabricated answer.
+# - `phase2`, `phase3` and the historical diagnostic switches (`liveProbe`,
+#   `hostDiagnostic`): they start real child processes / spend real model calls.
+#   They stay OFF in the default profile; the code that implements them is still
+#   shipped, so a local overlay can enable them.
+# - `research.fixturesRoot` pointing at a historical diagnostic corpus: the
+#   paper-only toolchain needs a fixtures root, so this template points at the
+#   bundled `fixtures/` tree instead of a machine-specific one.
+#
+# LOCAL OVERRIDES
+# ---------------
+# `dsh.bundle.patch` in package.json accepts ONE string, but a profile may layer
+# additional patch files on top (see `scripts/release/install-profile.mjs`). Put
+# personal routes, interpreter paths and artifact roots there.
+
+- insert:
+    - id: evolver-plugin
+      name: './../evolver/src/index.ts'
+      config:
+        # Registers the paper-only P5/P6/P7 toolchain. `storageRoot` and
+        # `skillRoot` are repo-relative and resolved by the adapters.
+        research:
+          fixturesRoot: fixtures/paper-only-v2
+          storageRoot: artifacts/paper-only/live-host
+          skillRoot: skills
+          publicProtocolPath: protocols/research-synthesis-v2.public.json
+        # Workbench submission tools (W5): evolver_get_stage_context and
+        # evolver_submit_design. A separate opt-in from experiments because they
+        # WRITE the workbench sidecar. The stage policy is trusted host config
+        # read from disk; a request can never name its own policy.
+        #
+        # NOTE: the stage Skill the chat agent loads lives at
+        # .dsh/skills/workbench-stage/SKILL.md, NOT under `skills/`. DSH
+        # discovers project skills from <git-root>/.dsh/skills; `skills/` is only
+        # read by this plugin through research.skillRoot.
+        workbenchResearch:
+          repoRoot: .
+          workbenchResearchRoot: artifacts/phase3/workbench-research
+          stagePolicyPath: configs/workbench/stage-policy.json
+          # W7 diagram registrar. Without this key evolver_register_diagram_output
+          # is NOT registered: the host would have nowhere to tell a diagram Skill
+          # to write, so offering the tool would invite a doomed call. The scratch
+          # root is per-(task, semanticHash, format); the caller never names a path.
+          diagram:
+            scratchRoot: artifacts/phase3/workbench-scratch
+
+    # Phase 3 workbench HOST half (read-only /evolver/api face + HostExecutionRecord).
+    # A separate Loader entry from evolver-plugin so the workbench can load without
+    # the research toolchain; same type-stripping constraint, so it is also a
+    # relative file URL.
+    - id: evolver-workbench-host
+      name: './../evolver/src/adapters/dsh/redesign-workbench-host.ts'
+      config:
+        repoRoot: .
+        researchExecutionRoot: artifacts/research-execution
+        paperOnlyRoot: artifacts/paper-only
+        # Phase 3 experiment store. The workbench builds its graph from the REAL
+        # pilot's campaign/comparison reports here, not only from Phase 2's tiny
+        # run; without it the page shows historical Phase 2 data as if it were the
+        # current research surface. The plugin defaults to this same path, so
+        # omitting it is not fatal, but declaring it keeps the wiring honest.
+        phase3ExperimentRoot: artifacts/phase3/experiments
+        workbenchResearchRoot: artifacts/phase3/workbench-research
+        hostExecutionRoot: artifacts/phase3/host-executions
+        scopeGrantRoot: artifacts/phase3/scope-grants
+        # The redesign host REQUIRES scoped read grants; leaving this false makes
+        # the entry throw at activation, which is the intended loud failure.
+        required: true
+
+    # Phase 3 workbench CLIENT half (the conversation view tab).
+    #
+    # Named by PATH, not by the bare package name `dsh-evolver-ui`. The client
+    # scanner locates a package by walking up from the resolved module URL to the
+    # nearest package.json (`nearestPackage` in dsh-client-modules), so a file URL
+    # into this tree finds `packages/evolver-ui/package.json` and its `dsh.client`
+    # declaration without the package being installed anywhere. A bare name would
+    # require the profile node_modules to contain it, which a release tree cannot
+    # assume.
+    - id: evolver-ui
+      name: './../evolver-ui/lib/index.js'
+
+    # Research bootstrap HOST half (BE-03): the read-only query route, the trusted
+    # action bridge, the evolver_* bootstrap tools and the real-Agent workflow
+    # dispatch. Every scope is derived from the calling session's workspace
+    # registration, so there is no path config to get wrong.
+    #
+    # The default extractor resolves the installed pdfjs-dist from this checkout.
+    # An optional pdfModulePath overrides it; relative overrides are repo-relative.
+    - id: evolver-research-bootstrap
+      name: './../evolver/src/adapters/dsh/research-bootstrap-host.ts'
+
+    # Paper library HOST half (F4 璁烘枃璧勪骇): the authenticated read-only web
+    # interface (/evolver/paper-library), the paper import/read Agent tools and the
+    # command-run store. The workbench header calls this route on every refresh 鈥?    # without this entry the fetch returns an empty 404 and the client crashes with
+    # "Unexpected end of JSON input".
+    #
+    # `libraryRoot` is legacy-compat only and is not read by the current host half
+    # (production storage is resolved per workspace via the registry at
+    # <workspace>/.dsh/research/papers); it is kept so an older adapter build
+    # cannot fail on a missing required field. PDF extraction uses installed pdfjs-dist.
+    - id: evolver-paper-library
+      name: './../evolver/src/adapters/dsh/paper-library-host.ts'
+      config:
+        libraryRoot: artifacts/paper-library
+
+    # Research Team domain adapter (research cycle). Native Team/Skills remain
+    # profile capabilities; this entry adds only the domain tools and the route.
+    - id: evolver-research-cycle
+      name: './../evolver/src/adapters/dsh/research-cycle-host.ts'
+
+    # Native Skill catalog: slash-menu and model on-demand invocation in any workspace.
+    - id: evolver-research-skills
+      name: './../evolver/src/adapters/dsh/research-skill-entries.ts'

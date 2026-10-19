@@ -1,0 +1,33 @@
+﻿{
+    "include":  [
+                    ".probe-ts/**/*.ts"
+                ],
+    "compilerOptions":  {
+                            "noEmit":  true,
+                            "skipLibCheck":  true,
+                            "typeRoots":  [
+                                              "../../tools/ts-toolchain/node_modules/@types"
+                                          ],
+                            "module":  "nodenext",
+                            "paths":  {
+                                          "@deepseek-ai/cordis":  [
+                                                                      "../../tools/vendor/gen/cordis/src/index.d.ts"
+                                                                  ],
+                                          "@deepseek-ai/dsh-tools":  [
+                                                                         "../../tools/vendor/gen/dsh-tools/lib/index.d.ts"
+                                                                     ]
+                                      },
+                            "moduleResolution":  "nodenext",
+                            "types":  [
+                                          "node"
+                                      ],
+                            "allowJs":  true,
+                            "strict":  true,
+                            "target":  "es2023",
+                            "checkJs":  false,
+                            "allowImportingTsExtensions":  true,
+                            "lib":  [
+                                        "es2023"
+                                    ]
+                        }
+}

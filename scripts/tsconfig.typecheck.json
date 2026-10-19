@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "target": "es2023",
+    "lib": ["es2023"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
+    "types": ["node"],
+    "typeRoots": ["../tools/ts-toolchain/node_modules/@types"],
+    "paths": {
+      "@deepseek-ai/cordis": ["../tools/vendor/gen/cordis/src/index.d.ts"],
+      "@deepseek-ai/dsh-tools": ["../tools/vendor/gen/dsh-tools/lib/index.d.ts"],
+      "@deepseek-ai/cosmokit": ["../tools/vendor/gen/cosmokit/src/index.d.ts"],
+      "@deepseek-ai/schemastery": ["../tools/vendor/gen/schemastery/src/index.d.ts"],
+      "@deepseek-ai/dsh-scope": ["../tools/vendor/gen/dsh-scope/lib/index.d.ts"],
+      "@deepseek-ai/dsh-llm": ["../tools/vendor/gen/dsh-llm/lib/index.d.ts"],
+      "@deepseek-ai/dsh-util-values": ["../tools/vendor/gen/dsh-util-values/lib/index.d.ts"],
+      "@deepseek-ai/dsh-brand": ["../tools/vendor/gen/dsh-brand/lib/index.d.ts"]
+    },
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": [
+    "lib/**/*.ts",
+    "probes/**/*.ts",
+    "eval-workbench-graph-publication-repair.ts",
+    "eval-workbench-graph-publication-round2.ts",
+    "eval-acceptance-evidence.ts",
+    "eval-workbench-research-diagram.ts",
+    "eval-workbench-graph-resolver.ts",
+    "eval-workbench-research-tools.ts",
+    "eval-workbench-research-v3.ts",
+    "eval-workbench-research-dataflow.ts",
+    "eval-workbench-research-poll.ts",
+    "eval-workbench-research-domain.ts",
+    "eval-phase3-preflight-repair.ts",
+    "verify-phase3-preflight-run.ts",
+    "build-phase3-preflight-manifest.ts",
+    "eval-resume-gap-wiki.ts",
+    "verify-resume-gap-wiki.ts"
+  ],
+  "files": ["../tools/vendor/dsh-tools-boundary.d.ts"]
+}

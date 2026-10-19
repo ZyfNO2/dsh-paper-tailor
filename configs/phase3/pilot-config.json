@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "taskId": "task-phase3-pilot",
+  "taskDescription": "Phase 3 MVP pilot: mechanism-level comparison of the attention gate (P002, research candidate) over the frozen Phase 2 CPU architecture, on the REAL licensed Oxford-IIIT Pet trimap slice. The candidate is a REAL published P6 product (candidate-P002) bound to a pinned implementation that passed the Phase 2 seven-step chain with CheckReport 22/22 and executable readiness=ready. The data is a real, CC BY-SA 4.0 dataset with pixel-level ground truth, prepared once and pinned by hash; what stays blocked is the independent test split, which only the formal final evaluation needs.",
+  "baselineRef": "phase2-baseline-stitch-cpu-v1",
+  "candidateRefs": [
+    "candidate-P002"
+  ],
+  "proposalLink": {
+    "kind": "research",
+    "synthesisResultRef": {
+      "id": "work/phase2-candidate-2026-10-06/p6-synthesis-result.json",
+      "sha256": "af1c88281298e6348a989afb88fb3008433925da523337d87ee94ad8024c46ce"
+    },
+    "candidateId": "candidate-P002",
+    "candidateHash": "6adb45bb56a814b4017cdc2e7212d9762c4c6da24b4ea741ab99697196bb509a"
+  },
+  "executableRefs": [
+    {
+      "id": "executable-f64255fdef41",
+      "sha256": "f64255fdef41bafdea63f4f2aa394447be092660be7316185df9fadc48335b7b"
+    }
+  ],
+  "profileRef": "phase2-cpu-seg-v1@1",
+  "dataVersionRef": "oxford-iiit-pet-trimap-v1",
+  "licenseRef": "CC-BY-SA-4.0",
+  "subsetSamplingNote": "a seed-pinned random sample (seed 20261004) of 32 annotated images from the 7349 the dataset ships: 16 train / 16 validation, image-name disjoint. The dataset's own README encourages random splits, so the paper split is not used. This is a real dataset but a SMALL sample of it: it supports a mechanism-level comparison on real pixels and is NOT a benchmark. Licence CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/), from https://www.robots.ox.ac.uk/~vgg/data/pets/; attribution and share-alike both apply and copyright remains with the original owners of the images. The full source, archive hashes and preprocessing rule are in fixtures/real-data/oxford-pet-trimap-v1/manifest.json.",
+  "preprocessingRef": "fixtures/real-data/oxford-pet-trimap-v1/manifest.json",
+  "primaryMetricId": "validation_loss",
+  "metricSpecs": [
+    {
+      "id": "validation_loss",
+      "direction": "minimize",
+      "unit": "cross_entropy",
+      "validRange": [
+        0,
+        100
+      ],
+      "split": "validation",
+      "aggregation": "mean",
+      "evaluatorOutputKey": "validation_loss"
+    },
+    {
+      "id": "validation_accuracy",
+      "direction": "maximize",
+      "unit": "accuracy",
+      "validRange": [
+        0,
+        1
+      ],
+      "split": "validation",
+      "aggregation": "mean",
+      "evaluatorOutputKey": "validation_accuracy"
+    }
+  ],
+  "trainingRecipeRef": "configs/phase2/profile-registry.json#phase2-cpu-seg-v1.runtime",
+  "baselineValidityCriterion": "PRE-DECLARED, and measured before it was declared: the baseline's validation_accuracy must exceed 0.5 (the 2-class random rate) AND exceed the 0.6875 majority-class rate of this slice's training split. scripts/probe-phase3-baseline-budget.ts measured the pinned baseline alone on this slice 鈥?5 steps 0.2500, 20 steps 0.4375, 50 steps 0.7500, 200 steps 0.7500 鈥?and the 50-step per-trial limit is the smallest budget at which both bars are cleared. A baseline below either bar would mean the matrix is measuring noise, and such a run is a protocol failure, not a negative result.",
+  "variantIds": [
+    "baseline",
+    "a",
+    "ab"
+  ],
+  "pairedSeeds": [
+    20261004,
+    20261006
+  ],
+  "budgetBasis": "train_steps",
+  "perTrialLimit": {
+    "kind": "train_steps",
+    "value": 50
+  },
+  "wallClockDeadlineMs": 3600000,
+  "maxRetryPerTrial": 1,
+  "evaluatorRef": {
+    "id": "experiments/phase2-cpu-seg-v1/independent_evaluator.py",
+    "sha256": "b679825192a9bfef248288b0ab0eb0e0de271cb66325fc8cdf07b1b8c6f07c29"
+  },
+  "reproductionToleranceRef": {
+    "id": "configs/phase3/reproduction-tolerance.json",
+    "sha256": "4da348c7126a9c1f42371548304e7adccd5b2271a6f437c1ae83349bc2e60e2e"
+  },
+  "modelRoute": {
+    "provider": "our-free-model",
+    "model": "muse-spark-1.3-contributor-free"
+  },
+  "upstreamQualityNote": "Phase 1 formalStatus=blocked, independentBenchmarkEstablished=false; sources are provisional. These disclosures ride every MVP report.",
+  "blockedFields": [
+    {
+      "field": "dataSplitManifest.testHandle",
+      "reason": "the slice has a train/validation split and no independent test split; the SPEC makes the test handle an evaluation-side opaque id and blocks the FORMAL final evaluation when it is absent. This does not block the pilot, and the formal final evaluation refuses itself (CONFIG_INCOMPLETE) rather than scoring on validation data it already selected on."
+    }
+  ],
+  "configHash": "d799f4c1257bd9d4358300f69558f320b2cb2e2aa702bea678c5f772bad73a79"
+}

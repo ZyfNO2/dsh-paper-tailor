@@ -1,0 +1,7 @@
+import fs from 'node:fs';import path from 'node:path';import { createHash } from 'node:crypto';import { fileURLToPath } from 'node:url';
+const source=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');const target=process.argv[2]&&path.resolve(process.argv[2]);
+if(!target||target===source||target.startsWith(source+path.sep))throw Error('Provide an independent empty target directory');
+if(fs.existsSync(target)&&fs.readdirSync(target).length)throw Error('Target must be empty; existing trees are never overwritten');
+const manifest=JSON.parse(fs.readFileSync(path.join(source,'verification/release-files.json'),'utf8'));
+for(const file of manifest.files){if(path.isAbsolute(file.path)||file.path.split(/[\\/]/).some(p=>p==='..'||p===''))throw Error('Unsafe release path');const src=path.resolve(source,file.path),dst=path.resolve(target,file.path);if(!src.startsWith(source+path.sep)||!dst.startsWith(target+path.sep))throw Error('Path escaped tree');let p=src;while(p!==source){if(fs.lstatSync(p).isSymbolicLink())throw Error('Refusing release link');p=path.dirname(p);}const bytes=fs.readFileSync(src);if(file.sha256&&createHash('sha256').update(bytes).digest('hex')!==file.sha256)throw Error('Manifest drift: '+file.path);fs.mkdirSync(path.dirname(dst),{recursive:true});fs.writeFileSync(dst,bytes);}
+console.log('Exported '+manifest.files.length+' verified payload files; dependencies, runtime state and old evidence excluded');

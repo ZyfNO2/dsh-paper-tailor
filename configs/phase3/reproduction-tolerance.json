@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "toleranceId": "phase3-reproduction-tolerance-v1",
+  "source": "host",
+  "generatedBy": "frozen by the worker BEFORE any reproduction run (docs/mvp/phases/PHASE3-SPEC.md section 3)",
+  "rule": "A reproduced trial matches the original when |new - original| <= reproductionTolerance on the primary metric, per (arm, seed). The tolerance is ABSOLUTE, not relative: the primary metric is a cross-entropy on a frozen 8-sample validation split, so a relative band would divide by a value that sits near 0.7 and silently widen the band as the metric shrinks.",
+  "reproductionTolerance": 0.02,
+  "rationale": [
+    "The runner is deterministic on this profile (torch.use_deterministic_algorithms, single thread, pinned seed, pinned weights), so a correct reproduction should land within floating-point noise; 0.02 is deliberately wider than that noise so the check can catch a real environment drift rather than fire on rounding.",
+    "0.02 is roughly 2.8% of the observed baseline validation_loss (0.71248) and an order of magnitude tighter than the arm-to-arm differences this pilot measures, so a reproduction that lands inside the band cannot be mistaken for a performance result.",
+    "The tolerance is NOT widened after a number is seen. A reproduction that lands outside it stays failed; re-running with a looser band is a new protocol version, not a retry."
+  ],
+  "appliesTo": "primaryMetricId only; secondary metrics are reported, not gated",
+  "notAToleranceFor": [
+    "mechanism-check bounds (configs/phase2/tolerances.json) — those bound a probe's assertions, not a run-to-run delta",
+    "cross-machine reproducibility — the environment pin in fixtures/phase2-source-pack/environment.json is single-host"
+  ]
+}

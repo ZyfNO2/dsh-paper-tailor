@@ -1,0 +1,50 @@
+{
+  "name": "dsh-paper-beta",
+  "version": "0.1.0-beta.1",
+  "private": true,
+  "type": "module",
+  "description": "Beta release candidate: DSH host extension for the research workbench (paper library, research bootstrap, research cycle, workbench UI).",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "install:tools": "node scripts/release/install-tools.mjs",
+    "install:host": "node scripts/release/link-host-modules.mjs",
+    "install:all": "npm ci && npm run install:host && npm run install:tools",
+    "postinstall": "node scripts/release/link-host-modules.mjs --if-available",
+    "typecheck": "npm run typecheck:backend && npm run typecheck:frontend && npm run typecheck:scripts",
+    "typecheck:backend": "tsc --noEmit -p packages/evolver/tsconfig.typecheck.json",
+    "typecheck:frontend": "tsc --noEmit -p packages/evolver-ui/tsconfig.json",
+    "typecheck:scripts": "tsc --noEmit -p scripts/tsconfig.typecheck.json",
+    "build": "npm run build:runtime && npm run build:client && npm run build:types && npm run build:node",
+    "build:runtime": "node --experimental-strip-types scripts/build-report-offline-runtime.ts --write",
+    "build:client": "node packages/evolver-ui/build-client.mjs",
+    "build:types": "tsc -p packages/evolver-ui/tsconfig.build.json",
+    "build:node": "node scripts/build-node-half.mjs",
+    "check:client": "node --experimental-strip-types scripts/build-client-check.ts",
+    "verify:beta": "node scripts/release/verify-beta.mjs",
+    "verify:host": "node scripts/release/verify-host.mjs",
+    "test:domain": "node --experimental-strip-types --test tests/integration/external-result.spec.ts tests/integration/general-metrics.spec.ts tests/integration/general-package.spec.ts tests/integration/research-takeover.spec.ts tests/integration/research-takeover-adopt.spec.ts tests/integration/general-wiki-workspace.spec.ts",
+    "test:wiring": "node --experimental-strip-types --test tests/integration/research-guidance.spec.ts tests/integration/research-cycle-host.spec.ts tests/integration/research-cycle-team.spec.ts tests/integration/general-report.spec.ts tests/integration/general-report-offline.spec.ts tests/frontend-redesign/paper-commands.test.ts tests/frontend-redesign/paper-library.test.ts tests/integration/research-bootstrap-host.spec.ts tests/frontend-redesign/studio-model.test.ts tests/frontend-redesign/studio-ui.test.ts tests/integration/pdf-intake.spec.ts tests/integration/research-skill-entries.spec.ts",
+    "test": "npm run test:domain && npm run test:wiring",
+    "verify:licenses": "node scripts/release/verify-licenses.mjs",
+    "verify:model": "node scripts/release/verify-host.mjs --e2e",
+    "test:skills": "node --experimental-strip-types --test tests/integration/research-skill-entries.spec.ts tests/integration/general-wiki-workspace.spec.ts"
+  },
+  "dependencies": {
+    "fflate": "0.8.3",
+    "yaml": "2.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "esbuild": "0.28.1",
+    "jsdom": "29.1.1",
+    "pdfjs-dist": "^6.3.289",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "typescript": "5.9.3"
+  },
+  "license": "MIT"
+}

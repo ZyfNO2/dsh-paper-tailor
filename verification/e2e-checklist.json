@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "status": "executed_current_source_partial_release_freeze_pending",
+  "date": "2026-10-18",
+  "note": "Real DSH A/B/C, native Team and restart completed; 6 pass / 0 fail / 1 not_run. Browser file-protocol policy prevents the final local-file opening check. Receipt is bound to current source hashes, not the stale frozen manifest. See verification/results/current-source-e2e-2026-10-18/summary.json.",
+  "cases": [
+    {
+      "id": "e2e/native-model",
+      "command": "npm run verify:model -- --dsh-home <isolated-home> --model-profile <local-profile> --forward-settings <optional-local-settings> --model <provider/model>",
+      "assertions": [
+        "Actual assistant response contains the requested token; user prompt text does not count",
+        "Save first model error; no silent model substitution"
+      ],
+      "status": "pass",
+      "actual": "Actual native assistant text exactly matches the probe token; configured workbuddy-global/hy4-preview-f; no silent route substitution."
+    },
+    {
+      "id": "e2e/abc-a",
+      "procedure": "Create a fresh DSH workspace containing one self-authored PDF; use native conversation to import, extract, publish cited Wiki and one candidate",
+      "assertions": [
+        "Wiki quotes match extracted page text and hash",
+        "Candidate persists; unknown budget/data stay unknown; no experiment executed"
+      ],
+      "status": "pass",
+      "actual": "Native PDF discover/import/read/Wiki/candidate; original hash and 5 page-quote sections match; dataset/compute/time budgets remain null."
+    },
+    {
+      "id": "e2e/abc-b",
+      "procedure": "Create a fresh synthetic mixed directory; request native takeover then explicit adoption",
+      "assertions": [
+        "Independent original-file hashes unchanged",
+        "Unread/metadata-only/failed files remain distinguished",
+        "Simulation nature survives Wiki/graph publication; all graph nodes unstarted"
+      ],
+      "status": "pass",
+      "actual": "Native takeover and snapshot followed by trusted user action adoption; 6 original hashes unchanged; broken PDF failed, fake weight metadata-only; 4 simulation sources; all nodes not_started."
+    },
+    {
+      "id": "e2e/abc-c",
+      "procedure": "Supply a new synthetic failed result; register/report/review; revoke source and attempt stale adoption; restore and re-review; send an actual user acceptance message; export/import package",
+      "assertions": [
+        "Ambiguous result mapping remains unresolved unless a genuine user choice identifies it",
+        "No missing measurement replaced with zero",
+        "Revocation rejects old adoption; a new trusted user decision creates an unstarted node",
+        "Imported package resets source/execution authorization"
+      ],
+      "status": "pass",
+      "actual": "Native failed result/review; ambiguous mapping rejected until actual user-origin session message; revoked source rejects stale adoption; restored/re-reviewed/accepted into one unstarted node; host export/import resets access and execution."
+    },
+    {
+      "id": "e2e/native-team",
+      "procedure": "Enable a compatible native Agent Team host plugin; authorize an evidence-analysis-only cycle from the trusted UI",
+      "assertions": [
+        "Real native members and durable tasks execute and publish artifacts",
+        "No GPU or project code execution",
+        "Model-unavailable or missing native capability fails admission honestly"
+      ],
+      "status": "pass",
+      "actual": "4 actual native members, 4 durable completed tasks and hash-validated artifacts; member traces limited to skill/read/publish; no shell/GPU tools."
+    },
+    {
+      "id": "e2e/restart",
+      "procedure": "Stop only the isolated acceptance host, restart it with the same profile, and re-read A/B/C and package data",
+      "assertions": [
+        "Full asset contents match before/after restart",
+        "Incomplete jobs become interrupted rather than silently rerunning"
+      ],
+      "status": "pass",
+      "actual": "51 files byte-identical across actual isolated host restart; actual running brainstorm job interrupted and not silently rerun; completed Team tasks retained."
+    },
+    {
+      "id": "e2e/ui-report",
+      "procedure": "Use a real browser on the final constructed client; open paper-compatible view, Wiki, research tree, Agent/Team and offline report",
+      "assertions": [
+        "Final bundle renders, authenticated routes match real assets",
+        "Offline report opens without host or network; synthetic inputs stay labeled"
+      ],
+      "status": "not_run",
+      "actual": "Partial: real browser Wiki/index/task board/Team/report and report modes render; actual exported report passes all 4 modes in a network-free DOM (0 requests). Direct local-file browser opening blocked by browser URL policy; no bypass attempted."
+    }
+  ]
+}

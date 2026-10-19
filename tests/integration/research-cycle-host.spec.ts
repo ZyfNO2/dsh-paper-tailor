@@ -1,0 +1,75 @@
+import * as assert from 'node:assert/strict';
+import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
+import { test } from 'node:test';
+import { ResearchBootstrapStore } from '../../packages/evolver/src/application/research-bootstrap-store.ts';
+import { GeneralResearchService } from '../../packages/evolver/src/application/general-research-service.ts';
+import { ResearchCycleService } from '../../packages/evolver/src/application/research-cycle-service.ts';
+import { ResearchCycleStore } from '../../packages/evolver/src/application/research-cycle-store.ts';
+import { apply as applyHost } from '../../packages/evolver/src/adapters/dsh/research-cycle-host.ts';
+import type { CycleRole } from '../../packages/evolver/src/contracts/research-cycle.ts';
+import type { CycleRoleExecutor } from '../../packages/evolver/src/application/research-cycle-roles.ts';
+
+test('queue Host saves without dispatch, requires explicit authorization, survives replay and stops its original coordinator', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dsh-queue-host-')); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const store = new ResearchBootstrapStore(root), researchId = new GeneralResearchService(store).create({ operationId: 'create', baseRevision: 0, title: '队列 Host', question: '待核对', domains: [], methods: [], entryMode: 'idea_only' }).result.researchId;
+  const g = store.readStateOrEmpty().researches[0].general!, cycles = new ResearchCycleStore(root, researchId);
+  let route: any, factories = 0, executes = 0;
+  const registry = { list: () => [{ id: 'fixture', title: 'fixture', path: root, sessionIds: ['session-1'] }] };
+  const context = { tools: { register: () => undefined }, on: () => () => undefined, logger: { warn: () => undefined, info: () => undefined }, get: (name: string) => name === 'workspaceRegistry' ? registry : name === 'connection' ? { requestRejection: () => undefined } : name === 'webServer' ? { register: (value: any) => { route = value; return () => undefined; } } : undefined };
+  applyHost(context as never, { workspaceRegistry: registry, resolverFactory: () => ({ getPaper: () => null }), executorsFactory: () => { factories++; return new Map<CycleRole, CycleRoleExecutor>([['hypothesis', { role: 'hypothesis', memberIdentity: 'queue-host-fixture', async execute(_, signal) { executes++; await new Promise<void>((_, reject) => signal.addEventListener('abort', () => reject(new Error('queue host cancelled')), { once: true })); } }]]); } });
+  const request = (method: string, payload?: Record<string, unknown>) => new Promise<{ status: number; body: any }>(resolve => {
+    const raw = JSON.stringify(payload), req = { method, url: method === 'GET' ? `/evolver/research-cycle?sessionId=session-1&researchId=${researchId}` : '/evolver/research-cycle/actions?sessionId=session-1', destroy() {}, on(event: string, callback: (chunk?: Buffer) => void) { if (event === 'data') callback(Buffer.from(raw)); if (event === 'end') queueMicrotask(() => callback()); return this; } };
+    const res = { statusCode: 0, setHeader() {}, end(text: string) { resolve({ status: res.statusCode, body: JSON.parse(text) }); } }; route.handler(req, res);
+  });
+  const saved = await request('POST', { type: 'create_schedule', operationId: 'host-create-queue', researchId, selectedIdeaId: g.ideas[0].ideaId, tasks: [{ nodeId: g.graph.nodes[0].nodeId, sourceIds: [] }], baseRevision: store.readStateOrEmpty().revision, cycleRevision: 0 });
+  assert.equal(saved.body.ok, true, JSON.stringify(saved.body)); assert.equal(factories, 0); assert.equal(executes, 0);
+  const read = await request('GET'); assert.equal(read.body.schedules[0].status, 'pending'); assert.equal(read.body.schedules[0].authorizedBy, 'web-ui:session-1'); assert.equal(factories, 0);
+  const input = { type: 'run_schedule', operationId: 'host-run-queue', researchId, scheduleId: saved.body.scheduleId, baseRevision: store.readStateOrEmpty().revision, cycleRevision: cycles.readStateOrEmpty().revision, authorize: true };
+  assert.equal((await request('POST', { ...input, authorize: false, operationId: 'unauthorized-queue' })).body.ok, false);
+  assert.equal((await request('POST', { ...input, baseRevision: undefined, operationId: 'missing-bootstrap' })).body.ok, false);
+  assert.equal(factories, 0);
+  const begun = await request('POST', input); assert.equal(begun.body.ok, true, JSON.stringify(begun.body)); assert.equal(begun.body.state, 'queued');
+  for (let i = 0; i < 50 && !executes; i++) await new Promise<void>(resolve => setImmediate(resolve));
+  assert.equal(executes, 1);
+  assert.equal((await request('POST', input)).body.replayed, true); assert.equal(factories, 1);
+  const stopped = await request('POST', { type: 'stop_schedule', operationId: 'host-stop-queue', researchId, scheduleId: saved.body.scheduleId, cycleRevision: cycles.readStateOrEmpty().revision });
+  assert.equal(stopped.body.ok, true, JSON.stringify(stopped.body));
+  for (let i = 0; i < 50 && cycles.readStateOrEmpty().runs[0].status !== 'cancelled'; i++) await new Promise<void>(resolve => setImmediate(resolve));
+  assert.equal(cycles.readStateOrEmpty().runs[0].status, 'cancelled'); assert.equal(cycles.readStateOrEmpty().schedules[0].status, 'stopped');
+  await new Promise<void>(resolve => setImmediate(resolve)); assert.equal(factories, 1);
+  applyHost(context as never, { workspaceRegistry: registry, resolverFactory: () => ({ getPaper: () => null }) });
+  const revision = cycles.readStateOrEmpty().revision;
+  const unavailable = await request('POST', { ...input, operationId: 'native-unavailable-queue', cycleRevision: revision });
+  assert.equal(unavailable.body.ok, false); assert.match(unavailable.body.reason, /UNSUPPORTED_CAPABILITY/);
+  assert.equal(cycles.readStateOrEmpty().revision, revision); assert.equal(factories, 1);
+});
+
+test('trusted Cycle Host restores an undispatched round only after explicit authorization and preserves its budget', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dsh-chain-host-')); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const store = new ResearchBootstrapStore(root), researchId = new GeneralResearchService(store).create({ operationId: 'create', baseRevision: 0, title: 'Host 恢复测试', question: '尚无证据', domains: [], methods: [], entryMode: 'idea_only' }).result.researchId;
+  const g = store.readStateOrEmpty().researches[0].general!, service = new ResearchCycleService({ workspaceRoot: root, bootstrapStore: store, resolver: { getPaper: () => null } });
+  const queued = service.startCycle({ identity: 'user', kind: 'user', actionId: 'seed' }, { commandId: 'queued-before-restart', researchId, selectedIdeaId: g.ideas[0].ideaId, nodeId: g.graph.nodes[0].nodeId, sourceIds: [], authorize: true, expectedBootstrapRevision: store.readStateOrEmpty().revision, expectedCycleRevision: 0 });
+  const original = new ResearchCycleStore(root, researchId).readStateOrEmpty();
+  let route: any, executes = 0, factories = 0;
+  const registry = { list: () => [{ id: 'fixture', title: 'fixture', path: root, sessionIds: ['session-1'] }] };
+  const context = { tools: { register: () => undefined }, on: () => () => undefined, logger: { warn: () => undefined, info: () => undefined }, get: (name: string) => name === 'workspaceRegistry' ? registry : name === 'connection' ? { requestRejection: () => undefined } : name === 'webServer' ? { register: (value: any) => { route = value; return () => undefined; } } : undefined };
+  applyHost(context as never, { workspaceRegistry: registry, resolverFactory: () => ({ getPaper: () => null }), executorsFactory: () => { factories++; return new Map<CycleRole, CycleRoleExecutor>([['hypothesis', { role: 'hypothesis', memberIdentity: 'host-scripted-fixture', async execute() { executes++; throw new Error('Host fixture intentionally stops after admission; no scientific result'); } }]]); } });
+  assert.equal(new ResearchCycleStore(root, researchId).readStateOrEmpty().runs[0].status, 'interrupted'); assert.equal(executes, 0);
+  const post = (payload: Record<string, unknown>) => new Promise<{ status: number; body: any }>(resolve => {
+    const raw = JSON.stringify(payload), req = { method: 'POST', url: '/evolver/research-cycle/actions?sessionId=session-1', destroy() {}, on(event: string, callback: (chunk?: Buffer) => void) { if (event === 'data') callback(Buffer.from(raw)); if (event === 'end') queueMicrotask(() => callback()); return this; } };
+    const res = { statusCode: 0, setHeader() {}, end(text: string) { resolve({ status: res.statusCode, body: JSON.parse(text) }); } }; route.handler(req, res);
+  });
+  const request = { type: 'resume_cycle', researchId, runId: queued.runId, operationId: 'host-resume', baseRevision: store.readStateOrEmpty().revision, cycleRevision: new ResearchCycleStore(root, researchId).readStateOrEmpty().revision, authorize: true };
+  const unauthorized = await post({ ...request, operationId: 'unauthorized-resume', authorize: false }); assert.equal(unauthorized.body.ok, false); assert.equal(factories, 0);
+  const wrongRenewal = await post({ ...request, operationId: 'renew-on-resume', renewChain: { reason: '不能通过恢复重置额度' } }); assert.equal(wrongRenewal.body.ok, false); assert.match(wrongRenewal.body.reason, /cannot renew/); assert.equal(factories, 0);
+  assert.equal((await post({ ...request, actor: { identity: 'forged' } })).status, 400);
+  const accepted = await post(request); assert.equal(accepted.body.ok, true, JSON.stringify(accepted.body)); assert.equal(accepted.body.state, 'queued'); assert.match(accepted.body.message, /原 attempt/);
+  for (let i = 0; i < 50 && new ResearchCycleStore(root, researchId).readStateOrEmpty().runs[0].status !== 'failed'; i++) await new Promise<void>(resolve => setImmediate(resolve));
+  await new Promise<void>(resolve => setImmediate(resolve));
+  const state = new ResearchCycleStore(root, researchId).readStateOrEmpty(); assert.equal(state.runs[0].status, 'failed'); assert.equal(executes, 1);
+  assert.deepEqual(state.steps.map(s => s.attemptId), original.steps.map(s => s.attemptId)); assert.equal(state.runs[0].round, 1); assert.deepEqual(state.runs[0].chain, original.runs[0].chain);
+  const revision = state.revision; assert.equal((await post(request)).body.ok, true); await new Promise<void>(resolve => setImmediate(resolve));
+  assert.equal(executes, 1); assert.equal(new ResearchCycleStore(root, researchId).readStateOrEmpty().revision, revision);
+});

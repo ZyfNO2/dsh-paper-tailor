@@ -1,0 +1,718 @@
+{
+  "protocolId": "paper-only-v1",
+  "version": 1,
+  "schemaVersion": 1,
+  "split": "candidate",
+  "sealedSetAvailable": false,
+  "requestHashContract": {
+    "includes": [
+      "protocolRef",
+      "sampleKey",
+      "budget",
+      "phase",
+      "inputRefs or taskBrief+cardRefs or candidateSetRef"
+    ],
+    "excludes": [
+      "commandId",
+      "evalInvocationId",
+      "ownerSessionId"
+    ],
+    "idempotencyKey": "ownerSessionId + phase + commandId; payload equality is then checked on requestHash"
+  },
+  "portKinds": {
+    "replay": "engineer_authored_replay: exercises the Host machinery, never certifies model capability",
+    "authored_draft": "P6 component drafts supplied by the dev case builder, not model output",
+    "live": "requires an explicit DSH route binding; absent it, live cases are blocked"
+  },
+  "formalBlockedReason": "This fixture is a candidate corpus with agent-produced labels. manifest.sealed is false, so the micro-F1 threshold does not apply and P5-07 stays blocked until a human reviews the labels and decides to seal.",
+  "vocabularies": {
+    "evidenceStatus": [
+      "source_reported",
+      "inferred",
+      "hypothesis",
+      "unknown"
+    ],
+    "role": [
+      "baseline",
+      "module",
+      "both",
+      "unclear"
+    ],
+    "interventionAxis": [
+      "feature_path",
+      "loss",
+      "training_parameterization",
+      "attention_implementation",
+      "other"
+    ],
+    "taskDomain": [
+      "vision_segmentation",
+      "vision_detection",
+      "sequence_modeling",
+      "cross_domain",
+      "other"
+    ],
+    "metricDirection": [
+      "higher",
+      "lower",
+      "unknown"
+    ],
+    "coverage": [
+      "complete",
+      "partial",
+      "insufficient_evidence"
+    ],
+    "comparability": [
+      "unknown",
+      "incomparable",
+      "context_matched"
+    ],
+    "compatibilityDecision": [
+      "compatible",
+      "conditionally_compatible",
+      "reject_for_mvp",
+      "insufficient_evidence"
+    ],
+    "candidateDecision": [
+      "proposed",
+      "conditional",
+      "rejected",
+      "insufficient_evidence"
+    ],
+    "reasonCodes": [
+      "TASK_MISMATCH",
+      "REQUIRED_OPERATOR_ABSENT",
+      "REQUIRED_TARGET_ABSENT",
+      "SCOPE_EXCLUDED",
+      "MECHANISM_CONFLICT",
+      "CONDITION_UNRESOLVED",
+      "EVIDENCE_MISSING",
+      "DISTINCT_INTERVENTION_AXES",
+      "SOURCE_SUPPORTED_COMPOSITION"
+    ],
+    "requirementCategory": [
+      "existing_feature_hook",
+      "loss_target_transform",
+      "parameter_selection",
+      "operator_replacement",
+      "new_data_annotation",
+      "architecture_change",
+      "environment_constraint",
+      "other"
+    ],
+    "requirementResolution": [
+      "satisfied",
+      "unresolved",
+      "conflicting",
+      "unknown"
+    ],
+    "bindingRelation": [
+      "transforms_features",
+      "adds_objective",
+      "reparameterizes",
+      "replaces_operator",
+      "other"
+    ],
+    "constraintKind": [
+      "task_requirement",
+      "resource_limit",
+      "scope_exclusion"
+    ],
+    "rankingGroup": [
+      "eligible",
+      "conditional",
+      "not_rankable",
+      "excluded"
+    ],
+    "errorCodes": [
+      "INVALID_INPUT",
+      "SCHEMA_VIOLATION",
+      "SOURCE_MISMATCH",
+      "EVIDENCE_INVALID",
+      "OWNER_MISMATCH",
+      "POLICY_DENIED",
+      "IDEMPOTENCY_CONFLICT",
+      "DEPENDENCY_NOT_READY",
+      "MODEL_UNAVAILABLE",
+      "BUDGET_EXHAUSTED",
+      "MODEL_TIMEOUT",
+      "MODEL_RESPONSE_ERROR",
+      "CANCELLED",
+      "INTERRUPTED"
+    ]
+  },
+  "fieldClasses": {
+    "PaperIdentification": {
+      "paperId": "metadata",
+      "documentHash": "metadata",
+      "taskDomain": "evidence_field",
+      "role": "evidence_field",
+      "contributedMethods": "evidence_field",
+      "builtOnBaselines": "evidence_field",
+      "comparisonBaselines": "evidence_field",
+      "moduleMentions": "evidence_field",
+      "limitations": "evidence_field",
+      "reportedResults": "structural_set",
+      "ablations": "evidence_field",
+      "evidenceSpans": "metadata",
+      "coverage": "host_derived",
+      "unresolvedFields": "host_derived"
+    },
+    "ResearchBaselineCard": {
+      "id": "metadata",
+      "revision": "metadata",
+      "paperId": "metadata",
+      "name": "evidence_field",
+      "taskDomain": "evidence_field",
+      "methodSummary": "evidence_field",
+      "requirements": "evidence_field",
+      "evidenceRefs": "metadata",
+      "status": "metadata",
+      "producerOperationId": "metadata",
+      "documentHash": "metadata"
+    },
+    "ResearchModuleCard": {
+      "id": "metadata",
+      "revision": "metadata",
+      "paperId": "metadata",
+      "name": "evidence_field",
+      "mechanism": "evidence_field",
+      "interventionAxis": "evidence_field",
+      "requirements": "evidence_field",
+      "modifies": "evidence_field",
+      "expectedOutput": "evidence_field",
+      "builtOnBaselines": "evidence_field",
+      "limitations": "evidence_field",
+      "evidenceRefs": "metadata",
+      "status": "metadata",
+      "producerOperationId": "metadata",
+      "documentHash": "metadata"
+    }
+  },
+  "responseSchema": {
+    "topLevelKeys": [
+      "identifications",
+      "baselineCards",
+      "moduleCards",
+      "evidenceSpans"
+    ],
+    "topLevelRule": "Send ONE JSON object whose top-level keys are exactly the four listed in topLevelKeys. Do not nest them under an object named after a type, and do not add taskId or any other key. Send that object alone: no heading, no reasoning preamble and no closing note around it, because anything outside the object makes the answer unparseable.",
+    "definitions": {
+      "PaperIdentificationDraft": {
+        "required": [
+          "paperId",
+          "taskDomain",
+          "role",
+          "contributedMethods",
+          "builtOnBaselines",
+          "comparisonBaselines",
+          "moduleMentions",
+          "limitations",
+          "reportedResults",
+          "ablations",
+          "evidenceSpans"
+        ],
+        "additionalProperties": false,
+        "note": "documentHash, coverage and unresolvedFields are Host-derived and must not be sent",
+        "fieldTypes": {
+          "paperId": "string",
+          "taskDomain": "EvidenceField",
+          "role": "EvidenceField",
+          "contributedMethods": "Array<EvidenceField>",
+          "builtOnBaselines": "Array<EvidenceField>",
+          "comparisonBaselines": "Array<EvidenceField>",
+          "moduleMentions": "Array<EvidenceField>",
+          "limitations": "Array<EvidenceField>",
+          "reportedResults": "Array<ReportedResultDraft>",
+          "ablations": "Array<EvidenceField>",
+          "evidenceSpans": "Array<string>"
+        }
+      },
+      "ResearchBaselineCardDraft": {
+        "required": [
+          "paperId",
+          "name",
+          "taskDomain",
+          "methodSummary",
+          "requirements"
+        ],
+        "additionalProperties": false,
+        "note": "id, revision, documentHash, producerOperationId, status and evidenceRefs are Host-assembled and must not be sent",
+        "fieldTypes": {
+          "paperId": "string",
+          "name": "EvidenceField",
+          "taskDomain": "EvidenceField",
+          "methodSummary": "EvidenceField",
+          "requirements": "Array<EvidenceField>"
+        }
+      },
+      "ResearchModuleCardDraft": {
+        "required": [
+          "paperId",
+          "name",
+          "mechanism",
+          "interventionAxis",
+          "requirements",
+          "modifies",
+          "expectedOutput",
+          "builtOnBaselines",
+          "limitations"
+        ],
+        "additionalProperties": false,
+        "note": "id, revision, documentHash, producerOperationId, status and evidenceRefs are Host-assembled and must not be sent",
+        "fieldTypes": {
+          "paperId": "string",
+          "name": "EvidenceField",
+          "mechanism": "EvidenceField",
+          "interventionAxis": "EvidenceField",
+          "requirements": "Array<EvidenceField>",
+          "modifies": "EvidenceField",
+          "expectedOutput": "EvidenceField",
+          "builtOnBaselines": "Array<EvidenceField>",
+          "limitations": "Array<EvidenceField>"
+        }
+      },
+      "SpanDraft": {
+        "required": [
+          "id",
+          "paperId",
+          "section",
+          "quote"
+        ],
+        "additionalProperties": false,
+        "note": "quote is copied verbatim from the visible section; never send start/end/offsets, the Host resolves them and fails on a non-unique hit, so copy a span long enough to identify one occurrence rather than a short phrase"
+      },
+      "EvidenceField": {
+        "required": [
+          "value",
+          "status",
+          "evidenceRefs",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "statusEnum": [
+          "source_reported",
+          "inferred",
+          "hypothesis",
+          "unknown"
+        ],
+        "rules": [
+          "status=unknown requires value=null and a non-empty reason",
+          "any other status requires a non-null value and at least one evidenceRefs entry naming a SpanDraft id",
+          "inferred and hypothesis also require a non-empty reason",
+          "reason is null or a non-empty string; an empty string is rejected"
+        ]
+      },
+      "MetricValue": {
+        "required": [
+          "name",
+          "direction"
+        ],
+        "directionEnum": [
+          "higher",
+          "lower",
+          "unknown"
+        ]
+      },
+      "ReportedResultDraft": {
+        "required": [
+          "metric",
+          "value",
+          "unit",
+          "dataset",
+          "split",
+          "baseline",
+          "configuration",
+          "hardware",
+          "comparability",
+          "sourceEvidence"
+        ],
+        "comparabilityEnum": [
+          "unknown",
+          "incomparable",
+          "context_matched"
+        ],
+        "fieldTypes": {
+          "metric": "EvidenceField(MetricValue)",
+          "value": "EvidenceField",
+          "unit": "EvidenceField",
+          "dataset": "EvidenceField",
+          "split": "EvidenceField",
+          "baseline": "EvidenceField",
+          "configuration": "EvidenceField",
+          "hardware": "EvidenceField",
+          "comparability": "comparability (a bare enum string, never an EvidenceField wrapper)",
+          "sourceEvidence": "Array<string> of SpanDraft ids (never an EvidenceField wrapper)"
+        }
+      }
+    },
+    "setFieldRule": "a set field is an array of EvidenceField; when the whole set is unknown send exactly one entry with value=null,status=unknown; never mix it with valued entries; an empty array means nothing was extracted this run",
+    "setValueShapeRule": "Array<EvidenceField> means a JSON array whose every element is its own complete EvidenceField object. Do not wrap the array inside a single EvidenceField: {\"value\":[{...},{...}],\"status\":...,\"evidenceRefs\":...} is invalid; the correct shape is [{...},{...}]",
+    "forbiddenFields": [
+      "status other than \"proposed\" on a card",
+      "implementationHash",
+      "implementationId",
+      "inputContract",
+      "outputContract",
+      "allowedSlots",
+      "tensorShape",
+      "dtype",
+      "channels",
+      "slotId",
+      "readyReportId",
+      "start",
+      "end"
+    ]
+  },
+  "synthesisResponseSchema": {
+    "topLevelKeys": [
+      "candidates"
+    ],
+    "topLevelRule": "Send ONE JSON object whose only top-level key is candidates, an array of SynthesisCandidateDraft. Do not nest the array under an object named after a type. Send that object alone: no heading, no reasoning preamble and no closing note around it, because anything outside the object makes the answer unparseable.",
+    "definitions": {
+      "SynthesisCandidateDraft": {
+        "required": [
+          "id",
+          "baselineCardRef",
+          "moduleCardRefs",
+          "compatibility",
+          "mechanismHypothesis",
+          "conceptualBindings",
+          "expectedEffects",
+          "risks",
+          "requiredValidation",
+          "evidenceRefs",
+          "decision"
+        ],
+        "additionalProperties": false,
+        "note": "candidateHash, taskBriefHash, ablationMatrix and performanceStatus are Host-derived and must not be sent",
+        "fieldTypes": {
+          "id": "string",
+          "baselineCardRef": "CardRef",
+          "moduleCardRefs": "Array<CardRef>",
+          "compatibility": "CompatibilityAssessmentDraft",
+          "mechanismHypothesis": "EvidenceField",
+          "conceptualBindings": "Array<ConceptualBindingDraft>",
+          "expectedEffects": "Array<EvidenceField>",
+          "risks": "Array<EvidenceField>",
+          "requiredValidation": "Array<EvidenceField>",
+          "evidenceRefs": "Array<string>",
+          "decision": "candidateDecision"
+        }
+      },
+      "CardRef": {
+        "required": [
+          "id",
+          "revision",
+          "sha256",
+          "producerOperationId"
+        ],
+        "additionalProperties": false,
+        "note": "copy a CardRef verbatim from the PUBLISHED CARDS block; an invented id, revision or sha256 is refused by the Host"
+      },
+      "CompatibilityAssessmentDraft": {
+        "required": [
+          "baselineCardRef",
+          "moduleCardRefs",
+          "scope",
+          "decision",
+          "requirements",
+          "unresolvedConditions",
+          "reasonCodes",
+          "rationale",
+          "evidenceRefs",
+          "interfaceStatus"
+        ],
+        "additionalProperties": false,
+        "scopeEnum": [
+          "mechanism_only"
+        ],
+        "interfaceStatusEnum": [
+          "NOT_VERIFIED"
+        ],
+        "decisionEnum": [
+          "compatible",
+          "conditionally_compatible",
+          "reject_for_mvp",
+          "insufficient_evidence"
+        ],
+        "fieldTypes": {
+          "baselineCardRef": "CardRef",
+          "moduleCardRefs": "Array<CardRef>",
+          "requirements": "Array<RequirementDraft>",
+          "unresolvedConditions": "Array<string>",
+          "reasonCodes": "Array<reasonCode>",
+          "rationale": "string",
+          "evidenceRefs": "Array<string>"
+        }
+      },
+      "RequirementDraft": {
+        "required": [
+          "id",
+          "category",
+          "description",
+          "resolution",
+          "basisRefs"
+        ],
+        "additionalProperties": false,
+        "categoryEnum": [
+          "existing_feature_hook",
+          "loss_target_transform",
+          "parameter_selection",
+          "operator_replacement",
+          "new_data_annotation",
+          "architecture_change",
+          "environment_constraint",
+          "other"
+        ],
+        "resolutionEnum": [
+          "satisfied",
+          "unresolved",
+          "conflicting",
+          "unknown"
+        ],
+        "fieldTypes": {
+          "description": "EvidenceField",
+          "basisRefs": "Array<string>"
+        }
+      },
+      "ConceptualBindingDraft": {
+        "required": [
+          "moduleRef",
+          "axis",
+          "targetConcept",
+          "relation",
+          "requiredInputs"
+        ],
+        "additionalProperties": false,
+        "axisEnum": [
+          "feature_path",
+          "loss",
+          "training_parameterization",
+          "attention_implementation",
+          "other"
+        ],
+        "relationEnum": [
+          "transforms_features",
+          "adds_objective",
+          "reparameterizes",
+          "replaces_operator",
+          "other"
+        ],
+        "fieldTypes": {
+          "moduleRef": "CardRef",
+          "targetConcept": "EvidenceField",
+          "requiredInputs": "Array<EvidenceField>"
+        }
+      },
+      "EvidenceField": {
+        "required": [
+          "value",
+          "status",
+          "evidenceRefs",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "statusEnum": [
+          "source_reported",
+          "inferred",
+          "hypothesis",
+          "unknown"
+        ],
+        "rules": [
+          "status=unknown requires value=null and a non-empty reason",
+          "any other status requires a non-null value and at least one evidenceRefs entry",
+          "inferred and hypothesis also require a non-empty reason",
+          "reason is null or a non-empty string; an empty string is rejected"
+        ]
+      }
+    },
+    "decisionRule": "compatibility.decision alone fixes the candidate decision: compatible->proposed, conditionally_compatible->conditional, reject_for_mvp->rejected, insufficient_evidence->insufficient_evidence. mechanismHypothesis must carry status=hypothesis on a proposed/conditional candidate and status=unknown on a rejected/insufficient one, and risks plus requiredValidation must each hold at least one valued entry when the candidate is proposed or conditional.",
+    "evidenceRefRule": "P6 cannot introduce quotations: every evidenceRefs and basisRefs entry must name a span id that is already attached to one of the published cards you bind.",
+    "setFieldRule": "a set field is an array of EvidenceField; when the whole set is unknown send exactly one entry with value=null,status=unknown; never mix it with valued entries",
+    "setValueShapeRule": "Array<EvidenceField> means a JSON array whose every element is its own complete EvidenceField object, not one EvidenceField whose value is an array.",
+    "forbiddenFields": [
+      "implementationHash",
+      "implementationId",
+      "inputContract",
+      "outputContract",
+      "allowedSlots",
+      "tensorShape",
+      "dtype",
+      "channels",
+      "slotId",
+      "readyReportId",
+      "any predicted metric value"
+    ]
+  },
+  "hashProtocol": {
+    "canonicalEncoding": "canonical-json-v1",
+    "textNormalization": "paper-text-v1",
+    "location": "Unicode code point half-open [start,end) relative to one section",
+    "requestHashFields": [
+      "protocolRef",
+      "sampleKey",
+      "budget",
+      "phase",
+      "inputs or card refs"
+    ],
+    "requestHashExcludes": [
+      "commandId",
+      "evalInvocationId",
+      "ownerSessionId"
+    ],
+    "idempotencyKey": "ownerSessionId + phase + commandId, then compare requestHash",
+    "typeNames": [
+      "request",
+      "candidate",
+      "corpus",
+      "policy",
+      "report",
+      "paper-document",
+      "card-identity",
+      "task-brief",
+      "protocol-public",
+      "candidate-set",
+      "proposal"
+    ],
+    "canonicalSetKeys": [
+      "ablations",
+      "allowedModuleRefs",
+      "availableSections",
+      "basisRefs",
+      "builtOnBaselines",
+      "comparisonBaselines",
+      "conceptualBindings",
+      "conditionalIds",
+      "constraints",
+      "contributedMethods",
+      "eligibleIds",
+      "evaluationQuestions",
+      "evidenceRefs",
+      "evidenceSpans",
+      "excludedIds",
+      "exclusionReasons",
+      "expectedEffects",
+      "inputPaths",
+      "limitations",
+      "moduleCardRefs",
+      "moduleMentions",
+      "moduleRefs",
+      "notRankableIds",
+      "reasonCodes",
+      "requiredInputs",
+      "requiredValidation",
+      "requirements",
+      "risks",
+      "sourceEvidence",
+      "unresolvedConditions",
+      "unresolvedFields"
+    ]
+  },
+  "budgets": {
+    "connectivity": {
+      "maxCalls": 1,
+      "maxInputTokensPerCall": 2048,
+      "maxOutputTokensPerCall": 512,
+      "callTimeoutMs": 120000,
+      "totalTimeoutMs": 120000
+    },
+    "basic": {
+      "maxCalls": 4,
+      "maxInputTokensPerCall": 16384,
+      "maxOutputTokensPerCall": 32768,
+      "callTimeoutMs": 120000,
+      "totalTimeoutMs": 600000
+    },
+    "formalPerSample": {
+      "maxCalls": 2,
+      "maxInputTokensPerCall": 16384,
+      "maxOutputTokensPerCall": 8192,
+      "callTimeoutMs": 120000,
+      "totalTimeoutMs": 300000
+    },
+    "p7PerCandidateSet": {
+      "maxCalls": 0,
+      "maxInputTokensPerCall": 0,
+      "maxOutputTokensPerCall": 0,
+      "callTimeoutMs": 30000,
+      "totalTimeoutMs": 30000
+    }
+  },
+  "synthesisLimits": {
+    "maxCandidates": 5,
+    "maxModulesPerCandidate": 3
+  },
+  "ablationMatrixRule": {
+    "modules_0": 1,
+    "modules_1": 2,
+    "modules_2": 4,
+    "modules_3": 8,
+    "reducible": false
+  },
+  "scoringPolicy": {
+    "policyId": "scoring-policy-v1",
+    "rubricVersion": "rubric-v1",
+    "weights": {
+      "evidence_strength": 30,
+      "mechanism_compatibility": 30,
+      "mechanism_complementarity": 25,
+      "implementation_simplicity": 15
+    },
+    "levels": [
+      0,
+      1,
+      2
+    ],
+    "denominator": 200
+  },
+  "acceptanceCases": {
+    "P5": [
+      "P5-01",
+      "P5-02",
+      "P5-03",
+      "P5-04",
+      "P5-05",
+      "P5-06",
+      "P5-07"
+    ],
+    "P6": [
+      "P6-01",
+      "P6-02",
+      "P6-03",
+      "P6-04",
+      "P6-05",
+      "P6-06",
+      "P6-07",
+      "P6-08"
+    ],
+    "P7": [
+      "P7-01",
+      "P7-02",
+      "P7-03",
+      "P7-04",
+      "P7-05",
+      "P7-06"
+    ]
+  },
+  "requiredP5NegativeSubcases": [
+    "gold_overreach_read",
+    "prompt_injection",
+    "nonexistent_citation",
+    "multiple_quote_hits",
+    "cross_paper_same_name",
+    "no_quantitative_value",
+    "same_key_different_payload",
+    "cancel_publish_race",
+    "owner_destroy",
+    "restart_interrupt"
+  ],
+  "evaluatorOnlyArtifacts": [
+    "gold/dev-field-annotations.json",
+    "gold/dev-field-annotations.json",
+    "gold/dev-alias-normalization.json",
+    "gold/dev-p6-case-annotations.json",
+    "gold/README.md"
+  ],
+  "publicHash": "ced3dcdad86351af18d342e83fa2449d92fefc031fb5d19b8b23f59303a319c2"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "scope": "RG-K K0–K3 minimal text/keyword Wiki engineering profile",
+  "configRef": "configs/knowledge/minimal.json",
+  "requirements": [
+    { "id": "RG-K-01", "required": true, "status": "draft", "assertions": ["byte-identical import is idempotent", "same paper new bytes creates a version", "different paper identity is not merged"] },
+    { "id": "RG-K-02", "required": true, "status": "draft", "assertions": ["UTF-8 byte locators round-trip CRLF, CJK and emoji", "no synthetic page numbers"] },
+    { "id": "RG-K-03", "required": true, "status": "draft", "assertions": ["known source retrieval is deterministic", "unsupported exact value remains unknown", "tie ordering is stable", "context limit records omissions"] },
+    { "id": "RG-K-04", "required": true, "status": "draft", "assertions": ["unlisted source, task and scope are denied before body disclosure", "denial has no model or process side effect"] },
+    { "id": "RG-K-05", "required": true, "status": "draft", "assertions": ["claim refs must be in the submitted evidence pack", "local observation requires a verified result and conditions ref"] },
+    { "id": "RG-K-06", "required": true, "status": "draft", "assertions": ["new source version marks dependent current claims stale", "old immutable bytes remain hash-addressable", "revoked source body cannot be read"] },
+    { "id": "RG-K-07", "required": true, "status": "draft", "assertions": ["Wiki update is compare-and-swap", "same-condition contradictory claims stay conflicted", "different conditions remain separate"] },
+    { "id": "RG-K-08", "required": true, "status": "draft", "assertions": ["actual downstream task input records EvidencePack and chunk refs", "result, cost and error remain tied to that task call"] },
+    { "id": "RG-K-09", "required": true, "status": "draft", "assertions": ["independent recompute verifies bytes, locator, conditions and manifest", "source or evidence hash tampering is rejected"] }
+  ]
+}

@@ -1,0 +1,605 @@
+{
+  "schemaVersion": 1,
+  "protocolId": "paper-only-v1",
+  "corpusHash": "40358a19b5ae6cdada213040a1fd7cd21a51d764df9c2317c94fd435c1662dca",
+  "split": "candidate",
+  "sealed": false,
+  "note": "Candidate corpus for the paper-only evaluation. Built from 12 real arXiv abstracts by an agreed truncation plan (work/corpus-candidate). sealed=false: the labels are agent-produced and have not been human-reviewed.",
+  "memoryContaminationControl": "not_prepared",
+  "entries": [
+    {
+      "paperId": "P01",
+      "title": "Deep Residual Learning for Image Recognition",
+      "version": "1512.03385v1",
+      "sourceUri": "https://arxiv.org/abs/1512.03385",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1512.03385",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P01.deep-residual-learning-for-image-recognition.title.txt",
+          "sectionTextHash": "52d6accc68656d873cf4c0c5fc4d7b61aaf61be0f7e3c656ba3c2994e0eafece",
+          "codePoints": 44
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P01.deep-residual-learning-for-image-recognition.abstract.txt",
+          "sectionTextHash": "82e1125d329c811b2bdaeec068f3b54e22db3f9d98f208c0710b5f9a0de924fc",
+          "codePoints": 331
+        }
+      ],
+      "documentHash": "82e1125d329c811b2bdaeec068f3b54e22db3f9d98f208c0710b5f9a0de924fc",
+      "truncation": {
+        "sentenceCount": 11,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3
+        ],
+        "cutAfterSentence": 3,
+        "droppedSentenceCount": 8,
+        "lastKeptSentence": "We explicitly reformulate the layers as learning residual functions with reference to the layer inputs, instead of learning unreferenced functions.",
+        "droppedSentences": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "firstDroppedSentence": "We provide comprehensive empirical evidence showing that these residual networks are easier to optimize, and can gain accuracy from considerably increased depth."
+      }
+    },
+    {
+      "paperId": "P02",
+      "title": "Squeeze-and-Excitation Networks",
+      "version": "1709.01507v1",
+      "sourceUri": "https://arxiv.org/abs/1709.01507",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1709.01507",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P02.squeeze-and-excitation-networks.title.txt",
+          "sectionTextHash": "3ff9c40086b471a25b1a55653ef854279771cc8a617fc1138ee683f3ce7c5397",
+          "codePoints": 31
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P02.squeeze-and-excitation-networks.abstract.txt",
+          "sectionTextHash": "24699e6280bdb206192afe77bbf69a326152acaa3bc4aa935ec2abc77accb7db",
+          "codePoints": 897
+        }
+      ],
+      "documentHash": "24699e6280bdb206192afe77bbf69a326152acaa3bc4aa935ec2abc77accb7db",
+      "truncation": {
+        "sentenceCount": 7,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "cutAfterSentence": 4,
+        "droppedSentenceCount": 3,
+        "lastKeptSentence": "We show that these blocks can be stacked together to form SENet architectures that generalise extremely effectively across different datasets.",
+        "droppedSentences": [
+          5,
+          6,
+          7
+        ],
+        "firstDroppedSentence": "We further demonstrate that SE blocks bring significant improvements in performance for existing state-of-the-art CNNs at slight additional computational cost."
+      }
+    },
+    {
+      "paperId": "P03",
+      "title": "CBAM: Convolutional Block Attention Module",
+      "version": "1807.06521v1",
+      "sourceUri": "https://arxiv.org/abs/1807.06521",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1807.06521",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P03.cbam-convolutional-block-attention-module.title.txt",
+          "sectionTextHash": "d80f8e90217aa05acb09110407a837afe14f5b1f89456f672e317b64edd4e55b",
+          "codePoints": 42
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P03.cbam-convolutional-block-attention-module.abstract.txt",
+          "sectionTextHash": "72848a4419cf662a9785ddd7f9e690b47dc6b308e812b49dcb3f42c4101bbcf8",
+          "codePoints": 677
+        }
+      ],
+      "documentHash": "72848a4419cf662a9785ddd7f9e690b47dc6b308e812b49dcb3f42c4101bbcf8",
+      "truncation": {
+        "sentenceCount": 6,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "cutAfterSentence": 4,
+        "droppedSentenceCount": 2,
+        "lastKeptSentence": "We validate our CBAM through extensive experiments on ImageNet-1K, MS~COCO detection, and VOC~2007 detection datasets.",
+        "droppedSentences": [
+          5,
+          6
+        ],
+        "firstDroppedSentence": "Our experiments show consistent improvements in classification and detection performances with various models, demonstrating the wide applicability of CBAM."
+      }
+    },
+    {
+      "paperId": "P04",
+      "title": "BAM: Bottleneck Attention Module",
+      "version": "1807.06514v1",
+      "sourceUri": "https://arxiv.org/abs/1807.06514",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1807.06514",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P04.bam-bottleneck-attention-module.title.txt",
+          "sectionTextHash": "632d0c2f5e0a47e197394f639723849d4e703eed0238236ef5524ae45c6efed2",
+          "codePoints": 32
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P04.bam-bottleneck-attention-module.abstract.txt",
+          "sectionTextHash": "e4fc8b92560a347693187e08b46164e95c1c2d6f563fe94bb23f5a11948297c6",
+          "codePoints": 835
+        }
+      ],
+      "documentHash": "e4fc8b92560a347693187e08b46164e95c1c2d6f563fe94bb23f5a11948297c6",
+      "truncation": {
+        "sentenceCount": 9,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "cutAfterSentence": 7,
+        "droppedSentenceCount": 2,
+        "lastKeptSentence": "We validate our BAM through extensive experiments on CIFAR-100, ImageNet-1K, VOC 2007 and MS COCO benchmarks.",
+        "droppedSentences": [
+          8,
+          9
+        ],
+        "firstDroppedSentence": "Our experiments show consistent improvement in classification and detection performances with various models, demonstrating the wide applicability of BAM."
+      }
+    },
+    {
+      "paperId": "P05",
+      "title": "DropBlock: A regularization method for convolutional networks",
+      "version": "1810.12890v1",
+      "sourceUri": "https://arxiv.org/abs/1810.12890",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1810.12890",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P05.dropblock-a-regularization-method-for-convolutio.title.txt",
+          "sectionTextHash": "7cdc68a1aa385609c39a8de80c5a3ef3d7b4d9e3cc35be881b364bfbfac808cf",
+          "codePoints": 61
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P05.dropblock-a-regularization-method-for-convolutio.abstract.txt",
+          "sectionTextHash": "79a5244d6d3f6e7bbd5f47369f2766bbd759dea09bdfc42912ec83762b99afed",
+          "codePoints": 1221
+        }
+      ],
+      "documentHash": "79a5244d6d3f6e7bbd5f47369f2766bbd759dea09bdfc42912ec83762b99afed",
+      "truncation": {
+        "sentenceCount": 10,
+        "style": "mid_sentence",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "cutAfterSentence": 9,
+        "droppedSentenceCount": 1,
+        "lastKeptSentence": "On ImageNet classification, ResNet-50 architecture with DropBlock achieves $78.13\\%$ accuracy, which is more than $1.6\\%$ improvement on the baseline.",
+        "droppedSentences": [
+          10
+        ],
+        "firstDroppedSentence": ", which is more than $1.6\\%$ improvement on the baseline.",
+        "midSentenceCut": {
+          "sentence": 9,
+          "keptUpTo": "$78.13\\%$ accuracy",
+          "droppedRemainderOfSentence": ", which is more than $1.6\\%$ improvement on the baseline."
+        }
+      }
+    },
+    {
+      "paperId": "P06",
+      "title": "mixup: Beyond Empirical Risk Minimization",
+      "version": "1710.09412v1",
+      "sourceUri": "https://arxiv.org/abs/1710.09412",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1710.09412",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P06.mixup-beyond-empirical-risk-minimization.title.txt",
+          "sectionTextHash": "ee58c36b038aaaac5bccc582a0c52f777fa4d63df4ba3f2f38dddcab6e68456a",
+          "codePoints": 41
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P06.mixup-beyond-empirical-risk-minimization.abstract.txt",
+          "sectionTextHash": "68d46ea9980f729fe37b507d9a6ef9176d3eab0e30eeb6645b4d7449d455f453",
+          "codePoints": 439
+        }
+      ],
+      "documentHash": "68d46ea9980f729fe37b507d9a6ef9176d3eab0e30eeb6645b4d7449d455f453",
+      "truncation": {
+        "sentenceCount": 6,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "cutAfterSentence": 4,
+        "droppedSentenceCount": 2,
+        "lastKeptSentence": "By doing so, mixup regularizes the neural network to favor simple linear behavior in-between training examples.",
+        "droppedSentences": [
+          5,
+          6
+        ],
+        "firstDroppedSentence": "Our experiments on the ImageNet-2012, CIFAR-10, CIFAR-100, Google commands and UCI datasets show that mixup improves the generalization of state-of-the-art neural network architectures."
+      }
+    },
+    {
+      "paperId": "P07",
+      "title": "CutMix: Regularization Strategy to Train Strong Classifiers with Localizable Features",
+      "version": "1905.04899v1",
+      "sourceUri": "https://arxiv.org/abs/1905.04899",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1905.04899",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P07.cutmix-regularization-strategy-to-train-strong-c.title.txt",
+          "sectionTextHash": "42971db8b13d725eb8a54f37ce68c36cc8003becb43e8a3b9904dbd894d57a42",
+          "codePoints": 85
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P07.cutmix-regularization-strategy-to-train-strong-c.abstract.txt",
+          "sectionTextHash": "1619c5a7f8b92ccbb2b205d1a77ae8b9c5746b3c0180bde6c89db109553bfa71",
+          "codePoints": 818
+        }
+      ],
+      "documentHash": "1619c5a7f8b92ccbb2b205d1a77ae8b9c5746b3c0180bde6c89db109553bfa71",
+      "truncation": {
+        "sentenceCount": 9,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "cutAfterSentence": 5,
+        "droppedSentenceCount": 4,
+        "lastKeptSentence": "We therefore propose the CutMix augmentation strategy: patches are cut and pasted among training images where the ground truth labels are also mixed proportionally to the area of the patches.",
+        "droppedSentences": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "firstDroppedSentence": "By making efficient use of training pixels and retaining the regularization effect of regional dropout, CutMix consistently outperforms the state-of-the-art augmentation strategies on CIFAR and ImageNet classification tasks, as well as on the ImageNet weakly-supervised localization task."
+      }
+    },
+    {
+      "paperId": "P08",
+      "title": "Deep Networks with Stochastic Depth",
+      "version": "1603.09382v1",
+      "sourceUri": "https://arxiv.org/abs/1603.09382",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1603.09382",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P08.deep-networks-with-stochastic-depth.title.txt",
+          "sectionTextHash": "a7c256e97367cf3e826995b7a3105fe77ce745300be251e50024faed92d195c7",
+          "codePoints": 35
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P08.deep-networks-with-stochastic-depth.abstract.txt",
+          "sectionTextHash": "f804e97d735fa6426c8d8a0996a775930703d25194d4fc76934133f910aa5fdf",
+          "codePoints": 730
+        }
+      ],
+      "documentHash": "f804e97d735fa6426c8d8a0996a775930703d25194d4fc76934133f910aa5fdf",
+      "truncation": {
+        "sentenceCount": 8,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "cutAfterSentence": 5,
+        "droppedSentenceCount": 3,
+        "lastKeptSentence": "We start with very deep networks but during training, for each mini-batch, randomly drop a subset of layers and bypass them with the identity function.",
+        "droppedSentences": [
+          6,
+          7,
+          8
+        ],
+        "firstDroppedSentence": "This simple approach complements the recent success of residual networks."
+      }
+    },
+    {
+      "paperId": "P09",
+      "title": "Deeply-Supervised Nets",
+      "version": "1409.5185v1",
+      "sourceUri": "https://arxiv.org/abs/1409.5185",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1409.5185",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P09.deeply-supervised-nets.title.txt",
+          "sectionTextHash": "c75e9f961b59c3f58a339016d04130fc2008b047122688b8aa1ff43f2905cbc5",
+          "codePoints": 22
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P09.deeply-supervised-nets.abstract.txt",
+          "sectionTextHash": "85157ad9d3aec83b4d8f34ab04ecf30880cdea08fa7e9b5f1779ce8426d8f4db",
+          "codePoints": 804
+        }
+      ],
+      "documentHash": "85157ad9d3aec83b4d8f34ab04ecf30880cdea08fa7e9b5f1779ce8426d8f4db",
+      "truncation": {
+        "sentenceCount": 6,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "cutAfterSentence": 4,
+        "droppedSentenceCount": 2,
+        "lastKeptSentence": "We introduce \"companion objective\" to the individual hidden layers, in addition to the overall objective at the output layer (a different strategy to layer-wise pre-training).",
+        "droppedSentences": [
+          5,
+          6
+        ],
+        "firstDroppedSentence": "We extend techniques from stochastic gradient methods to analyze our algorithm."
+      }
+    },
+    {
+      "paperId": "P10",
+      "title": "Non-local Neural Networks",
+      "version": "1711.07971v1",
+      "sourceUri": "https://arxiv.org/abs/1711.07971",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1711.07971",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P10.non-local-neural-networks.title.txt",
+          "sectionTextHash": "1b0856d0bf425b227981de8706c0c8188f24cda9ef8d455b26c4353ee070398d",
+          "codePoints": 25
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P10.non-local-neural-networks.abstract.txt",
+          "sectionTextHash": "e1db4b5cc8f4a3225b5b1b64ce62631b4d27b580311ea99aaaffcec7c255e636",
+          "codePoints": 416
+        }
+      ],
+      "documentHash": "e1db4b5cc8f4a3225b5b1b64ce62631b4d27b580311ea99aaaffcec7c255e636",
+      "truncation": {
+        "sentenceCount": 7,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3
+        ],
+        "cutAfterSentence": 3,
+        "droppedSentenceCount": 4,
+        "lastKeptSentence": "Inspired by the classical non-local means method in computer vision, our non-local operation computes the response at a position as a weighted sum of the features at all positions.",
+        "droppedSentences": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "firstDroppedSentence": "This building block can be plugged into many computer vision architectures."
+      }
+    },
+    {
+      "paperId": "P11",
+      "title": "Selective Kernel Networks",
+      "version": "1903.06586v1",
+      "sourceUri": "https://arxiv.org/abs/1903.06586",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1903.06586",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P11.selective-kernel-networks.title.txt",
+          "sectionTextHash": "9ffe44132124a508c2ce9fd3ceb4e8edb61418a6e53fca83d5c6e8e8efe5d109",
+          "codePoints": 25
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P11.selective-kernel-networks.abstract.txt",
+          "sectionTextHash": "46acdcc8bf48e9cf55236d58eb9b87c2cb3299fd4a32dcdf1cf2d11f9161eced",
+          "codePoints": 923
+        }
+      ],
+      "documentHash": "46acdcc8bf48e9cf55236d58eb9b87c2cb3299fd4a32dcdf1cf2d11f9161eced",
+      "truncation": {
+        "sentenceCount": 9,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "cutAfterSentence": 6,
+        "droppedSentenceCount": 3,
+        "lastKeptSentence": "Multiple SK units are stacked to a deep network termed Selective Kernel Networks (SKNets).",
+        "droppedSentences": [
+          7,
+          8,
+          9
+        ],
+        "firstDroppedSentence": "On the ImageNet and CIFAR benchmarks, we empirically show that SKNet outperforms the existing state-of-the-art architectures with lower model complexity."
+      }
+    },
+    {
+      "paperId": "P12",
+      "title": "Res2Net: A New Multi-scale Backbone Architecture",
+      "version": "1904.01169v1",
+      "sourceUri": "https://arxiv.org/abs/1904.01169",
+      "sourceKind": "arxiv_candidate",
+      "sourceGroup": "arxiv:1904.01169",
+      "datasetSplit": "candidate",
+      "sealed": false,
+      "availableSections": [
+        "title",
+        "abstract"
+      ],
+      "sections": [
+        {
+          "section": "title",
+          "file": "inputs/P12.res2net-a-new-multi-scale-backbone-architecture.title.txt",
+          "sectionTextHash": "9943966b7387df61e52339d012f6ea1b031030b6f754097392d34b859dace915",
+          "codePoints": 48
+        },
+        {
+          "section": "abstract",
+          "file": "inputs/P12.res2net-a-new-multi-scale-backbone-architecture.abstract.txt",
+          "sectionTextHash": "c80933e318efc469f538863a85c96d507ebec047f26850f02638f6743df005d0",
+          "codePoints": 683
+        }
+      ],
+      "documentHash": "c80933e318efc469f538863a85c96d507ebec047f26850f02638f6743df005d0",
+      "truncation": {
+        "sentenceCount": 9,
+        "style": "mid_cut",
+        "keptSentences": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "cutAfterSentence": 5,
+        "droppedSentenceCount": 4,
+        "lastKeptSentence": "The Res2Net represents multi-scale features at a granular level and increases the range of receptive fields for each network layer.",
+        "droppedSentences": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "firstDroppedSentence": "The proposed Res2Net block can be plugged into the state-of-the-art backbone CNN models, e.g., ResNet, ResNeXt, and DLA."
+      }
+    }
+  ]
+}

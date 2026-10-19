@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "configId": "phase2-execution-config-v1",
+  "frozenOn": "2026-10-04",
+  "spec": "docs/mvp/phases/PHASE2-SPEC.md section 6 (开工前配置表)",
+  "rule": "One row per field of SPEC section 6. Every row either has a value with provenance, or is null with a blockedReason and an explicit blocks[] list naming the work it stops. A null row blocks ONLY the work in its blocks[] list; it never blocks unrelated work that already has its inputs.",
+  "rows": {
+    "firstTask": {
+      "value": "segmentation, CPU, single feature slot features.pre_pool, module chain built from pinned module ids",
+      "provenance": "docs/mvp/phases/PHASE2-FREEZE-CHECKLIST.md section 1 option 甲 (manual proposal over the two ready modules) combined with PHASE2-SPEC section 5 (first profile adds compileRecipe/prepareRun/verifyRun for ONE task)",
+      "null": false,
+      "blockedReason": null,
+      "blocks": []
+    },
+    "baseline": {
+      "value": {
+        "id": "baseline-small-conv-cpu",
+        "entrypoint": "experiments/stitch-cpu-v1/model.py",
+        "className": "BaselineModel",
+        "sha256": "f8a8bc32a729bb1c20e9a9f3fb2d8b66bbff7c30aca2d81da3f849c2283aa6c4",
+        "topology": "Conv2d(3->8,k=3,p=1) -> ReLU -> features.pre_pool -> AdaptiveAvgPool2d((1,1)) -> flatten -> Linear(8,2)",
+        "weights": {
+          "path": "artifacts/weights/baseline_seed20260929.pt",
+          "sha256": "af18b92ff025c17699b7e7f1bc866a9f267f6bee4bba8b4b042b081d2503a06d",
+          "seed": 20260929
+        },
+        "sourceKind": "offline_archive",
+        "note": "This is the repository's own pinned baseline source, not an upstream official implementation. It is recorded as an offline_archive pin by content hash rather than as a vcs commit, because this repository has no per-file commit pin for it and inventing one would be a false provenance claim."
+      },
+      "provenance": "experiments/stitch-cpu-v1/model.py read from disk and hashed in this session; weights file hashed in this session; fixtures/modules/manifest.json declares the matching [4,8,16,16] float32 module contract",
+      "null": false,
+      "blockedReason": null,
+      "blocks": []
+    },
+    "modules": {
+      "value": [
+        {
+          "id": "module-aspp-v1",
+          "name": "ASPPBlock",
+          "mechanismKind": "parameterized_feature",
+          "entrypoint": "fixtures/modules/aspp_block.py",
+          "sha256": "9bd94a7c105cea93ca79c66f7b4794e840541bec8c9c6729a80ec5bb2f38cf6b",
+          "licenseRef": "no-license-declared",
+          "sourceUri": "repo://fixtures/modules/aspp_block.py",
+          "paperRef": { "paperId": "ASPP_1706.05587.snapshot", "arxivId": "1706.05587v3", "locator": "3.3 Atrous Spatial Pyramid Pooling", "documentHash": "1a0608a2fef8d07f38cf18bbf9104d3e727b2eb766b8d6b68da7041bb65cabab" }
+        },
+        {
+          "id": "module-se-v1",
+          "name": "SEBlock",
+          "mechanismKind": "parameterized_feature",
+          "entrypoint": "fixtures/modules/se_block.py",
+          "sha256": "8b78fc50e35cecb967d66bfb1c1226606584da7ad0023013d3d660a949371d61",
+          "licenseRef": "no-license-declared",
+          "sourceUri": "repo://fixtures/modules/se_block.py",
+          "paperRef": { "paperId": "SE_1709.01507.snapshot", "arxivId": "1709.01507v4", "locator": "III Squeeze-and-Excitation Blocks", "documentHash": "778bae36203ba16862697a8761e2011fe372122cd0f947dd8011dd7e320774b6" }
+        }
+      ],
+      "provenance": "fixtures/modules/manifest.json (ids, names, mechanism, implementationHash) and fixtures/papers/manifest.json (paper identity, locator, documentHash); both re-hashed from disk in this session. The implementationHash in the manifest matches the sha256 of the file on disk.",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "notClaimed": [
+        "Neither module is the paper's official implementation. Both are this repository's own 8-channel reimplementations, exactly as docs/mvp/phases/PHASE2-DATA-REQUEST.md section 1.2 states. The provenance recorded here is the PAPER identity plus a local implementation hash, not an upstream code pin.",
+        "Both modules declare mechanismKind parameterized_feature, which is the class the mechanism check engine keys on. No P6 interventionAxis label is used to place either module."
+      ]
+    },
+    "data": {
+      "value": {
+        "dataRef": "fixtures/phase2-source-pack/data/data-manifest.json",
+        "datasetId": "phase2-cpu-slice-v1",
+        "kind": "synthetic",
+        "generator": "fixtures/phase2-source-pack/data/generate_data.py",
+        "seed": 20261004,
+        "sampleCount": 24,
+        "train": { "samples": 16, "featuresSha256": "9f507b0d2bf40873353425d8255eb156e8e5ea08d6e1dcbf8e5d45136332b18b", "labelsSha256": "05bc81fdbe9bb768f4b76af2da818294faa3a48124c410cc69ea231f1fc67e82" },
+        "validation": { "samples": 8, "featuresSha256": "00bb38f6f8b5a22fc26ea9e701286c0d494f50d040be9cae056bd2568c621735", "labelsSha256": "87902d911344c887b9a447e08c9ac5e27a6216e126a65d7a6dc32f75930bb08a" },
+        "testSplit": null,
+        "testSplitReason": "PHASE2-SPEC section 2/3 declares no test split for Phase 2; a test handle belongs to the Phase 3 DataSplitManifest.",
+        "profileRuntimeData": {
+          "note": "The pinned runner currently consumes dataSpec.kind='synthetic' generated in-process from (seed, sampleCount, shape, numClasses). The .npy slice above is the recorded, hash-pinned slice for the same generator parameters. A run that needs to read the .npy files directly requires a runner change, which is NOT part of this profile.",
+          "dataSpec": { "kind": "synthetic", "seed": 20260929, "sampleCount": 16, "shape": [3, 16, 16], "numClasses": 2 }
+        }
+      },
+      "provenance": "fixtures/phase2-source-pack/data/data-manifest.json read from disk; the four .npy files re-hashed in this session and matching the manifest",
+      "null": false,
+      "blockedReason": null,
+      "blocks": []
+    },
+    "dataLicense": {
+      "value": "synthetic-generated-in-repo",
+      "provenance": "The slice is generated by fixtures/phase2-source-pack/data/generate_data.py from numpy PCG64 with seed 20261004. It is not redistributed third-party data, so no third-party data licence applies.",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "notClaimed": [
+        "This licence statement covers ONLY the synthetic slice. It says nothing about the two module implementations, which carry licenseRef no-license-declared, and nothing about any upstream paper's code."
+      ]
+    },
+    "codeLicense": {
+      "value": null,
+      "provenance": null,
+      "null": true,
+      "blockedReason": "No LICENSE, LICENCE, COPYING or NOTICE file exists at the repository root and no licence file is tracked by git (verified by directory listing and `git ls-files`). The two module implementations and the baseline are therefore repository-internal code with no declared licence. docs/mvp/phases/PHASE2-DATA-REQUEST.md section 1.5 requires the honest value here to be no-license-declared, recorded as unresolved, and explicitly forbids inventing a licence name to fill the field.",
+      "verifiedOn": "2026-10-04, re-checked independently of the worker that first wrote this row: a recursive listing for LICENSE/LICENCE/COPYING/NOTICE/COPYRIGHT outside node_modules returned nothing, and `git remote -v` returned empty, so there is no upstream to cite either. The null therefore rests on a re-runnable check, not on an assumption; re-run both commands to confirm it still holds.",
+      "blocks": [
+        "ANY redistribution, publication or external hand-off of the module or baseline source, including attaching it to a paper artifact",
+        "ANY claim that the pinned code is reusable by a third party",
+        "replacing the repository-internal module implementations with upstream official code (that replacement needs a real upstream licence pin, which does not exist yet)"
+      ],
+      "doesNotBlock": [
+        "running the profile inside this repository for engineering validation",
+        "the smoke and tiny runs, which stay on this machine",
+        "mechanism checks, which read the local files only"
+      ]
+    },
+    "profileAndDevice": {
+      "value": {
+        "profileRef": "phase2-cpu-seg-v1@1",
+        "profileFile": "configs/phase2/profile-cpu-seg-v1.json",
+        "device": "cpu",
+        "dtype": "float32",
+        "maxModules": 3,
+        "sourceContractMax": 1,
+        "environmentRef": "configs/phase2/environment-cpu-seg-v1.json",
+        "isolationPolicyRef": "configs/phase2/isolation-policy.json"
+      },
+      "provenance": "configs/phase2/profile-cpu-seg-v1.json (validated against the frozen TaskProfile contract by scripts/verify-phase2-profile.ts) and configs/phase2/environment-cpu-seg-v1.json (measured in this session)",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "notClaimed": [
+        "maxModules=3 matches the frozen P6 v1 cap. The v2 contract raises the cap to 8 but is opt-in and is NOT this profile's contract; this profile refuses a 4-module binding rather than silently accepting it.",
+        "GPU execution is not supported. A manifest declaring any device other than cpu is refused at preflight with PREFLIGHT_DEVICE_MISMATCH."
+      ]
+    },
+    "patchProvider": {
+      "value": "human",
+      "provenance": "docs/mvp/phases/PHASE2-FREEZE-CHECKLIST.md section 1 option 甲 recommends the manual path for the first round; PHASE2-SPEC section 6 leaves human vs agent open, so this row records the first round's choice rather than a permanent decision.",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "agentPath": {
+        "status": "not_selected_this_round",
+        "detail": "The interface accepts patchProvider 'agent' and the adaptation plan can declare it. This row does not authorise an agent patch for the first round: no agent patch provider has been reviewed for the allowed-path policy yet.",
+        "blocks": ["an agent-generated patch entering adaptImplementation in round one"]
+      }
+    },
+    "allowedFiles": {
+      "value": {
+        "allowedPaths": [
+          "work/research-execution/**/patch-workspace/**"
+        ],
+        "forbiddenPaths": [
+          "experiments/phase2-cpu-seg-v1/**",
+          "experiments/stitch-cpu-v1/**",
+          "fixtures/modules/**",
+          "fixtures/phase2-source-pack/**",
+          "packages/evolver/src/contracts/experiments.ts",
+          "packages/evolver/src/domain/mechanism-checks.ts",
+          "packages/evolver/src/domain/check-report.ts",
+          "configs/phase2/**",
+          "artifacts/weights/**",
+          "data/sealed/**",
+          "**/gold/**",
+          "**/test/**",
+          "**/tests/**",
+          "isolation/**",
+          ".git/**"
+        ],
+        "sourceCheckout": "fixtures/modules",
+        "workspaceRoot": "work/research-execution",
+        "separation": "The source checkout is read-only and the patch workspace is a copy under work/research-execution/<taskId>/. packages/evolver/src/domain/patch-workspace.ts asserts the two roots are disjoint."
+      },
+      "provenance": "docs/mvp/phases/PHASE2-SPEC.md sections 5 and 6, plus the DEFAULT_FORBIDDEN_PATHS list already implemented in packages/evolver/src/domain/adaptation-plan.ts. The allowed set is deliberately narrow: one workspace subtree, so an adaptation cannot touch the evaluator, the pinned sources, the check rules or the configuration table.",
+      "null": false,
+      "blockedReason": null,
+      "blocks": []
+    },
+    "dependencies": {
+      "value": {
+        "dependencyPolicyRef": "policy:phase2-deps-frozen-v1",
+        "rule": "Only the packages already installed and recorded in configs/phase2/environment-cpu-seg-v1.json may be used. Adding a dependency is not permitted by this policy: it requires a new lock file and a re-run of the profile and mechanism checks, which is a separate decision.",
+        "allowedImports": ["torch", "numpy", "argparse", "importlib", "json", "os", "platform", "sys", "time", "datetime", "hashlib"],
+        "networkAccess": "denied"
+      },
+      "provenance": "configs/phase2/environment-cpu-seg-v1.json packageLock closure (384 packages, digest d8315f3a5da468066b4e9d6798d17bbd9fcf9d6cebd3002ec5c16bf2d1fc17f0) and the import list read from experiments/phase2-cpu-seg-v1/runner.py",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "notClaimed": [
+        "The dependency closure is a computed digest of what is installed, not a checked-in lock file. No requirements.txt, environment.yml or JS lock file exists in the repository root. Drift is detectable; a fresh-machine reproduction is not proven."
+      ]
+    },
+    "isolationBackend": {
+      "value": {
+        "id": "host-path-allowlist",
+        "kind": "in-process-path-allowlist",
+        "implementedIn": "packages/evolver/src/domain/task-profile.ts",
+        "policyRef": "configs/phase2/isolation-policy.json"
+      },
+      "provenance": "configs/phase2/isolation-policy.json, enforced and negative-tested by scripts/verify-phase2-profile.ts",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "notClaimed": [
+        "This is not an OS sandbox, not a container, and not a network jail. It constrains the paths THIS host code will read, write or hand to a child process. It does not stop an arbitrary already-running program.",
+        "Network isolation is not provided by the policy. The pinned runner imports no network module, which is a property of the pinned runner, not of the isolation backend."
+      ]
+    },
+    "mechanismChecks": {
+      "value": {
+        "checkProfileRef": "phase2-mechanism-checks-v1",
+        "executorRef": "phase2-probe-v1+phase2-mechanism-checks-v1",
+        "probeScript": "experiments/phase2-probe/mechanism_probe.py",
+        "toleranceRef": "configs/phase2/tolerances.json",
+        "requiredRuleIds": [
+          "parameterized.shape_dtype_device",
+          "parameterized.forward_participation",
+          "parameterized.finiteness",
+          "parameterized.output_difference",
+          "parameterized.optimizer_covers_parameters",
+          "parameterized.gradients_finite",
+          "parameterized.gradient_norm",
+          "parameterized.parameter_update",
+          "combination.members_pass_alone",
+          "combination.run_present",
+          "combination.order",
+          "combination.duplicate_function",
+          "combination.shared_state",
+          "combination.extra_parameter_sources"
+        ],
+        "ruleSource": "host",
+        "patchMayChangeRules": false
+      },
+      "provenance": "packages/evolver/src/domain/mechanism-checks.ts: the required rule set is fixed in code and loadMechanismCheckProfile rejects a profile that omits or invents a rule; the tolerance table in configs/phase2/tolerances.json was generated from MECHANISM_TOLERANCES_V1 so it cannot drift from the engine.",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "unavailableKinds": {
+        "note": "The engine implements all six MECHANISM_KINDS. This profile's pinned module chain only exercises two of them. A module of an unimplemented-for-this-profile kind is reported blocked by the check engine, never silently passed.",
+        "kindsExercisedByThisProfile": ["parameterized_feature", "combination"],
+        "kindsImplementedButNotExercised": ["parameter_free_operator", "loss", "training_hook", "data_policy"]
+      }
+    },
+    "budget": {
+      "value": {
+        "budgetRef": "configs/phase2/budget-measurement.json",
+        "basis": "steps",
+        "wallClockDeadline": null,
+        "wallClockDeadlineNote": "An absolute UTC deadline is a scheduling decision the caller supplies per request; this table pins the per-attempt and total ceilings below and does not invent a calendar date.",
+        "maxModelCalls": 0,
+        "maxTotalTokens": 0,
+        "maxExecutionSeconds": 300,
+        "maxRepairAttempts": 1,
+        "maxTrials": 12,
+        "perAttemptTimeoutMs": 120000,
+        "allowedDevices": ["cpu"],
+        "maxMemoryBytes": 4294967296,
+        "maxDiskBytes": 2147483648,
+        "measured": {
+          "runs": 6,
+          "maxWallMsIncludingTorchImport": 3208,
+          "maxPeakWorkingSetBytes": 611389440,
+          "maxRunOutputBytes": 3615,
+          "maxRunnerReportedTrainingWallTimeMs": 61
+        }
+      },
+      "provenance": "configs/phase2/budget-measurement.json: six real child-process runs of the pinned runner on this machine in this session, peak working set sampled every 10 ms",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "notClaimed": [
+        "The measurements are from this machine and this CPU path; they are not a cross-machine performance claim.",
+        "maxModelCalls=0 records that this profile performs no model call. It is not a statement that a future Phase 2 profile may not need one."
+      ]
+    },
+    "tolerances": {
+      "value": {
+        "toleranceRef": "configs/phase2/tolerances.json",
+        "toleranceId": "phase2-tolerances-v1",
+        "boundCount": 30,
+        "ruleKindsCovered": ["parameterized_feature", "parameter_free_operator", "loss", "training_hook", "data_policy", "combination"]
+      },
+      "provenance": "Generated from MECHANISM_TOLERANCES_V1 in packages/evolver/src/domain/mechanism-checks.ts in this session, so the config and the engine cannot drift. Each entry carries dtype plus abs/rel/min bounds or an explicit exact/count comparison rule, and a rationale string.",
+      "null": false,
+      "blockedReason": null,
+      "blocks": [],
+      "notClaimed": [
+        "No entry is a silent default: an entry with no numeric bound is declared 'exact' or 'count', which is a comparison rule, not a tolerance."
+      ]
+    },
+    "rerunTolerance": {
+      "value": {
+        "referenceToleranceId": "parameter_free.reference.abs",
+        "absolute": 1e-06,
+        "relative": 1e-05,
+        "dtype": "float32",
+        "appliesTo": "a same-input rerun of the pinned runner under the same seed, recipe and environment",
+        "evidence": "The pinned runner is deterministic by construction: torch.set_num_threads(1), torch.manual_seed(seed), torch.use_deterministic_algorithms(True) where supported, a fixed batch order (step % numBatches) and no dropout or augmentation. Two ab/5-step runs in this session produced identical initialLoss and finalLoss to the last printed digit (0.754048 -> 0.749849)."
+      },
+      "provenance": "configs/phase2/budget-measurement.json rows tiny-ab-5 and tiny-ab-5-rerun (identical loss start/end), plus the values EVAL.md section 1 already fixes for clean replay (atol 1e-6, rtol 1e-5)",
+      "null": false,
+      "blockedReason": null,
+      "blocks": []
+    }
+  },
+  "nullRows": ["codeLicense"],
+  "blockingSummary": {
+    "blockedByNullRows": [
+      "redistribution or publication of the module/baseline source",
+      "a third-party reusability claim for the pinned code",
+      "swapping in upstream official implementations"
+    ],
+    "stillRunnable": [
+      "the profile itself (configs/phase2/profile-cpu-seg-v1.json validates)",
+      "a smoke run of baseline/a/b/ab on this machine",
+      "a tiny run with declared metric specs",
+      "mechanism checks over the pinned modules"
+    ]
+  }
+}

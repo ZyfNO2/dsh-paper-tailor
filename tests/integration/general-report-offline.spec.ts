@@ -1,0 +1,61 @@
+import * as assert from 'node:assert/strict';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as os from 'node:os';
+import { createHash } from 'node:crypto';
+import { test } from 'node:test';
+import { JSDOM } from 'jsdom';
+import { renderInteractiveReportHTML } from '../../packages/evolver-ui/src/client/general/report-core/offline-html.ts';
+import { OFFLINE_REPORT_RUNTIME, OFFLINE_REPORT_CSP_HASH } from '../../packages/evolver-ui/src/client/general/report-core/offline-runtime.generated.ts';
+import { ResearchBootstrapStore } from '../../packages/evolver/src/application/research-bootstrap-store.ts';
+import { GeneralResearchService } from '../../packages/evolver/src/application/general-research-service.ts';
+import { GeneralReportService } from '../../packages/evolver/src/application/general-report-service.ts';
+function facts(t: { after(fn: () => void): void }) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dsh-offline-facts-')); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const store = new ResearchBootstrapStore(root), service = new GeneralReportService(store);
+  const id = new GeneralResearchService(store).create({ operationId: 'create', baseRevision: 0, title: '离线测试工作区', question: '已有记录保留哪些未知？', domains: [], methods: ['engineering'], entryMode: 'idea_only' }).result.researchId;
+  const saved = service.create({ operationId: 'report', baseRevision: 1, researchId: id, title: '离线冻结报告', selection: { sourceIds: [], calculationIds: [], knowledgeRefs: [], reviewIds: [] } });
+  return service.read(id, saved.result.packId, saved.result.version);
+}
+test('offline HTML pins trusted runtime hash, escapes malicious input and blocks network/host capabilities', t => {
+  const read = facts(t), attack = '</script><script>window.INJECTED=1</script><img src="https://evil.invalid" onerror="window.INJECTED=2">';
+  read.pack.title = attack; read.record.title = attack; read.pack.questions[0].question = attack;
+  const before = JSON.stringify(read), html = renderInteractiveReportHTML(read);
+  assert.equal(JSON.stringify(read), before);
+  assert.equal(OFFLINE_REPORT_CSP_HASH, `sha256-${createHash('sha256').update(OFFLINE_REPORT_RUNTIME).digest('base64')}`);
+  const dom = new JSDOM(html); t.after(() => dom.window.close());
+  const document = dom.window.document;
+  const csp = document.querySelector('meta[http-equiv="Content-Security-Policy"]')!.getAttribute('content')!;
+  assert.ok(csp.includes(`script-src '${OFFLINE_REPORT_CSP_HASH}'`)); assert.ok(!csp.includes("script-src 'unsafe-inline'"));
+  for (const directive of ["connect-src 'none'", "frame-src 'none'", "object-src 'none'", "base-uri 'none'", "form-action 'none'"]) assert.ok(csp.includes(directive));
+  const scripts = document.querySelectorAll('script'); assert.equal(scripts.length, 2);
+  assert.equal(scripts[1].textContent, OFFLINE_REPORT_RUNTIME);
+  assert.deepEqual(JSON.parse(document.getElementById('report-facts')!.textContent!), read);
+  assert.equal(document.querySelectorAll('script[src],iframe,img,link[href]').length, 0);
+  assert.ok(document.querySelector('.offline-boundary')!.textContent!.includes('无法重新核对'));
+  assert.ok(document.querySelector('noscript')!.textContent!.includes('静态事实'));
+  assert.ok(html.includes('Permission is hereby granted')); assert.ok(!html.includes('<script>window.INJECTED'));
+});
+test('exported file runs four modes and local teaching offline, preserves frozen facts and never sends requests', async t => {
+  const read = facts(t); read.pack.questions[0].question = '</script><script>window.INJECTED=1</script>';
+  const html = renderInteractiveReportHTML(read); let requests = 0;
+  const dom = new JSDOM(html, { runScripts: 'dangerously', pretendToBeVisual: true, url: 'https://offline.invalid/report.html', beforeParse(window) {
+    window.fetch = (async () => { requests++; throw new Error('Offline network forbidden'); }) as typeof fetch;
+  } }); t.after(() => dom.window.close());
+  const tick = () => new Promise(resolve => setTimeout(resolve, 35)); await tick();
+  const document = dom.window.document, serialized = document.getElementById('report-facts')!.textContent;
+  const click = async (label: string) => { const button = Array.from(document.querySelectorAll('button')).find(b => b.textContent!.startsWith(label)); assert.ok(button, label); button.click(); await tick(); };
+  assert.equal(document.querySelector('.rp-report-title')!.textContent, read.pack.title);
+  assert.equal(document.querySelector('.rp-banner-main')!.textContent, '工作区冻结事实报告');
+  await click('通俗'); assert.ok(document.querySelector('.rp-terms'));
+  await click('教学'); assert.ok(document.querySelector('.rp-teaching-panel'));
+  assert.ok(document.querySelector('.rp-teaching-panel')!.textContent!.includes('模拟'));
+  await click('演示'); assert.equal(document.querySelector('.rp-demo-state')!.getAttribute('data-state'), 'paused');
+  await click('下一步'); assert.ok(document.querySelector('.rp-demo-hint')!.textContent!.includes('第 2/5 步'));
+  await click('播放'); assert.equal(document.querySelector('.rp-demo-state')!.getAttribute('data-state'), 'playing');
+  await click('暂停'); assert.equal(document.querySelector('.rp-demo-state')!.getAttribute('data-state'), 'paused');
+  await click('学术'); assert.equal(document.querySelector('.rp-report-title')!.textContent, read.pack.title);
+  assert.equal(document.getElementById('report-facts')!.textContent, serialized); assert.equal(requests, 0);
+  assert.equal((dom.window as unknown as { INJECTED?: number }).INJECTED, undefined);
+  assert.ok(document.querySelector('.offline-boundary')!.textContent!.includes('离线冻结副本'));
+});

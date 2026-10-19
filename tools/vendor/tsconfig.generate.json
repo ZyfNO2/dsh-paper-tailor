@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "allowJs": true,
+    "checkJs": false,
+    "allowImportingTsExtensions": true,
+    "strict": false,
+    "target": "es2023",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "types": ["node"],
+    "typeRoots": ["../ts-toolchain/node_modules/@types"],
+    "baseUrl": "@deepseek-ai",
+    "rootDir": "@deepseek-ai",
+    "outDir": "gen",
+    "paths": {
+      "@deepseek-ai/cosmokit": ["cosmokit/src/index.ts"],
+      "@deepseek-ai/schemastery": ["schemastery/src/index.ts"],
+      "@deepseek-ai/cordis": ["cordis/src/index.ts"],
+      "@deepseek-ai/dsh-scope": ["dsh-scope/lib/index.js"],
+      "@deepseek-ai/dsh-llm": ["dsh-llm/lib/index.js"],
+      "@deepseek-ai/dsh-util-values": ["dsh-util-values/lib/index.js"],
+      "@deepseek-ai/dsh-brand": ["dsh-brand/lib/index.js"],
+      "@deepseek-ai/dsh-tools": ["dsh-tools/lib/index.js"]
+    }
+  },
+  "include": [
+    "@deepseek-ai/cosmokit/src/index.ts",
+    "@deepseek-ai/schemastery/src/index.ts",
+    "@deepseek-ai/cordis/src/index.ts",
+    "@deepseek-ai/dsh-scope/lib/index.js",
+    "@deepseek-ai/dsh-llm/lib/index.js",
+    "@deepseek-ai/dsh-util-values/lib/index.js",
+    "@deepseek-ai/dsh-brand/lib/index.js",
+    "@deepseek-ai/dsh-tools/lib/index.js"
+  ]
+}

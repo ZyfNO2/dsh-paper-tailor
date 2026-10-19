@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "note": "科研工作台阶段策略。这是 HOST 受信配置，阶段上下文从中派生；请求不得指定阶段状态或覆盖本文件。",
+  "stages": {
+    "discovery": {
+      "objectiveZh": "从已登记资料抽取论文身份、方法机制与作者证据；为每个方法卡片保留证据状态。",
+      "allowedActions": [
+        { "tool": "evolver_discover_papers", "purposeZh": "运行既有 P5 抽取，得到带证据的卡片链" },
+        { "tool": "evolver_get_task", "purposeZh": "读取已登记的任务与产物；本阶段不提供独立读资料工具，资料随 P5 输入进入" },
+        { "tool": "evolver_submit_design", "purposeZh": "以 annotate_module 提交单模块中文说明（无需先有 P6）" }
+      ],
+      "expectedOutputs": [
+        "成功的 P5 卡片链（每张卡片带 status/evidenceRefs/reason）",
+        "输入清单的 content hash"
+      ],
+      "exitCriteriaZh": [
+        "P5 发布状态为 succeeded",
+        "每张模块卡片的每个字段都保留其证据状态，未知字段保持 unknown"
+      ]
+    },
+    "composition": {
+      "objectiveZh": "基于合法 P5 与 TaskBrief 解释任务匹配与组合假设，形成可审查的候选。",
+      "allowedActions": [
+        { "tool": "evolver_synthesize_research", "purposeZh": "运行既有 P6/P7，产生合法研究候选（这是产生新事实的唯一路径）" },
+        { "tool": "evolver_submit_design", "purposeZh": "以 bind_candidate 绑定候选；以 annotate_design 提交中文拼接理由" }
+      ],
+      "expectedOutputs": [
+        "至少一个 succeeded 的 P6 发布与其中的候选",
+        "拼接理由五个槽位：任务问题 / 机制与互补 / 位置 / 顺序 / 风险与验证"
+      ],
+      "exitCriteriaZh": [
+        "候选已通过 bind_candidate 绑定到本任务",
+        "每个理由字段要么有据，要么有明确的 unknown 原因"
+      ]
+    },
+    "implementation": {
+      "objectiveZh": "把选定候选接入基线，确认模块顺序与插入位；不发明未发布的结构。",
+      "allowedActions": [
+        { "tool": "evolver_save_spec", "purposeZh": "既有 Phase 2 接入规划，产出带 orderedModuleIds 的 adaptation plan" },
+        { "tool": "evolver_run_baseline", "purposeZh": "既有 Phase 2 来源解析与基线核对，校验候选身份与已发布源" }
+      ],
+      "expectedOutputs": [
+        "可执行的 recipe 引用",
+        "orderedModuleIds 与 slotId"
+      ],
+      "exitCriteriaZh": [
+        "存在与该候选对应的已发布 adaptation plan",
+        "模块顺序来自配方记录，而非数组顺序"
+      ]
+    },
+    "analysis": {
+      "objectiveZh": "解释实验结果是否支持假设；区分失败与负收益，未配对时不报总体提升。",
+      "allowedActions": [
+        { "tool": "evolver_freeze_experiment", "purposeZh": "冻结不可变实验协议" },
+        { "tool": "evolver_run_experiment", "purposeZh": "按已授权预算与前置条件执行" },
+        { "tool": "evolver_analyze_experiment", "purposeZh": "既有 Phase 3 分析与比较" }
+      ],
+      "expectedOutputs": [
+        "比较报告及其限制说明",
+        "成对种子下的 improvement 及其方向"
+      ],
+      "exitCriteriaZh": [
+        "比较报告可复查且限制已显示",
+        "未完成配对时明确说明，不得汇报总体提升"
+      ]
+    },
+    "next_proposal": {
+      "objectiveZh": "基于开发结果与预声明探索政策，提出下一步或建议停止；不自动开启新训练。",
+      "allowedActions": [
+        { "tool": "evolver_synthesize_research", "purposeZh": "既有 P6，建立新的研究提案" },
+        { "tool": "evolver_get_stage_context", "purposeZh": "读取当前阶段与未决项" }
+      ],
+      "expectedOutputs": ["下一步计划或停止建议，含其依据"],
+      "exitCriteriaZh": ["仅产出计划；未启动任何新训练或树搜索"]
+    }
+  },
+  "skill": {
+    "name": "workbench-stage",
+    "version": "1",
+    "sha256": ""
+  }
+}

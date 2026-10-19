@@ -1,0 +1,33 @@
+{
+  "profileRef": "phase2-cpu-seg-v1@1",
+  "dataSubsetRef": {
+    "id": "phase2-data-slice-v1",
+    "sha256": "27d82d46318bb7d32f25c6380a503f1905d22f3f5e633334a887e33b16ab2016"
+  },
+  "variants": [
+    "baseline"
+  ],
+  "seeds": [
+    20261004
+  ],
+  "limit": {
+    "kind": "steps",
+    "value": 2
+  },
+  "metricSpecs": [],
+  "toleranceRef": {
+    "id": "phase2-tolerances-v1",
+    "sha256": "a92c25db28cb91b85e8c51a9664bfc6eb274d1d4916c0ba6fc249a3fc22cf2c6"
+  },
+  "inputSampleRef": {
+    "id": "phase2-input-sample-v1",
+    "sha256": "75b8c33690490c559a67b8c109982cd64450005529a062d36b699cb4d2cb6e7f"
+  },
+  "mechanismAssertionRefs": [
+    {
+      "id": "phase2-mechanism-assertion-v1",
+      "sha256": "d262975accc1a3b5dfdae16a650b94db10f1f1acb30d4b5383219614cb62c565"
+    }
+  ],
+  "protocolHash": "650a34ef48e24bf7cd62468ca1567ad38f23b1929e84b83caf8f9bfffd5d5297"
+}

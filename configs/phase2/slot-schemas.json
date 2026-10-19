@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "schemaSetId": "phase2-slot-schemas-v1",
+  "note": "Concrete tensor contracts behind TaskProfile.slots[].inputSchemaRef / outputSchemaRef. Every field below is a decision the runner can actually enforce: experiments/phase2-cpu-seg-v1/runner.py checks logits shape (batchSize, numClasses), torch.isfinite on logits and loss, and the module contract [B, 8, H, W] float32 that fixtures/modules/manifest.json already declares for module-aspp-v1 and module-se-v1.",
+  "schemas": {
+    "schema:phase2.features.pre_pool.input.v1": {
+      "slotId": "features.pre_pool",
+      "direction": "input",
+      "layout": "NCHW",
+      "shape": [4, 8, 16, 16],
+      "dynamicDims": [
+        { "axis": 0, "name": "batch", "allowed": [4], "reason": "the profile's fixed runner reads batchSize=4 from the manifest and refuses a logits shape other than (batchSize, numClasses)" }
+      ],
+      "dtype": "float32",
+      "device": "cpu",
+      "mask": {
+        "present": false,
+        "semantics": "none: features.pre_pool in this profile carries no attention/validity mask. An operator that requires a mask argument cannot be bound here, because the pinned baseline calls self.pre_pool(h) with a single tensor (experiments/stitch-cpu-v1/model.py)."
+      },
+      "batch": {
+        "semantics": "contiguous slice of the deterministic CPU dataset, taken in a fixed order",
+        "size": 4,
+        "source": "runner.py get_batch equivalent: batch index = step % (sampleCount // batchSize)"
+      },
+      "label": {
+        "semantics": "not carried at this slot: features.pre_pool sees activations only. Labels are consumed by CrossEntropyLoss at the logits stage.",
+        "numClasses": 2,
+        "dtype": "int64",
+        "rule": "(global_index * 7 + 3) % numClasses"
+      },
+      "values": {
+        "finiteness": "required: the pinned runner raises on non-finite activations upstream; a module that emits NaN/Inf fails the run, not a tolerance"
+      }
+    },
+    "schema:phase2.features.pre_pool.output.v1": {
+      "slotId": "features.pre_pool",
+      "direction": "output",
+      "layout": "NCHW",
+      "shape": [4, 8, 16, 16],
+      "dynamicDims": [
+        { "axis": 0, "name": "batch", "allowed": [4], "reason": "shape-preserving: a module that changes the batch axis breaks the downstream pool/flatten/Linear chain" }
+      ],
+      "dtype": "float32",
+      "device": "cpu",
+      "mask": {
+        "present": false,
+        "semantics": "none: a module must not emit a mask side-channel at this slot; the baseline discards anything but a single tensor"
+      },
+      "batch": { "semantics": "unchanged from the input batch axis", "size": 4 },
+      "label": { "semantics": "none" },
+      "shapePreservation": {
+        "required": true,
+        "reason": "the downstream path is AdaptiveAvgPool2d((1,1)) -> flatten -> Linear(8, 2). A module that changes C, H or W changes the Linear input width and the pinned baseline weights stop applying, which would silently make the baseline arm non-comparable."
+      },
+      "channelRule": "C must stay 8. A module needing an internal projection must project back to 8 channels (both pinned modules do)."
+    }
+  }
+}

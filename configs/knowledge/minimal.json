@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "libraryId": "attention-modules-dev-v1",
+  "sourceRoot": "fixtures/paper-only-v2/inputs",
+  "sources": [
+    {
+      "paperId": "P02",
+      "title": "Squeeze-and-Excitation Networks",
+      "identifier": "arXiv:1709.01507v1",
+      "declaredVersion": "1709.01507v1",
+      "sourceGroupId": "arxiv:1709.01507",
+      "sourceUri": "https://arxiv.org/abs/1709.01507",
+      "hostRegisteredFileRef": "P02.squeeze-and-excitation-networks.abstract.txt",
+      "section": "abstract",
+      "contentClass": "provisional_text",
+      "sha256": "24699e6280bdb206192afe77bbf69a326152acaa3bc4aa935ec2abc77accb7db",
+      "qualityStatus": "provisional",
+      "accessPolicyRef": "docs/mvp/PROVISIONAL-DATA-USE-2026-10-03.md",
+      "accessPolicySha256": "8b37f9b99917bd28ba9c8c7977241b2a3faa76e92fd65ba2bbf2474e111b0f1d",
+      "scope": {
+        "usageScopes": ["internal_development"],
+        "allowedTaskIds": ["resume-gap-k-min-attention"],
+        "visibleSections": ["abstract"],
+        "forbiddenContentClasses": ["sealed", "gold", "final_test", "external_distribution"]
+      }
+    },
+    {
+      "paperId": "P03",
+      "title": "CBAM: Convolutional Block Attention Module",
+      "identifier": "arXiv:1807.06521v1",
+      "declaredVersion": "1807.06521v1",
+      "sourceGroupId": "arxiv:1807.06521",
+      "sourceUri": "https://arxiv.org/abs/1807.06521",
+      "hostRegisteredFileRef": "P03.cbam-convolutional-block-attention-module.abstract.txt",
+      "section": "abstract",
+      "contentClass": "provisional_text",
+      "sha256": "72848a4419cf662a9785ddd7f9e690b47dc6b308e812b49dcb3f42c4101bbcf8",
+      "qualityStatus": "provisional",
+      "accessPolicyRef": "docs/mvp/PROVISIONAL-DATA-USE-2026-10-03.md",
+      "accessPolicySha256": "8b37f9b99917bd28ba9c8c7977241b2a3faa76e92fd65ba2bbf2474e111b0f1d",
+      "scope": {
+        "usageScopes": ["internal_development"],
+        "allowedTaskIds": ["resume-gap-k-min-attention"],
+        "visibleSections": ["abstract"],
+        "forbiddenContentClasses": ["sealed", "gold", "final_test", "external_distribution"]
+      }
+    },
+    {
+      "paperId": "P04",
+      "title": "BAM: Bottleneck Attention Module",
+      "identifier": "arXiv:1807.06514v1",
+      "declaredVersion": "1807.06514v1",
+      "sourceGroupId": "arxiv:1807.06514",
+      "sourceUri": "https://arxiv.org/abs/1807.06514",
+      "hostRegisteredFileRef": "P04.bam-bottleneck-attention-module.abstract.txt",
+      "section": "abstract",
+      "contentClass": "provisional_text",
+      "sha256": "e4fc8b92560a347693187e08b46164e95c1c2d6f563fe94bb23f5a11948297c6",
+      "qualityStatus": "provisional",
+      "accessPolicyRef": "docs/mvp/PROVISIONAL-DATA-USE-2026-10-03.md",
+      "accessPolicySha256": "8b37f9b99917bd28ba9c8c7977241b2a3faa76e92fd65ba2bbf2474e111b0f1d",
+      "scope": {
+        "usageScopes": ["internal_development"],
+        "allowedTaskIds": ["resume-gap-k-min-attention"],
+        "visibleSections": ["abstract"],
+        "forbiddenContentClasses": ["sealed", "gold", "final_test", "external_distribution"]
+      }
+    }
+  ],
+  "policy": {
+    "allowedTaskIds": ["resume-gap-k-min-attention"],
+    "usageScopes": ["internal_development"],
+    "forbiddenContentClasses": ["sealed", "gold", "final_test", "external_distribution"],
+    "tokenizer": "unicode-keyword-bigram-stop-v1",
+    "ranking": "matched-token-count+phrase-bonus-v1",
+    "chunking": "blank-line-paragraph-v1",
+    "indexVersion": "keyword-index-v1",
+    "topK": 5,
+    "maxSourceBytes": 1048576,
+    "maxChunkBytes": 4096,
+    "maxContextTokens": 1800,
+    "tokenEstimate": "ceil-utf8-bytes-over-3-v1"
+  },
+  "modelBudget": { "maxCalls": 0, "maxInputTokens": 0, "maxOutputTokens": 0 },
+  "querySet": [
+    {
+      "queryId": "kq-se-mechanism",
+      "taskId": "resume-gap-k-min-attention",
+      "usageScope": "internal_development",
+      "query": "SE block adaptively recalibrates channel-wise feature responses",
+      "maxContextTokens": 1800,
+      "expectedSourceRefs": ["P02/abstract"],
+      "expectedUnknown": false
+    },
+    {
+      "queryId": "kq-cbam-dimensions",
+      "taskId": "resume-gap-k-min-attention",
+      "usageScope": "internal_development",
+      "query": "CBAM attention maps channel and spatial dimensions",
+      "maxContextTokens": 1800,
+      "expectedSourceRefs": ["P03/abstract"],
+      "expectedUnknown": false
+    },
+    {
+      "queryId": "kq-bam-placement",
+      "taskId": "resume-gap-k-min-attention",
+      "usageScope": "internal_development",
+      "query": "BAM placement at bottlenecks where feature maps downsample",
+      "maxContextTokens": 1800,
+      "expectedSourceRefs": ["P04/abstract"],
+      "expectedUnknown": false
+    },
+    {
+      "queryId": "kq-unknown-accuracy",
+      "taskId": "resume-gap-k-min-attention",
+      "usageScope": "internal_development",
+      "query": "unreported peak signal-to-noise ratio for this source bundle",
+      "maxContextTokens": 1800,
+      "expectedSourceRefs": [],
+      "expectedUnknown": true
+    },
+    {
+      "queryId": "kq-tied-attention",
+      "taskId": "resume-gap-k-min-attention",
+      "usageScope": "internal_development",
+      "query": "attention module channel spatial feature maps",
+      "maxContextTokens": 1800,
+      "expectedSourceRefs": ["P03/abstract", "P04/abstract"],
+      "expectedUnknown": false
+    },
+    {
+      "queryId": "kq-context-truncation",
+      "taskId": "resume-gap-k-min-attention",
+      "usageScope": "internal_development",
+      "query": "attention channel spatial pathway feature refinement adaptive map",
+      "maxContextTokens": 80,
+      "expectedSourceRefs": ["P03/abstract", "P04/abstract"],
+      "expectedUnknown": false
+    }
+  ]
+}

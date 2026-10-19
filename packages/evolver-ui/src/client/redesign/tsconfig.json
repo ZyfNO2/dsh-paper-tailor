@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "react": ["../../../../../node_modules/@types/react"],
+      "react/*": ["../../../../../node_modules/@types/react/*"],
+      "react-dom": ["../../../../../node_modules/@types/react-dom"],
+      "react-dom/*": ["../../../../../node_modules/@types/react-dom/*"],
+      "mermaid": ["../../../../../tools/mermaid/node_modules/mermaid/dist/mermaid.d.ts"]
+    }
+  },
+  "include": ["."]
+}

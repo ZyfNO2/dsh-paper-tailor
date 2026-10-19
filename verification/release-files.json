@@ -1,0 +1,3221 @@
+{
+  "schemaVersion": 1,
+  "note": "Paths are repo-relative and forward-slashed. node_modules, the isolated verification DSH home, and runtime state are not part of the release payload. `generatedBy` names the command that produces a build artifact; those files are verified by rebuilding, not by trusting the copy.",
+  "totals": {
+    "files": 531,
+    "bytes": 25782941,
+    "byCategory": {
+      "skill:project-native": 19,
+      "other": 11,
+      "root-manifest": 4,
+      "config": 19,
+      "fixture": 50,
+      "package:evolver-bundle": 2,
+      "package:evolver-ui": 121,
+      "package:evolver-ui (generated build output)": 5,
+      "package:evolver": 165,
+      "protocol": 1,
+      "script": 17,
+      "skill:plugin-read": 4,
+      "test": 20,
+      "toolchain": 5,
+      "vendor:type-pin": 84,
+      "verification": 4
+    }
+  },
+  "files": [
+    {
+      "path": ".dsh/skills/academic-tailor/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "7d6622c248375c39d3b03dffecd950f2313c26b4caf7c28e3fbffb11a8b94e65",
+      "bytes": 1896
+    },
+    {
+      "path": ".dsh/skills/academic-tailor/references/stages.md",
+      "category": "skill:project-native",
+      "sha256": "c6f10fa9599e021b6396a53b141eaee81bc0724d350babdb014ff863f7239e53",
+      "bytes": 1486
+    },
+    {
+      "path": ".dsh/skills/analyze-results/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "a717b4b0160a46652305cd40611aa20402f24471ef29b3bcae74dda312e9b249",
+      "bytes": 1659
+    },
+    {
+      "path": ".dsh/skills/brain-storm/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "45d75aa82b6ac196a8e6bc2809d2c0261adee063d7a2d11da38cfab605385d0d",
+      "bytes": 1459
+    },
+    {
+      "path": ".dsh/skills/make-dag/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "dfe5eb3668ec849502119bbf687db719fa1bec2d65d59dccf3b88ef2c466d9fc",
+      "bytes": 1472
+    },
+    {
+      "path": ".dsh/skills/organize-wiki/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "55d760cd837f7be660bb22d54c9a69856fcd13bbb99c35c54b6fd52d19eb2dda",
+      "bytes": 1815
+    },
+    {
+      "path": ".dsh/skills/paper-start/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "c5514fa1a355033686efedee0562788226ebd5efe5ff81ac2c85a549b1b09bf7",
+      "bytes": 1470
+    },
+    {
+      "path": ".dsh/skills/research-bootstrap-brainstorm/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "d312b3e1ade17b1aa4d221be2aa9a206080570f7950ce7e3691d51cf7649b9d7",
+      "bytes": 8537
+    },
+    {
+      "path": ".dsh/skills/research-bootstrap-initialize/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "99dec30c95a3a1378d3e953cb33f5cdb06ddec8e4d95c9563db2355f0b72ac8e",
+      "bytes": 6118
+    },
+    {
+      "path": ".dsh/skills/research-resume/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "16ee1cfee49787b25d4bac4572635612b04ab22468910787ea3bf073e878deb7",
+      "bytes": 2117
+    },
+    {
+      "path": ".dsh/skills/research-review/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "a46169cddcd3e5ac3e390915d0944eaea043a82ef90b1b41aed2bbb0731dc212",
+      "bytes": 1490
+    },
+    {
+      "path": ".dsh/skills/research-takeover/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "d14f71583de030a1cf281914b2b993d07948c6220cae9901f4a3571951ff9320",
+      "bytes": 11388
+    },
+    {
+      "path": ".dsh/skills/research-team/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "e43b33ea3da713707d299e7ffb553bb1d9279373e1bfa0fd0a56c7b20b2683b8",
+      "bytes": 1663
+    },
+    {
+      "path": ".dsh/skills/research-wiki/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "8d305b4407df6bab5604bea63f17b1e5930598e6fe2e209a5ede66bdf7f4f506",
+      "bytes": 2656
+    },
+    {
+      "path": ".dsh/skills/research-workspace-sync/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "b011a30d282c8e0bddd06ddad3980f18d09fe23f31ae72ca7f439172deaf56bd",
+      "bytes": 4190
+    },
+    {
+      "path": ".dsh/skills/workbench-diagram/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "89f3d25890cec191b087a4ce1689a994b22bcdbab14a09e0738e590df40053d6",
+      "bytes": 6871
+    },
+    {
+      "path": ".dsh/skills/workbench-stage/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "deceff533a0f0a13575c472f35304d755b9a5c3de33e093d20962e0911cf7f0d",
+      "bytes": 6167
+    },
+    {
+      "path": ".dsh/skills/workspace-paper-extract/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "19841c3b987250f936a1d242bb980594244f112f4aa5453ad56886322ae0093f",
+      "bytes": 15434
+    },
+    {
+      "path": ".dsh/skills/workspace-paper-wiki/SKILL.md",
+      "category": "skill:project-native",
+      "sha256": "5fc81abb926cd10e6c3db9dae7d59c154257e78e6a5fbbb75f942e1c8055a780",
+      "bytes": 14162
+    },
+    {
+      "path": ".gitattributes",
+      "category": "other",
+      "sha256": "6a1cf0590a0b06090ad7d1ef682f8b9632fb05bed49446c6317f1437c3b48d47",
+      "bytes": 86
+    },
+    {
+      "path": ".gitignore",
+      "category": "root-manifest",
+      "sha256": "15291e1f170eb8d7e49135efaf2587506054cf9b136246645763e661a602d4fa",
+      "bytes": 3899
+    },
+    {
+      "path": "LICENSE",
+      "category": "other",
+      "sha256": "0c5cdc284ad70cbb736e051954878d7f5a196383780cd5e10cc4506dc0473675",
+      "bytes": 1063
+    },
+    {
+      "path": "README.md",
+      "category": "other",
+      "sha256": "aca206928723a723ea0c9386658d25cb15c37a40661ecdf8207d36a3b3b559d0",
+      "bytes": 11441
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "category": "other",
+      "sha256": "8ba5b4300daa59199c5f2b1a4a65017f8194ca63d85e32bcec720298f1938ff4",
+      "bytes": 232592
+    },
+    {
+      "path": "assets/architecture.svg",
+      "category": "other",
+      "sha256": "981903fc0b7d9299e64182ec35c1ba5391f7827f264739203747a60316efe07d",
+      "bytes": 6850
+    },
+    {
+      "path": "assets/overview.jpg",
+      "category": "other",
+      "sha256": "6a53c3c5eb05d2767609f5469ef27c7fea98c2d4258bc4c10a8e90ca033f158a",
+      "bytes": 133129
+    },
+    {
+      "path": "assets/reviewer.jpg",
+      "category": "other",
+      "sha256": "bf477f819bba83a9e7f13b6d81998a5def38a0bfdee691dfc815835f2ffcf047",
+      "bytes": 199429
+    },
+    {
+      "path": "assets/task-tree.jpg",
+      "category": "other",
+      "sha256": "087a4b0364643addd61d2f78130572b2b8249c35660c714b5894295e51de5c3a",
+      "bytes": 150725
+    },
+    {
+      "path": "assets/team.jpg",
+      "category": "other",
+      "sha256": "b40d4944f236014073924cbde88544c754f0f2a0c70994e5c0509095622f2afa",
+      "bytes": 123985
+    },
+    {
+      "path": "assets/wiki-citation.jpg",
+      "category": "other",
+      "sha256": "9940f23f0f79dc5bef1da056a012e68b2e99bc6bd6c87797d5487ba7c713db49",
+      "bytes": 153858
+    },
+    {
+      "path": "assets/wiki-graph.jpg",
+      "category": "other",
+      "sha256": "37af47dfff13c75d9b5633bf7c744ba93f8776448332595df853566de66f773f",
+      "bytes": 139609
+    },
+    {
+      "path": "configs/knowledge/minimal.json",
+      "category": "config",
+      "sha256": "a62c4820d42587100146cffb53cbf4a6f8721465c6e6adc2b0bbdc515b3c0ecd",
+      "bytes": 5713
+    },
+    {
+      "path": "configs/knowledge/required-manifest.json",
+      "category": "config",
+      "sha256": "31953958a24ee8fd64b167402c0e83fd75d28a2dd0626cf29d1462752a558015",
+      "bytes": 1982
+    },
+    {
+      "path": "configs/phase2/budget-measurement.json",
+      "category": "config",
+      "sha256": "0d3a0c6ebf49ecacfc185dbe52db5b92762a3758fe4e38e2908a3ab3e6dd3d94",
+      "bytes": 5716
+    },
+    {
+      "path": "configs/phase2/environment-cpu-seg-v1.json",
+      "category": "config",
+      "sha256": "1370ff6f6d7e51801cbddc705eb1d5e34a4347023574392f465584475fb7e69d",
+      "bytes": 4671
+    },
+    {
+      "path": "configs/phase2/execution-config.json",
+      "category": "config",
+      "sha256": "24bbf53e444db67808b0b08e4d8cb9bd4169e732463d88e9b88d21a9002577df",
+      "bytes": 19431
+    },
+    {
+      "path": "configs/phase2/host-constraints.json",
+      "category": "config",
+      "sha256": "61c7f8a2248ae11546b91332e143c7b66b741a336189e926b456af9cc186fa1c",
+      "bytes": 4482
+    },
+    {
+      "path": "configs/phase2/isolation-policy.json",
+      "category": "config",
+      "sha256": "4eda2e73f76bda4a32affc27560b2b382654db0a3e44daa1eb6fbac070869778",
+      "bytes": 3913
+    },
+    {
+      "path": "configs/phase2/order-rules.json",
+      "category": "config",
+      "sha256": "ecad152feab0ab69d969dc982b7999d92c8135bcde58f1cf60b9f48a3bd681a0",
+      "bytes": 3013
+    },
+    {
+      "path": "configs/phase2/profile-cpu-seg-v1.json",
+      "category": "config",
+      "sha256": "4562fcf5d06e6455d86be393b191373e6bb09f2259cd7136a2571c50661a2926",
+      "bytes": 984
+    },
+    {
+      "path": "configs/phase2/profile-registry.json",
+      "category": "config",
+      "sha256": "97501085b5512a6e5ccfc199b4563e5a18baf519a6fc9c401ef35b33f3826a27",
+      "bytes": 6672
+    },
+    {
+      "path": "configs/phase2/protocol-smoke.json",
+      "category": "config",
+      "sha256": "e53428686bccbffdb60ff0379a08e88db75d9180f9e9a83e24152e2f6de34272",
+      "bytes": 870
+    },
+    {
+      "path": "configs/phase2/protocol-tiny.json",
+      "category": "config",
+      "sha256": "91607862a5c968befdff3a5be8eb80abed4feec0549158ab2bfc3a3b2cd87567",
+      "bytes": 1110
+    },
+    {
+      "path": "configs/phase2/slot-schemas.json",
+      "category": "config",
+      "sha256": "acb36b5dc1c17b6a92eda22dd1403ebf5f9348e6fc71178b49ed0f80e4e2f092",
+      "bytes": 3194
+    },
+    {
+      "path": "configs/phase2/tolerances.json",
+      "category": "config",
+      "sha256": "a92c25db28cb91b85e8c51a9664bfc6eb274d1d4916c0ba6fc249a3fc22cf2c6",
+      "bytes": 11068
+    },
+    {
+      "path": "configs/phase3/host-constraints.json",
+      "category": "config",
+      "sha256": "feafeedd5281f33b342bce6522aa7246ff8de87aa8ad84ad40ab93834ac36abf",
+      "bytes": 4433
+    },
+    {
+      "path": "configs/phase3/pilot-config.json",
+      "category": "config",
+      "sha256": "608376179f2b26e6ea78bcef9f2cc910d7462eefde6de48562fd585b32d204c3",
+      "bytes": 4929
+    },
+    {
+      "path": "configs/phase3/protocol-comparison.json",
+      "category": "config",
+      "sha256": "e4a61f81ea8c10cff3e3cf2387c9776bd93bee3e68432eed0a283900f28b6a52",
+      "bytes": 2540
+    },
+    {
+      "path": "configs/phase3/reproduction-tolerance.json",
+      "category": "config",
+      "sha256": "4da348c7126a9c1f42371548304e7adccd5b2271a6f437c1ae83349bc2e60e2e",
+      "bytes": 1751
+    },
+    {
+      "path": "configs/workbench/stage-policy.json",
+      "category": "config",
+      "sha256": "14c030752e4b115ae7165d4042f36833ae870606941412bfdfdf5cd3272e095c",
+      "bytes": 4104
+    },
+    {
+      "path": "fixtures/modules/aspp_block.py",
+      "category": "fixture",
+      "sha256": "9bd94a7c105cea93ca79c66f7b4794e840541bec8c9c6729a80ec5bb2f38cf6b",
+      "bytes": 1109
+    },
+    {
+      "path": "fixtures/modules/attention_gate_block.py",
+      "category": "fixture",
+      "sha256": "e405220c210ffba1771cd064d00819624bb55ca4171951fe7104618eea2068d0",
+      "bytes": 2810
+    },
+    {
+      "path": "fixtures/modules/manifest.json",
+      "category": "fixture",
+      "sha256": "24ebc6419f2037745709c3ca5a925d4560cb1e606ee15d9bb978a5299e9b2ada",
+      "bytes": 4289
+    },
+    {
+      "path": "fixtures/modules/se_block.py",
+      "category": "fixture",
+      "sha256": "8b78fc50e35cecb967d66bfb1c1226606584da7ad0023013d3d660a949371d61",
+      "bytes": 813
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P01.deep-residual-learning-for-image-recognition.abstract.txt",
+      "category": "fixture",
+      "sha256": "82e1125d329c811b2bdaeec068f3b54e22db3f9d98f208c0710b5f9a0de924fc",
+      "bytes": 331
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P01.deep-residual-learning-for-image-recognition.title.txt",
+      "category": "fixture",
+      "sha256": "52d6accc68656d873cf4c0c5fc4d7b61aaf61be0f7e3c656ba3c2994e0eafece",
+      "bytes": 44
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P02.squeeze-and-excitation-networks.abstract.txt",
+      "category": "fixture",
+      "sha256": "24699e6280bdb206192afe77bbf69a326152acaa3bc4aa935ec2abc77accb7db",
+      "bytes": 897
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P02.squeeze-and-excitation-networks.title.txt",
+      "category": "fixture",
+      "sha256": "3ff9c40086b471a25b1a55653ef854279771cc8a617fc1138ee683f3ce7c5397",
+      "bytes": 31
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P03.cbam-convolutional-block-attention-module.abstract.txt",
+      "category": "fixture",
+      "sha256": "72848a4419cf662a9785ddd7f9e690b47dc6b308e812b49dcb3f42c4101bbcf8",
+      "bytes": 677
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P03.cbam-convolutional-block-attention-module.title.txt",
+      "category": "fixture",
+      "sha256": "d80f8e90217aa05acb09110407a837afe14f5b1f89456f672e317b64edd4e55b",
+      "bytes": 42
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P04.bam-bottleneck-attention-module.abstract.txt",
+      "category": "fixture",
+      "sha256": "e4fc8b92560a347693187e08b46164e95c1c2d6f563fe94bb23f5a11948297c6",
+      "bytes": 835
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P04.bam-bottleneck-attention-module.title.txt",
+      "category": "fixture",
+      "sha256": "632d0c2f5e0a47e197394f639723849d4e703eed0238236ef5524ae45c6efed2",
+      "bytes": 32
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P05.dropblock-a-regularization-method-for-convolutio.abstract.txt",
+      "category": "fixture",
+      "sha256": "79a5244d6d3f6e7bbd5f47369f2766bbd759dea09bdfc42912ec83762b99afed",
+      "bytes": 1221
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P05.dropblock-a-regularization-method-for-convolutio.title.txt",
+      "category": "fixture",
+      "sha256": "7cdc68a1aa385609c39a8de80c5a3ef3d7b4d9e3cc35be881b364bfbfac808cf",
+      "bytes": 61
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P06.mixup-beyond-empirical-risk-minimization.abstract.txt",
+      "category": "fixture",
+      "sha256": "68d46ea9980f729fe37b507d9a6ef9176d3eab0e30eeb6645b4d7449d455f453",
+      "bytes": 439
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P06.mixup-beyond-empirical-risk-minimization.title.txt",
+      "category": "fixture",
+      "sha256": "ee58c36b038aaaac5bccc582a0c52f777fa4d63df4ba3f2f38dddcab6e68456a",
+      "bytes": 41
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P07.cutmix-regularization-strategy-to-train-strong-c.abstract.txt",
+      "category": "fixture",
+      "sha256": "1619c5a7f8b92ccbb2b205d1a77ae8b9c5746b3c0180bde6c89db109553bfa71",
+      "bytes": 818
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P07.cutmix-regularization-strategy-to-train-strong-c.title.txt",
+      "category": "fixture",
+      "sha256": "42971db8b13d725eb8a54f37ce68c36cc8003becb43e8a3b9904dbd894d57a42",
+      "bytes": 85
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P08.deep-networks-with-stochastic-depth.abstract.txt",
+      "category": "fixture",
+      "sha256": "f804e97d735fa6426c8d8a0996a775930703d25194d4fc76934133f910aa5fdf",
+      "bytes": 730
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P08.deep-networks-with-stochastic-depth.title.txt",
+      "category": "fixture",
+      "sha256": "a7c256e97367cf3e826995b7a3105fe77ce745300be251e50024faed92d195c7",
+      "bytes": 35
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P09.deeply-supervised-nets.abstract.txt",
+      "category": "fixture",
+      "sha256": "85157ad9d3aec83b4d8f34ab04ecf30880cdea08fa7e9b5f1779ce8426d8f4db",
+      "bytes": 804
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P09.deeply-supervised-nets.title.txt",
+      "category": "fixture",
+      "sha256": "c75e9f961b59c3f58a339016d04130fc2008b047122688b8aa1ff43f2905cbc5",
+      "bytes": 22
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P10.non-local-neural-networks.abstract.txt",
+      "category": "fixture",
+      "sha256": "e1db4b5cc8f4a3225b5b1b64ce62631b4d27b580311ea99aaaffcec7c255e636",
+      "bytes": 416
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P10.non-local-neural-networks.title.txt",
+      "category": "fixture",
+      "sha256": "1b0856d0bf425b227981de8706c0c8188f24cda9ef8d455b26c4353ee070398d",
+      "bytes": 25
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P11.selective-kernel-networks.abstract.txt",
+      "category": "fixture",
+      "sha256": "46acdcc8bf48e9cf55236d58eb9b87c2cb3299fd4a32dcdf1cf2d11f9161eced",
+      "bytes": 923
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P11.selective-kernel-networks.title.txt",
+      "category": "fixture",
+      "sha256": "9ffe44132124a508c2ce9fd3ceb4e8edb61418a6e53fca83d5c6e8e8efe5d109",
+      "bytes": 25
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P12.res2net-a-new-multi-scale-backbone-architecture.abstract.txt",
+      "category": "fixture",
+      "sha256": "c80933e318efc469f538863a85c96d507ebec047f26850f02638f6743df005d0",
+      "bytes": 683
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/P12.res2net-a-new-multi-scale-backbone-architecture.title.txt",
+      "category": "fixture",
+      "sha256": "9943966b7387df61e52339d012f6ea1b031030b6f754097392d34b859dace915",
+      "bytes": 48
+    },
+    {
+      "path": "fixtures/paper-only-v2/inputs/manifest.json",
+      "category": "fixture",
+      "sha256": "b0397f68876d5be4ac3183a2b961cdd84c7ec4f60355a8a04e91594e0ff7c1a0",
+      "bytes": 21240
+    },
+    {
+      "path": "fixtures/paper-only-v2/isolation/readable-roots.json",
+      "category": "fixture",
+      "sha256": "f595dfcdcb785f208e59662edbc27279f9c2ce9bfdccdc0ef1b432d6a75ab129",
+      "bytes": 640
+    },
+    {
+      "path": "fixtures/paper-only-v2/protocol/public.json",
+      "category": "fixture",
+      "sha256": "d688d13f9928333ba4cd0c220efde81805b2f0c983bfd6db211f53e562353b5c",
+      "bytes": 22192
+    },
+    {
+      "path": "fixtures/papers/README.md",
+      "category": "fixture",
+      "sha256": "f4da9e2b2738c9038d177f2ccbff2ad24b76ab3bab5be240f52fc078d222bb1f",
+      "bytes": 182
+    },
+    {
+      "path": "fixtures/papers/manifest.json",
+      "category": "fixture",
+      "sha256": "30224383e4fe849efb59ddc34e1d5026c0885e86045323ef79e1bbb690080e4e",
+      "bytes": 1645
+    },
+    {
+      "path": "fixtures/papers/sources/ASPP_1706.05587.snapshot.md",
+      "category": "fixture",
+      "sha256": "1a0608a2fef8d07f38cf18bbf9104d3e727b2eb766b8d6b68da7041bb65cabab",
+      "bytes": 1415
+    },
+    {
+      "path": "fixtures/papers/sources/SE_1709.01507.snapshot.md",
+      "category": "fixture",
+      "sha256": "778bae36203ba16862697a8761e2011fe372122cd0f947dd8011dd7e320774b6",
+      "bytes": 1304
+    },
+    {
+      "path": "fixtures/papers/sources/references.bib",
+      "category": "fixture",
+      "sha256": "cd4dc12c97f678dfafffc9b0c439dcbe6a00b3cce672a445ab9aa77d748406a9",
+      "bytes": 547
+    },
+    {
+      "path": "fixtures/phase2-probe/hook_fixture.py",
+      "category": "fixture",
+      "sha256": "6c23902739421108fb4f00a978851dfeed8c54072c16ca940d35f21b70182c2f",
+      "bytes": 1076
+    },
+    {
+      "path": "fixtures/phase2-probe/loss_fixture.py",
+      "category": "fixture",
+      "sha256": "3c74cf9cdf6900bcc743bcb77267bd49f3ee3c4f72d2c304bf13e7f9348f2669",
+      "bytes": 1557
+    },
+    {
+      "path": "fixtures/phase2-probe/nan_module.py",
+      "category": "fixture",
+      "sha256": "08c271795574b4e02b32d663a0e65063d5cd98c03569da1c3d0fb127f84513ae",
+      "bytes": 926
+    },
+    {
+      "path": "fixtures/phase2-probe/operator_fixture.py",
+      "category": "fixture",
+      "sha256": "77beb9365e8b5a17fa2bb7a8059858118b94f62069025f7d20ff3b01ed94ee40",
+      "bytes": 3132
+    },
+    {
+      "path": "fixtures/phase2-probe/stack_fixture.py",
+      "category": "fixture",
+      "sha256": "a11a8535a5c4dd681bc2cfcb242953da8445d54896d5e721899c37d6e76f8dab",
+      "bytes": 1535
+    },
+    {
+      "path": "fixtures/phase2-probe/tolerances.json",
+      "category": "fixture",
+      "sha256": "9f2a272ec6fcac66f6632825a36521eb0143ef1e5d47dbe61ba6c957c684798b",
+      "bytes": 5994
+    },
+    {
+      "path": "fixtures/phase2-source-pack/README.md",
+      "category": "fixture",
+      "sha256": "b527a8a623da00d680a9869c9a805b8426a47a63a9b00e4f75c607f0e982cc06",
+      "bytes": 9121
+    },
+    {
+      "path": "fixtures/phase2-source-pack/build-manifest.ts",
+      "category": "fixture",
+      "sha256": "8ed4049639582d026c2052b3957fc243faa74b91387d65b337f10cabad60ca6c",
+      "bytes": 21252
+    },
+    {
+      "path": "fixtures/phase2-source-pack/environment.json",
+      "category": "fixture",
+      "sha256": "495125b4c8f39e2dd1f190a5e4abbd9af6d126c44e9ddb67df6300f3a0b3df5c",
+      "bytes": 4450
+    },
+    {
+      "path": "fixtures/phase2-source-pack/external-provenance.candidates.json",
+      "category": "fixture",
+      "sha256": "41ff662256dd0f81406126d4ecd63cae22e53b590418bbb75c025a8385f29019",
+      "bytes": 8573
+    },
+    {
+      "path": "fixtures/phase2-source-pack/manifest.json",
+      "category": "fixture",
+      "sha256": "c1de20dabba46927e86d265cf94acf6427c108eaa6e30930e75261bc77c93cb8",
+      "bytes": 21610
+    },
+    {
+      "path": "fixtures/phase2-source-pack/tools/adversarial-check.ts",
+      "category": "fixture",
+      "sha256": "03b278756438b83781874a9899eaa937c24dd35b84ea71c3d29afec593ff6e85",
+      "bytes": 2248
+    },
+    {
+      "path": "fixtures/phase2-source-pack/tools/npy-header.ts",
+      "category": "fixture",
+      "sha256": "c41fe6bb0dbb6dfa2a13b5a06013815b3f7de588c858087cb0740e9bdb1f7558",
+      "bytes": 2823
+    },
+    {
+      "path": "fixtures/phase2-source-pack/tools/zip-entries.ts",
+      "category": "fixture",
+      "sha256": "4984c70a17cf343c6aafd724b7181ad173d295f4ae62caa698912257075327c7",
+      "bytes": 4491
+    },
+    {
+      "path": "package-lock.json",
+      "category": "root-manifest",
+      "sha256": "d1d4cfb142e05b46434b8dcb886b56c1377434b3fc68863f8b07be750939e575",
+      "bytes": 48607,
+      "generatedBy": "npm install"
+    },
+    {
+      "path": "package.json",
+      "category": "root-manifest",
+      "sha256": "f11fdbcaee9a37705d3e1ecce6eeb15734fff4a304be77e3e64f017c1e894c61",
+      "bytes": 3250
+    },
+    {
+      "path": "packages/evolver-bundle/cordis.patch.yml",
+      "category": "package:evolver-bundle",
+      "sha256": "3ee156a223bc74a7f08bb4b83a192f78100a6444e91b79252160b0895c8f4e02",
+      "bytes": 8864
+    },
+    {
+      "path": "packages/evolver-bundle/package.json",
+      "category": "package:evolver-bundle",
+      "sha256": "0cb42aab62b8d58fef321a1847a9adf3150a6de25059ed0f100730439b47b472",
+      "bytes": 190
+    },
+    {
+      "path": "packages/evolver-ui/build-client.mjs",
+      "category": "package:evolver-ui",
+      "sha256": "06a63230f8c9b29a22cc8c44aaac06521511135bb758cf115e81abd520afaba7",
+      "bytes": 3645
+    },
+    {
+      "path": "packages/evolver-ui/check-bundle-probes.cjs",
+      "category": "package:evolver-ui",
+      "sha256": "eab46568ad1f1085092c112a1cc3c57dfa7acf25c0807659f01964ec046bf627",
+      "bytes": 356
+    },
+    {
+      "path": "packages/evolver-ui/lib/client.js",
+      "category": "package:evolver-ui (generated build output)",
+      "sha256": "3b6a90a387bba2a101c34d092aadd1da768d8568f6993c079c25d1c7be8b1dfc",
+      "bytes": 6792331,
+      "generatedBy": "node packages/evolver-ui/build-client.mjs"
+    },
+    {
+      "path": "packages/evolver-ui/lib/client.js.map",
+      "category": "package:evolver-ui (generated build output)",
+      "sha256": "a518449cc393ebe326bacd3039f092251703fd3708c933febdd9961b9f57716b",
+      "bytes": 10551395
+    },
+    {
+      "path": "packages/evolver-ui/lib/index.js",
+      "category": "package:evolver-ui (generated build output)",
+      "sha256": "381cd1137531233844c3550a4b9d811fde39f4a60cbc405cf299a9687e2d3fa5",
+      "bytes": 517,
+      "generatedBy": "node scripts/build-node-half.mjs"
+    },
+    {
+      "path": "packages/evolver-ui/lib/types/index.d.ts",
+      "category": "package:evolver-ui (generated build output)",
+      "sha256": "4da8f8c33200bdd121f224d5150ef1e0c86e1731bef8cfc3a3a8c6f861b8ca50",
+      "bytes": 492,
+      "generatedBy": "tsc -p packages/evolver-ui/tsconfig.build.json"
+    },
+    {
+      "path": "packages/evolver-ui/lib/types/wire.d.ts",
+      "category": "package:evolver-ui (generated build output)",
+      "sha256": "18cafecdfe12fd6734b3e0219330083e2f39146a0bfb999615e1481336c835ad",
+      "bytes": 13876,
+      "generatedBy": "tsc -p packages/evolver-ui/tsconfig.build.json"
+    },
+    {
+      "path": "packages/evolver-ui/package.json",
+      "category": "package:evolver-ui",
+      "sha256": "d32b7bd27eaf7a45536de1c3dd180c0f19b2b19f2f1d0e5f4b68a95d0ecff56d",
+      "bytes": 1932
+    },
+    {
+      "path": "packages/evolver-ui/src/client/DesignRationale.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "432c9d55812409af891be85dbd417dc94827a24c636d8d1ca78572b50939a4bf",
+      "bytes": 6322
+    },
+    {
+      "path": "packages/evolver-ui/src/client/DetailDrawer.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "e4f4dc9d182a0eb3c9ef750a61786bee7a20e44a0b22fd39ae26d4e5a12caf2a",
+      "bytes": 12119
+    },
+    {
+      "path": "packages/evolver-ui/src/client/ModelDataFlow.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "459f1c56b9e729881e132930333e0c2c0387118681edf059e00e6ce5dc34e48d",
+      "bytes": 9610
+    },
+    {
+      "path": "packages/evolver-ui/src/client/PaperLibrary.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "0ec8f682cf8fffd344470126decedf93b1246d5aac7c2994c0596a0d3c5d07aa",
+      "bytes": 4073
+    },
+    {
+      "path": "packages/evolver-ui/src/client/ResearchPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "04d37943510f799a72286b5a97f7eba85ee06c123b463148dddff07de00069a4",
+      "bytes": 9419
+    },
+    {
+      "path": "packages/evolver-ui/src/client/TailorShop.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "0cb2ce2900691a8056f83d3a27f1f5756fe61512d148f73d12f34400d2c88458",
+      "bytes": 7082
+    },
+    {
+      "path": "packages/evolver-ui/src/client/WorkTree.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "157a91665061b5d7a5399d22f28b04271730fa85678b3bd35cb954733eeec4bb",
+      "bytes": 12824
+    },
+    {
+      "path": "packages/evolver-ui/src/client/Workbench.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "8bf2ec3be603eb508cac47e35f6d6541fbf3c3e3fec6845b3e8070a4c7978757",
+      "bytes": 30266
+    },
+    {
+      "path": "packages/evolver-ui/src/client/api.ts",
+      "category": "package:evolver-ui",
+      "sha256": "8a25cbfcd16210c6c2f2fb1979607922c2a1c0ecc50a3454283069e1f108885f",
+      "bytes": 8692
+    },
+    {
+      "path": "packages/evolver-ui/src/client/format.ts",
+      "category": "package:evolver-ui",
+      "sha256": "e3743cce63c817efb2e5bffac0f147b36f30ec9472bfbadebcde52289aa3af33",
+      "bytes": 19276
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/AnalysisResults.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "71cb4ef3b129525ab0d615d951966af28a438ce1f4704ece64f0b86232f21ce4",
+      "bytes": 26149
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/FollowupAdoptionForm.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "c684e4110291d4f6337c8626a516d51662451498b8a88838fe7d33306c4133f0",
+      "bytes": 2220
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/GeneralAgentPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "7d686ecf1386bf6aed2ef847c0f2e8772de6be6008372c4b2d952aacdb4580c0",
+      "bytes": 23612
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/GeneralTeamPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "861d34bcf331b2848ab03ed42cf6cba509178ad7eecb0166a5a6277262239cf1",
+      "bytes": 13025
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/GeneralTreePanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "3a509b4ffc76b46eef1a7ceeed1aa297c44e371e4adeb8ac14708d5d3f06c82f",
+      "bytes": 28303
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/GeneralWorkbench.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "5a140f9150244543a8b09fc2ac0c63097ee62b3730cfb49409e96f38ad2d2376",
+      "bytes": 75028
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/ImportedPlanAdoption.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "31669bb8b732bf6354dc074c814ae88ef54c25a6957292dbb33a3325911803f3",
+      "bytes": 2525
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/InferencePanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "a1abf265c462674898682b1bff0d2cab0798280bbd5a68803a8e9fa7dd45b0eb",
+      "bytes": 24459
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/KnowledgePanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "6fd17eba60bf3d2c5f2607f62911db132523bd4133b00a2fd7cf5a20232a9f05",
+      "bytes": 26773
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/MetricsPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "3fbe06c2f931391b38ccb60dae32421988d9985dfe3bf0f33a4c5d312895e1bf",
+      "bytes": 17099
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/PackagePanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "d199bf09519aca3896d256ffd2b618f494240f610f67ada46ae7c37f64beb45f",
+      "bytes": 5150
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/SchedulePanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "b55de29980537e15a6597e07a348897ea853b5b951b650a5cd6a48d14d35a416",
+      "bytes": 6281
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/SourceAccessPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "44e86866e1405bbf0420550de32d74493654f708ef6483db386cbb93c262b9d8",
+      "bytes": 2832
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/TakeoverPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "13b93f728b147aa9763440ec86a988aae782a2eb6e9cc9874c4e87b1d7a151d5",
+      "bytes": 12259
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/WikiBoard.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "1ab3345ff7599f92194985b2ae3e4c113c323f9de5c511701edd27519459c222",
+      "bytes": 9328
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/WikiContent.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "ea392e1c1869455dd686425a6190829eb859e9a2cbde0fe4a2b469e58404bd15",
+      "bytes": 2354
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/WikiGraph.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "214def8b4d6efa63ff70b37d3414573c3523be63296561c3693bae883a259020",
+      "bytes": 8555
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/WikiTools.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "138c749c5cadc46f8aa5643944014a0a2330087850abd2494c4c8b45054a6dcc",
+      "bytes": 12292
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/WikiWorkspace.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "c83cddbe22b0fcfd1517533b6564f628b9b564abbd6b370e98ee3f77aff56101",
+      "bytes": 19353
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/WorkflowEditor.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "fb5f0b35099584fae52f527082b1fb69e7c0f942939b6675ca87951e606b5089",
+      "bytes": 9342
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-core/FactPackPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "6205e06e54ed27ffa6a42fde3760ecb05689d9dd7a05e96aa5ece3715843f117",
+      "bytes": 10079
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-core/offline-entry.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "5b3a8d8194173d0ecff4665b415a7b3505e1cd2cb89cba09bb521b2d51ae6a38",
+      "bytes": 893
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-core/offline-html.ts",
+      "category": "package:evolver-ui",
+      "sha256": "c29c295672f654bdd6d3cb837c1ac4cd6a251911148fe7a2fd0a6e743cddf376",
+      "bytes": 2900
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-core/offline-runtime.generated.ts",
+      "category": "package:evolver-ui",
+      "sha256": "6f1e7cba47fee1eed8604be2d683f4cad82c8ba0b5ae0858171a8407e452eb14",
+      "bytes": 262536,
+      "generatedBy": "node --experimental-strip-types scripts/build-report-offline-runtime.ts --write"
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/ComparisonChart.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "768ecaeb071e76fa63b820f1cbb4fc74dc87cf8e1a71514dba7c911aaddb9115",
+      "bytes": 6108
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/EvidenceCards.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "a26037b265c975e860e923c30968e28047f5cc8bbe634b8d9d9020b9bf69bde0",
+      "bytes": 5556
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/LimitationsNotice.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "c5e33133807e4eb1378b3bb6fd9b33676919bbf237cae57da9897062fdfaf423",
+      "bytes": 1886
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/MetricTable.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "81e5722022a1a56fd59e7eb92b28baf8142198243c6fc2d9bf29930a7b6c19fe",
+      "bytes": 6663
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/ProcessSteps.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "f37bfd3ebc444b116b378bc74a5595e9374ec2b8e847f66d0dcb00035efb8972",
+      "bytes": 5861
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/ReportPresentation.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "13b7aa9c980612f3de3150010a4e7446a2a820bdfd5b3ae83ba336ef38996d97",
+      "bytes": 8762
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/TermDisclosure.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "b748a340238dc35327de4a2f5ff2c8ce2b8c231e4731143feb2525a23cff8226",
+      "bytes": 2058
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/fixtures.ts",
+      "category": "package:evolver-ui",
+      "sha256": "4782a45ab83b31d68017a4b65df041e66830ec3f19e7bfbf1ea0ec11eb7ded65",
+      "bytes": 14443
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/formatValue.ts",
+      "category": "package:evolver-ui",
+      "sha256": "6960a63eca7d2da829bee7fd97c1afe1ddedcd3df6de0aa7248956f3baff7638",
+      "bytes": 8064
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/components/index.ts",
+      "category": "package:evolver-ui",
+      "sha256": "3e7e2ab6b6d2855e6321056c5d2c7a626cfdfd6372bfc76a526e2099066dd584",
+      "bytes": 1794
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/content/banner.ts",
+      "category": "package:evolver-ui",
+      "sha256": "b765becfb18c241798dd245ba9116f4dd26e6491e60164885cb95e8460a33553",
+      "bytes": 3698
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/content/index.ts",
+      "category": "package:evolver-ui",
+      "sha256": "b23afef79b13321a0e9c9065ea813e324217ec1ff329881cd799c996f2f3e852",
+      "bytes": 739
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/content/legend.ts",
+      "category": "package:evolver-ui",
+      "sha256": "ba141a59fb8f0c07e5c3c4b847bb3d2fd5564ba2846aded415b8c05e4110c5aa",
+      "bytes": 4566
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/content/modes.ts",
+      "category": "package:evolver-ui",
+      "sha256": "53d94be80c03d864cd5c940f95aaa003e12adac9ac82d5171d370053889d9ff7",
+      "bytes": 2109
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/content/terms.ts",
+      "category": "package:evolver-ui",
+      "sha256": "5ccd4b3ea5b999d01fd193ab121366db59b063c89f6eb535f2ebdd22cf37bd35",
+      "bytes": 11203
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/fixtures/index.ts",
+      "category": "package:evolver-ui",
+      "sha256": "2f3ce67ef6a6fa8a0666dce380c285121d75d2c7a9d924fa7194c82d2e880ab5",
+      "bytes": 631
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/fixtures/metric-projection.ts",
+      "category": "package:evolver-ui",
+      "sha256": "7252b3aa4ebf10179398f169f246aa66049622434be1eccce7181cba3173f97b",
+      "bytes": 15535
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/fixtures/pack.ts",
+      "category": "package:evolver-ui",
+      "sha256": "3d1374878bffcae54a603546aa5910c33e0cba6d91a4f72a53e07795b8688dcb",
+      "bytes": 18632
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/fixtures/projection.ts",
+      "category": "package:evolver-ui",
+      "sha256": "b1ad8b7782414af76728d2438b6f6daf05889056f3a6288ae01322c5a9db5347",
+      "bytes": 3876
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/fixtures/simulation.ts",
+      "category": "package:evolver-ui",
+      "sha256": "6b8060b3bd6b9022d8f7adc96f06467997fe19037007eae028a9b1efa9786c34",
+      "bytes": 1342
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/modes/ReportModes.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "72dd7647db46c5a56d75883a6f00f22eca53ae64c6252aa0943aa97bd7b88fd5",
+      "bytes": 5401
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/modes/mode-model.ts",
+      "category": "package:evolver-ui",
+      "sha256": "194b4e84e0f724d4fd27f000ad2fc2dcaf346011035f4c743ad11e1a76f4c9f7",
+      "bytes": 3628
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/styles/charts.ts",
+      "category": "package:evolver-ui",
+      "sha256": "bd352ac57dd00ed0415810d1966e558bc00e13797db1359ae5bb00ae316f0203",
+      "bytes": 4012
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/styles/core.ts",
+      "category": "package:evolver-ui",
+      "sha256": "123f1b08fcd1eee5ea730c722e2a84b4743e8e5689a079be8e4383b1b6954441",
+      "bytes": 7010
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/styles/index.ts",
+      "category": "package:evolver-ui",
+      "sha256": "32d911c1daa7f390b21733640d607999638b0794c3262ecfe3833310603ffa41",
+      "bytes": 1143
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/styles/metrics.ts",
+      "category": "package:evolver-ui",
+      "sha256": "9d97792694ac0cf47037ca2852739ab48cc19211acfb4571e9acd1fa32ca40cc",
+      "bytes": 4342
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/styles/status.ts",
+      "category": "package:evolver-ui",
+      "sha256": "380547b979dae1ceee61bb8f758779fdfb6cf6634af62fb0551996c6561546c7",
+      "bytes": 5063
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/styles/teaching.ts",
+      "category": "package:evolver-ui",
+      "sha256": "ddacfe0476db07603b1e9fb784352b0f395b52199806a6f0d2042afda051ee59",
+      "bytes": 4672
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/teaching/TeachingPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "39fb6e441881158a9f18736f0ddcb8891ae5de933b494c7795ab45c88e5593c1",
+      "bytes": 6472
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/report-presentation/teaching/teaching-model.ts",
+      "category": "package:evolver-ui",
+      "sha256": "4fb1ae5ff28e0837ef65f352a7eed4709c052b4e1926b7b8704ce42abb5f2d08",
+      "bytes": 5577
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/styles.ts",
+      "category": "package:evolver-ui",
+      "sha256": "b5842d227dff0dba36d9584f94fb64dae53ce7a947a883ca6b992c868c0c5300",
+      "bytes": 32928
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/tree-projection.ts",
+      "category": "package:evolver-ui",
+      "sha256": "d8c0476f451eb7e0f43f082d07d2f63ac85beac70e0c8c8537f0556643074af4",
+      "bytes": 2136
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/tsconfig.json",
+      "category": "package:evolver-ui",
+      "sha256": "234349dd081dac2cf3328e79f3e964c5ab971d130eac34e61e90d422b320fda2",
+      "bytes": 100
+    },
+    {
+      "path": "packages/evolver-ui/src/client/general/wiki-styles.ts",
+      "category": "package:evolver-ui",
+      "sha256": "a1464e7f17c764ffe20360e741fdb87b359df6b6e3486da7add863e74165bb5d",
+      "bytes": 8206
+    },
+    {
+      "path": "packages/evolver-ui/src/client/index.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "97fa6352b8275aad6c161a97d8836054eb5941826ecea841d87460ed21ab5d31",
+      "bytes": 2301
+    },
+    {
+      "path": "packages/evolver-ui/src/client/integration/DshWorkbench.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "41fad52da8567c122aafcf1f035ffaa31776ca439184ca52146bb230e084e48a",
+      "bytes": 15007
+    },
+    {
+      "path": "packages/evolver-ui/src/client/integration/paper-library-view.ts",
+      "category": "package:evolver-ui",
+      "sha256": "dab3eceff03cd6c41f4b08b2f33fa760986071385e200f278cc8065b998be20e",
+      "bytes": 5678
+    },
+    {
+      "path": "packages/evolver-ui/src/client/integration/projection-adapter.ts",
+      "category": "package:evolver-ui",
+      "sha256": "6d2f192abe425ec8ecb71b679d095ddd65de1a0559856ba7b2705f1588821978",
+      "bytes": 10952
+    },
+    {
+      "path": "packages/evolver-ui/src/client/integration/read-client.ts",
+      "category": "package:evolver-ui",
+      "sha256": "34a9ab029484f07d43ca6d463d4006895563b58eb44431efc243c3de3d09db35",
+      "bytes": 3205
+    },
+    {
+      "path": "packages/evolver-ui/src/client/integration/research-bootstrap-view.ts",
+      "category": "package:evolver-ui",
+      "sha256": "3c23c2c91908181fef2ea25ad64c01d82b7addc096ab6cf1feab26e78a5998dd",
+      "bytes": 34210
+    },
+    {
+      "path": "packages/evolver-ui/src/client/integration/research-cycle-view.ts",
+      "category": "package:evolver-ui",
+      "sha256": "91be2f4bfcc24e9ba36b4f691ca0e36dc10b2352a759d360742c681ed9955916",
+      "bytes": 6567
+    },
+    {
+      "path": "packages/evolver-ui/src/client/integration/tsconfig.json",
+      "category": "package:evolver-ui",
+      "sha256": "e7f17d18d79773bec0ebf28f773375118553a5eb3f6a3005d6a56111fe55a741",
+      "bytes": 80
+    },
+    {
+      "path": "packages/evolver-ui/src/client/poll.ts",
+      "category": "package:evolver-ui",
+      "sha256": "b2312037339585f1db875481d377a5decf8c2ac7b5c2f29d5c309680aa726f87",
+      "bytes": 13977
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/BrainstormPage.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "93bd57f123022c9c996f8ddd4413fffe4ec368a2f01f4c99c1ea9441d36559f4",
+      "bytes": 6843
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/BrainstormView.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "3c40f01de91bede47da3fe748133c3448612a9c526bdab3f47dfa7523713d8a9",
+      "bytes": 20748
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/ExecutionFlow.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "51cb81e31ee5217fb00347179e1babb3c84aea6cc0eef8fc4362523a128c2571",
+      "bytes": 14752
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/Inspector.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "4cfee9c9a418342aca432a970705bc2876b304c63a9c20a1e799d798fe26439a",
+      "bytes": 4457
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/MermaidGraph.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "228b86d82cd37895b5c9591558864887d26aca710aa3273fad36b73d4e1ff861",
+      "bytes": 9227
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/PaperLibraryView.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "e8f2f785109711e4c6f537e4fdfdaac2eabbfb95b2f94216c08294d37ad2205a",
+      "bytes": 30232
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/ResearchCockpit.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "71709ceff77f9e1c84a4b70ab61445e000df8c6c8e180dcf17251ae6f2c46155",
+      "bytes": 22322
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/ResearchStartPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "2e26edab3b1fa128149785d70d308cb30aba18c1b25ce81f258f159fb12292ca",
+      "bytes": 10612
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/ResearchTeamPanel.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "e231cd85f822bf5bee329354b9fcc36614e5af0ed8c22238b3b81402e841ed57",
+      "bytes": 6366
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/SlotNavigator.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "c4aafaca7dae4545a826057bb16bab0c7f54b3fb77a66d8c4a84fc911db62d02",
+      "bytes": 8717
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/TailorShopView.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "21c496be89fbafb446855603dd2f31ca675154c0c869124d124855183dfd2dc5",
+      "bytes": 46235
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/WorkTreeView.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "cb078e0c8e581772a86fe3be83ba829e3fd59f6d14ece86e3d90d2c9d710eb1a",
+      "bytes": 25340
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/WorkbenchView.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "265500c42a6366b3f9a84351856cd343834884686a53a8eb4712d86efea0879a",
+      "bytes": 10975
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/brainstorm-rounds.ts",
+      "category": "package:evolver-ui",
+      "sha256": "982f3340a30773ba5f36b61b7e2a345231eb2dce7b0185d2731646a55829b686",
+      "bytes": 10113
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/controls.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "261b5452388e226a9cff6e36300ac52ccde86da5a5d0727d2bae90524de05647",
+      "bytes": 8730
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/demo/DemoWorkbench.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "87866418d75f58d0cbd403d18afc9aeaac7e23a993a5838f7d3b91b3aa1047cc",
+      "bytes": 9126
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/demo/fixtures.ts",
+      "category": "package:evolver-ui",
+      "sha256": "bfb98c13cd060b21950d0694b2c1588220044caf74c1ccc067043f4baec86cc7",
+      "bytes": 57675
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/demo/index.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "d1d9c2edd680d13618b1d1325145ebd4a21edc612e142cef89cba11db40aa7b0",
+      "bytes": 532
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/execution-graph.ts",
+      "category": "package:evolver-ui",
+      "sha256": "1612ac1662b8405705174c2588c8831bd6b71c33c2c43c051f3c72fd5e8244a8",
+      "bytes": 22470
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/icons.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "0c383c07aeb3f3b0adffa1dd0acabefbc15138fb2eb43c3500fc253a3ac390cb",
+      "bytes": 3632
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/index.ts",
+      "category": "package:evolver-ui",
+      "sha256": "1a0b94ba1aef0e6fe227a4e66f2c28c0376d14893a986879144b80ebfdd07f3e",
+      "bytes": 766
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/research-actions.ts",
+      "category": "package:evolver-ui",
+      "sha256": "6c9a5c7306b5a3e070bc4cff33e9f6116ee9da95da8481bbb4d6b7dde6d187aa",
+      "bytes": 13492
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/styles.ts",
+      "category": "package:evolver-ui",
+      "sha256": "f2f6e19ebfc7c65d67927ced621706789c1655596b9582ded1898d29d68f21f4",
+      "bytes": 42671
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/tsconfig.json",
+      "category": "package:evolver-ui",
+      "sha256": "bd0035faad4ff1a3550ad3436b7c9ac2f4d18a56f86bb32b9d54a31aa0330482",
+      "bytes": 851
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/view-model.ts",
+      "category": "package:evolver-ui",
+      "sha256": "584dd565157c6e7de0126a303ebd4663c6aad29b207d7cf365c90d9662ff07af",
+      "bytes": 30089
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/view-utils.ts",
+      "category": "package:evolver-ui",
+      "sha256": "072864ae37b9ec380f556910da35b7ef48334e3b8c6c31983cb0981c06ca7ee5",
+      "bytes": 30436
+    },
+    {
+      "path": "packages/evolver-ui/src/client/redesign/worktree-mermaid.ts",
+      "category": "package:evolver-ui",
+      "sha256": "6b5e2d6707d2d78fe2bded9b3b96611e766d59f14467a710139ba1113876d5a8",
+      "bytes": 6027
+    },
+    {
+      "path": "packages/evolver-ui/src/client/skill-menu-styles.ts",
+      "category": "package:evolver-ui",
+      "sha256": "75e904a9ba624189afbe88d92b3d081a858e4d02a79a4047b89bc18f6721bd2c",
+      "bytes": 1040
+    },
+    {
+      "path": "packages/evolver-ui/src/client/studio/StudioCanvas.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "6a80f85e268df77304c765d297f6cfa72024d947ab85b93f236a78e003f478e3",
+      "bytes": 10239
+    },
+    {
+      "path": "packages/evolver-ui/src/client/studio/StudioKnowledgeGraph.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "1b359da3f7fe6a5e290ee2efd249a59976f871cc91f37b09d1fd866f194a7c83",
+      "bytes": 9492
+    },
+    {
+      "path": "packages/evolver-ui/src/client/studio/StudioRunDetails.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "8850a8d61dbead63d81c585837c14b7fe431bb4f384dd5ad56d6d8640904b7e7",
+      "bytes": 7524
+    },
+    {
+      "path": "packages/evolver-ui/src/client/studio/StudioWorkbench.tsx",
+      "category": "package:evolver-ui",
+      "sha256": "8659ace4a918eb34ac9a376ef21e4ca14b81afe3ff73fe6fde0cc1bbc7dcb70c",
+      "bytes": 42799
+    },
+    {
+      "path": "packages/evolver-ui/src/client/studio/knowledge-network.ts",
+      "category": "package:evolver-ui",
+      "sha256": "5cef1ffa3c8515069f3d357720f09342cf5ae8c828c29c7ba69c4c77d3ec53e9",
+      "bytes": 3455
+    },
+    {
+      "path": "packages/evolver-ui/src/client/studio/prototype-styles.ts",
+      "category": "package:evolver-ui",
+      "sha256": "66c1a3b4cab4757e16b253429d1928021bbfa87f392dbcd648fac96e5f0477bd",
+      "bytes": 31278
+    },
+    {
+      "path": "packages/evolver-ui/src/client/studio/studio-model.ts",
+      "category": "package:evolver-ui",
+      "sha256": "2b5b151874bbdea75ff568c327f0fb704281696d57447b2047b01e937ceede94",
+      "bytes": 11101
+    },
+    {
+      "path": "packages/evolver-ui/src/client/studio/studio-styles.ts",
+      "category": "package:evolver-ui",
+      "sha256": "b80432d6e2319b97d5c5b2d6e549ca90385d1e2def11b0a51fda7e131ec9b649",
+      "bytes": 24786
+    },
+    {
+      "path": "packages/evolver-ui/src/client/styles.ts",
+      "category": "package:evolver-ui",
+      "sha256": "4ae23c399ccef6572df38ea2ab1b990cd15889a9874e4d66057e5a72dafdbc3b",
+      "bytes": 17354
+    },
+    {
+      "path": "packages/evolver-ui/src/index.ts",
+      "category": "package:evolver-ui",
+      "sha256": "f56cd6d9fe74015f4a1cffabf517e611a27fa311c988f89e347762b094550228",
+      "bytes": 523
+    },
+    {
+      "path": "packages/evolver-ui/src/wire.ts",
+      "category": "package:evolver-ui",
+      "sha256": "d5282806649e20a989a1c38f415e2dd0ced8f74f1a28da22a84d7f5b021943f9",
+      "bytes": 13794
+    },
+    {
+      "path": "packages/evolver-ui/tsconfig.build.json",
+      "category": "package:evolver-ui",
+      "sha256": "f597ba1de44f4c655a1bb26e9e2da427065594b4735de24199d185fd70a5236c",
+      "bytes": 292
+    },
+    {
+      "path": "packages/evolver-ui/tsconfig.json",
+      "category": "package:evolver-ui",
+      "sha256": "ae0e988fe109788d5b8a7c43a0257d92ce3e86f96e299bc0a4114e626d3896c9",
+      "bytes": 478
+    },
+    {
+      "path": "packages/evolver/package.json",
+      "category": "package:evolver",
+      "sha256": "88a98188e2da57d3c37de534b0bddde2bdc1a1f289166d7022c7bd49d3efe8eb",
+      "bytes": 527
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/dsh-headless-port.ts",
+      "category": "package:evolver",
+      "sha256": "ea70de85f0cfc9f8854dbeedb97cb621c29e96168957387546376779d574c54e",
+      "bytes": 7264
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/dsh-sdk-port.ts",
+      "category": "package:evolver",
+      "sha256": "87e8676ee542a83ed7e625b5034f82b83e7c13e82e4191e1a69323aee66ffe52",
+      "bytes": 14041
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/experiment-tools.ts",
+      "category": "package:evolver",
+      "sha256": "2e52706a6226e448e6bdab17a151d9d0729fc2f8132e639312a6607b855b3681",
+      "bytes": 17817
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/general-wiki-tools.ts",
+      "category": "package:evolver",
+      "sha256": "3217059724403c07edef9c2dd590ebf14c4eeefd0e82acc880df6122c90727bb",
+      "bytes": 7487
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/host-diagnostic.ts",
+      "category": "package:evolver",
+      "sha256": "7fb58cf4e1aea53cb8aa8ef24d65660c937fde1b87d354c4e15a848becd0bc0e",
+      "bytes": 4460
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/index.ts",
+      "category": "package:evolver",
+      "sha256": "508d4daf1ebbabd198d7bc301ea5476e65d3ade3a24b7abda3fc18497a7974c2",
+      "bytes": 22913
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/knowledge-tools.ts",
+      "category": "package:evolver",
+      "sha256": "f33488adfb5046e3be639853df0ce0bbfb44d8d47ad1f3f94dd9b729d518e0b7",
+      "bytes": 9453
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/live-extract.ts",
+      "category": "package:evolver",
+      "sha256": "db3ac9df67c01f9f61136828d2c4a25ef8485ecf3a9e5259a2098e6e10585693",
+      "bytes": 9555
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/live-probe.ts",
+      "category": "package:evolver",
+      "sha256": "b968f3ffa4ac7f1f21886002049b4d49aa88ce1dcc5636cff6a995ab025888e7",
+      "bytes": 4493
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/openai-compat-port.ts",
+      "category": "package:evolver",
+      "sha256": "3bb3dd9a1a84b54774bef3bac1025e721377e3ad8c444f5daa16297ee4e6b11c",
+      "bytes": 14238
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/paper-commands.ts",
+      "category": "package:evolver",
+      "sha256": "60b591dee02e68fa43827cf959b252a2e26a2fae853d2da938b48e4f0beb0bbc",
+      "bytes": 24412
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/paper-library-host.ts",
+      "category": "package:evolver",
+      "sha256": "af64b4f9311651169afd487e28d41ec917ff8aa58a2205d5dd5f664d365c40c9",
+      "bytes": 32951
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/phase2-host-config.ts",
+      "category": "package:evolver",
+      "sha256": "41d990cfd5b30a9e2075b2c5894ff3502f94ee44102df2d393528f7052dfab07",
+      "bytes": 5311
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/phase3-tools.ts",
+      "category": "package:evolver",
+      "sha256": "43b2400eeb881927086801baa3c0d830e655322eec3981994596db89f7477c32",
+      "bytes": 10786
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/redesign-workbench-host.ts",
+      "category": "package:evolver",
+      "sha256": "00be52e0b9bade9dea7bd6c4c2287b866abd505117b7f66719a4211a325ca891",
+      "bytes": 1681
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/repo-root.ts",
+      "category": "package:evolver",
+      "sha256": "47c88eb2e6fa8c6b1bebdccd6d37ed816f06d4c069319a2b899dffaefcef85f0",
+      "bytes": 1765
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-bootstrap-graph-tools.ts",
+      "category": "package:evolver",
+      "sha256": "429b251d4ee6665feee3bddec571b6c667c64af742e10ebd45e4f64036a4a078",
+      "bytes": 15685
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-bootstrap-host.ts",
+      "category": "package:evolver",
+      "sha256": "2be8f740ee825e2cc3ccf67017f564df96245fa0d2402e79f9e04a780b84b882",
+      "bytes": 105440
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-bootstrap-intent-tools.ts",
+      "category": "package:evolver",
+      "sha256": "4e35ca27aacbc8ba920111fa38095e5b34cc6cd833fe5250de27c127edff89cf",
+      "bytes": 25788
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-cycle-host.ts",
+      "category": "package:evolver",
+      "sha256": "6fa8397fb997b7cb4936ac6d05d06be016245870dc4aaa81a38c0a7e729e3645",
+      "bytes": 28937
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-cycle-team.ts",
+      "category": "package:evolver",
+      "sha256": "8c01a84a518c544f241b19a3c4fc5277c3376cfe047e308138df34456bc8a101",
+      "bytes": 16576
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-cycle-tools.ts",
+      "category": "package:evolver",
+      "sha256": "d5c6bc65f5ccb51a8e1021f4552b7a470ce439f980600bfc33d3e557548ab368",
+      "bytes": 11854
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-skill-entries.ts",
+      "category": "package:evolver",
+      "sha256": "809bca09b0a70d177012abf91cb31c63c5951909ba8d1c7fa4151e23a8b585c7",
+      "bytes": 2581
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-takeover-tools.ts",
+      "category": "package:evolver",
+      "sha256": "de015ceb7f77e5756d4b4739bb6e456e757ed0ed8304dccdb9c999078470d4e7",
+      "bytes": 27531
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-tools.ts",
+      "category": "package:evolver",
+      "sha256": "72950e7e08ed810ff3fc0fa861de4cbecb9bf1c3f4c45e87a44aa6e889cbd108",
+      "bytes": 13120
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/research-workspace-events.ts",
+      "category": "package:evolver",
+      "sha256": "b57f093639d1060b066234d3e9b238000e14331a61a6130e55cf0381d4003779",
+      "bytes": 7760
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/team-research-provider.ts",
+      "category": "package:evolver",
+      "sha256": "3a3ff60d64eb8edcf9ad0b8e84cf8a762b291c29e35116be976e83d767c7dc6f",
+      "bytes": 7405
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/team-research-routing.ts",
+      "category": "package:evolver",
+      "sha256": "997bdca8e441548369fedc97fcfe96df93cd4d93607610c919c0bdd68c521743",
+      "bytes": 6743
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/team-research-runtime.ts",
+      "category": "package:evolver",
+      "sha256": "ca412dd5bf56cef8236492c62d8a4fefcce9586cf37161248cd159fdd32136ba",
+      "bytes": 19000
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/team-research-tools.ts",
+      "category": "package:evolver",
+      "sha256": "836743719039e8e63f3e157c5d73e7f74986d6a439939de171fb8c6435d068de",
+      "bytes": 4404
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/workbench-diagram-publication.ts",
+      "category": "package:evolver",
+      "sha256": "27524c7ae63b090d2c8685942328be487732ecf2e0de91a1373a831ae2cffeb6",
+      "bytes": 78356
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/workbench-host.ts",
+      "category": "package:evolver",
+      "sha256": "4bfd556575d05c059ff0e5572ad0a32d2d698e4856ea67f18548e3b19c2940cd",
+      "bytes": 34261
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/workbench-metrics.ts",
+      "category": "package:evolver",
+      "sha256": "634b4f9bdca7bf3806746bcd3070221830a951b749604309fce48afa347da2b5",
+      "bytes": 7675
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/workbench-projection.ts",
+      "category": "package:evolver",
+      "sha256": "e922d7ddd34537a7dacc5eb2f0f1af1ec90e21949ff5720f4a2536db28de8bb5",
+      "bytes": 82329
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/workbench-research-projection.ts",
+      "category": "package:evolver",
+      "sha256": "91fc1e67348a52a4c37b8941e4a4975ede9c2962f2c463eb54e6699759c29eef",
+      "bytes": 65316
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/workbench-scope.ts",
+      "category": "package:evolver",
+      "sha256": "4ac53cbae33123b2fcaec82d06565f2af65f2366b55e1775fea78cb4cedba6c9",
+      "bytes": 15784
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/workbench-store-access.ts",
+      "category": "package:evolver",
+      "sha256": "047d49dfe25b2313b89184219f58527bc0ad5cfeb525efed2ed0e820ab211edd",
+      "bytes": 8115
+    },
+    {
+      "path": "packages/evolver/src/adapters/dsh/workbench-tools.ts",
+      "category": "package:evolver",
+      "sha256": "d03f03cb9575455d2004ca5f09cfa2ffb12025ed6f848a535d75dc34afaee32f",
+      "bytes": 48662
+    },
+    {
+      "path": "packages/evolver/src/application/campaign-orchestrator.ts",
+      "category": "package:evolver",
+      "sha256": "7d9600bffc8817ebeb559f1d3af64c8600454e2041ed8854c2f83e55508dbfa3",
+      "bytes": 5418
+    },
+    {
+      "path": "packages/evolver/src/application/experiment-service.ts",
+      "category": "package:evolver",
+      "sha256": "ac00372f9b759fc50a8a773c24449f9f63b39a640837bfffb8b9a73121ee46dd",
+      "bytes": 161159
+    },
+    {
+      "path": "packages/evolver/src/application/external-result-service.ts",
+      "category": "package:evolver",
+      "sha256": "8cab8f868be05fce10e5df6476a200ecc10f9908e2ca4ee76453677afcff336c",
+      "bytes": 40531
+    },
+    {
+      "path": "packages/evolver/src/application/general-analysis-service.ts",
+      "category": "package:evolver",
+      "sha256": "462f98b23936df73b76a19cec97d6a4828719035679f014d92ffb21da4c81590",
+      "bytes": 29388
+    },
+    {
+      "path": "packages/evolver/src/application/general-cycle-context.ts",
+      "category": "package:evolver",
+      "sha256": "34d902b2b53d664f4381f9fda04612be1b038e902a5a39bea716f7a6e7f4208d",
+      "bytes": 4150
+    },
+    {
+      "path": "packages/evolver/src/application/general-data-service.ts",
+      "category": "package:evolver",
+      "sha256": "13676bbf0850be4d6763196847ccbdf16b27a18c7ad0f06c7bd60d35fadfa02e",
+      "bytes": 14796
+    },
+    {
+      "path": "packages/evolver/src/application/general-descriptive.ts",
+      "category": "package:evolver",
+      "sha256": "b4d67fb47bddc839275c6b91f8f13ade8e4b4415fcf7cb5f9c9a2a2185e81220",
+      "bytes": 10953
+    },
+    {
+      "path": "packages/evolver/src/application/general-edit-history.ts",
+      "category": "package:evolver",
+      "sha256": "5042038b8cb8d66d9cfa74ab39c141fcdecb1c863163a3735dec8c789c7778da",
+      "bytes": 3865
+    },
+    {
+      "path": "packages/evolver/src/application/general-evidence-service.ts",
+      "category": "package:evolver",
+      "sha256": "79845a2abda7161104bab8739a76c0a3fae2bea10a97bada38172ca5dfa7d448",
+      "bytes": 17935
+    },
+    {
+      "path": "packages/evolver/src/application/general-followup-service.ts",
+      "category": "package:evolver",
+      "sha256": "e30929d481ebbf478162d6f2aa942c96b770af19fcc459cd101417fded25bc95",
+      "bytes": 11742
+    },
+    {
+      "path": "packages/evolver/src/application/general-graph-context.ts",
+      "category": "package:evolver",
+      "sha256": "dbf14721df67a4508475a6c8d3b751859eeb12000849150897705abc5fe4d09c",
+      "bytes": 1811
+    },
+    {
+      "path": "packages/evolver/src/application/general-inference-service.ts",
+      "category": "package:evolver",
+      "sha256": "30ee3ec3e1954c4535ab3e342c39fc6dd92dacd61687b9f2c139070801a50499",
+      "bytes": 17772
+    },
+    {
+      "path": "packages/evolver/src/application/general-inference.ts",
+      "category": "package:evolver",
+      "sha256": "3130e1068985c9d2664a58671ae765b168f6ac547e129a47baea55ceb7289f32",
+      "bytes": 6693
+    },
+    {
+      "path": "packages/evolver/src/application/general-knowledge-service.ts",
+      "category": "package:evolver",
+      "sha256": "490bc918e5aeb33ce2e9c2b6d1f99051a87a992fabfb69b0026d345e82734ec2",
+      "bytes": 13662
+    },
+    {
+      "path": "packages/evolver/src/application/general-material-parser.ts",
+      "category": "package:evolver",
+      "sha256": "99830977354d8c28e00bf72840dabd7dff017244a2feb83362140231eebafbf2",
+      "bytes": 7463
+    },
+    {
+      "path": "packages/evolver/src/application/general-material-store.ts",
+      "category": "package:evolver",
+      "sha256": "358e8f54d400b0483161624a667c049f148d3392ed9a43d9ef8bd3d39be5a805",
+      "bytes": 8724
+    },
+    {
+      "path": "packages/evolver/src/application/general-metric-service.ts",
+      "category": "package:evolver",
+      "sha256": "5afddf84aca09585e0a6bc552c864afc9eb9794023f18e7abdfc22f87208212c",
+      "bytes": 20613
+    },
+    {
+      "path": "packages/evolver/src/application/general-package-service.ts",
+      "category": "package:evolver",
+      "sha256": "6e637d755fe0e5c8c727649cc5fbc831d1364ed63fc0686c08e1e9344c38ade4",
+      "bytes": 29685
+    },
+    {
+      "path": "packages/evolver/src/application/general-report-service.ts",
+      "category": "package:evolver",
+      "sha256": "4ffe3a7e392572388c31dc953ce28ca02e593cc3c96d5935c730f7d7a7ed16fa",
+      "bytes": 25450
+    },
+    {
+      "path": "packages/evolver/src/application/general-research-service.ts",
+      "category": "package:evolver",
+      "sha256": "2be88893cfd7ccb8fce5f251b023618f848a1767636e744759728ac700851b88",
+      "bytes": 6046
+    },
+    {
+      "path": "packages/evolver/src/application/general-schedule-context.ts",
+      "category": "package:evolver",
+      "sha256": "0ba0e6b3fac71c0e102270b23995feffd33fbad340d3a688ff835cefdc9bcac7",
+      "bytes": 867
+    },
+    {
+      "path": "packages/evolver/src/application/general-schedule-service.ts",
+      "category": "package:evolver",
+      "sha256": "1c2579c8413fc9fd0aff6ede0a347869a190c0ebff0899c790fdf687f701d768",
+      "bytes": 16338
+    },
+    {
+      "path": "packages/evolver/src/application/general-source-access.ts",
+      "category": "package:evolver",
+      "sha256": "0a042dcb1062368962e7d7bcefed988cf6dc63ca1483950ecec807979f0e8773",
+      "bytes": 1152
+    },
+    {
+      "path": "packages/evolver/src/application/general-wiki-service.ts",
+      "category": "package:evolver",
+      "sha256": "2d857f5c7b5f102116db5702b7a7ae38a340fdaaf6d0abdc66877c79e7c13a91",
+      "bytes": 27771
+    },
+    {
+      "path": "packages/evolver/src/application/general-workflow-service.ts",
+      "category": "package:evolver",
+      "sha256": "d62e9edb0a11f382e3fd46489ad385e09cafa1b9328a714da1f813dafa6f0a10",
+      "bytes": 24771
+    },
+    {
+      "path": "packages/evolver/src/application/index.ts",
+      "category": "package:evolver",
+      "sha256": "e56a6667e19645f3f1784ce3f750bfaac5fd4a0b4b9c8007f3e055754b5762e7",
+      "bytes": 6920
+    },
+    {
+      "path": "packages/evolver/src/application/knowledge-service.ts",
+      "category": "package:evolver",
+      "sha256": "deec1fdd349b1353f5cbd7cbca2c498adc877d364a1716c9f2e72042ca958d2c",
+      "bytes": 55762
+    },
+    {
+      "path": "packages/evolver/src/application/paper-command-runs.ts",
+      "category": "package:evolver",
+      "sha256": "5898328cc66e1fa21422afee783c2f83ecfc7bdef386ac95bb92f60c512d4327",
+      "bytes": 23560
+    },
+    {
+      "path": "packages/evolver/src/application/paper-library.ts",
+      "category": "package:evolver",
+      "sha256": "fa67521bd71d837f8992bd14e589cb3b41c72dbc5c3ecb6241cf05e5170184f8",
+      "bytes": 20038
+    },
+    {
+      "path": "packages/evolver/src/application/paper-source-request.ts",
+      "category": "package:evolver",
+      "sha256": "28a7e2169fdf54dda3efac08021a196e082de46a0dac1876fd4e49746cb20e5c",
+      "bytes": 11430
+    },
+    {
+      "path": "packages/evolver/src/application/phase3-service.ts",
+      "category": "package:evolver",
+      "sha256": "8e81499ce1e34c1e73315460ed81b70c4f7d55a21e7e9c8bc86eb071e494a452",
+      "bytes": 75365
+    },
+    {
+      "path": "packages/evolver/src/application/research-asset-service.ts",
+      "category": "package:evolver",
+      "sha256": "28fb26f4b052b2ed22921a22d2c1dff8d022e291953ae6698533a2d64efa84b1",
+      "bytes": 28382
+    },
+    {
+      "path": "packages/evolver/src/application/research-bootstrap-environment.ts",
+      "category": "package:evolver",
+      "sha256": "2e2500fb07e35e470931b606310749f308239e26708d7df2e32ec036e3492736",
+      "bytes": 17741
+    },
+    {
+      "path": "packages/evolver/src/application/research-bootstrap-graph-service.ts",
+      "category": "package:evolver",
+      "sha256": "3019aab1a37a4d19f26a50cdcb2f0a76ff072a8d02c3c84aceb399980ec81802",
+      "bytes": 49970
+    },
+    {
+      "path": "packages/evolver/src/application/research-bootstrap-intent-service.ts",
+      "category": "package:evolver",
+      "sha256": "498ddfcdaac170e7b23b66ea4d74b1ff5b05087d834e810d17099dfcb66ffbac",
+      "bytes": 49551
+    },
+    {
+      "path": "packages/evolver/src/application/research-bootstrap-store.ts",
+      "category": "package:evolver",
+      "sha256": "112ac9d40f1ecb87e71302161cfaf1b3fc2e2bc948a1cf71f3f779d7ef6c62c7",
+      "bytes": 16699
+    },
+    {
+      "path": "packages/evolver/src/application/research-budget.ts",
+      "category": "package:evolver",
+      "sha256": "709671d1ed8ace37142bc132f1c5dfd7deb0b1a735a7132b445d2a7fefdc2c9c",
+      "bytes": 37130
+    },
+    {
+      "path": "packages/evolver/src/application/research-context-reader.ts",
+      "category": "package:evolver",
+      "sha256": "8fa2e9ce097069b02868cb8983092718198400dd9b8cab676b6d154609c62098",
+      "bytes": 3951
+    },
+    {
+      "path": "packages/evolver/src/application/research-cycle-graph.ts",
+      "category": "package:evolver",
+      "sha256": "1be2fc859c533ce66750a3f9e70bdfe7db75b4889ce629bc0b0589ae2957d742",
+      "bytes": 9279
+    },
+    {
+      "path": "packages/evolver/src/application/research-cycle-roles.ts",
+      "category": "package:evolver",
+      "sha256": "179c4f26b50f1fd661d55373f8ef3f481b059b4a8dd1f611bc642d652cc54c7e",
+      "bytes": 15375
+    },
+    {
+      "path": "packages/evolver/src/application/research-cycle-service.ts",
+      "category": "package:evolver",
+      "sha256": "2978ad01d0ec2ce20c9d8a2e7680bba5b9162bc82aea3f7c4f8ccf73475b9039",
+      "bytes": 99947
+    },
+    {
+      "path": "packages/evolver/src/application/research-cycle-store.ts",
+      "category": "package:evolver",
+      "sha256": "a28afb0c6e6119313a911376735dadcd0e8740bb1586ae9f7587787c4958e577",
+      "bytes": 14473
+    },
+    {
+      "path": "packages/evolver/src/application/research-experiment-plan-service.ts",
+      "category": "package:evolver",
+      "sha256": "a7509492a3fcb4bbb99e8e87e99f8e5624a9565465075f08d44e2f27c05e539f",
+      "bytes": 14278
+    },
+    {
+      "path": "packages/evolver/src/application/research-generation-context.ts",
+      "category": "package:evolver",
+      "sha256": "cc8d1a0a6db3ddda3e7fe9348c88bc7d884d1d1efde5aee6406a7fc8dfda04a6",
+      "bytes": 6611
+    },
+    {
+      "path": "packages/evolver/src/application/research-loop-service.ts",
+      "category": "package:evolver",
+      "sha256": "5fa0d62842446681adea82bc517aade3456df79f3c253b9914db75868849f070",
+      "bytes": 27111
+    },
+    {
+      "path": "packages/evolver/src/application/research-observation-assets.ts",
+      "category": "package:evolver",
+      "sha256": "0909b78eebf4e937baf1cb223164fc6508afa13580fcae1b2bf3e42e9c1130ed",
+      "bytes": 2255
+    },
+    {
+      "path": "packages/evolver/src/application/research-observation-reader.ts",
+      "category": "package:evolver",
+      "sha256": "e1177c6715b1ac33f50aaf04ba03b51c17deb0312f51d296be3f2b1b314b02d6",
+      "bytes": 4129
+    },
+    {
+      "path": "packages/evolver/src/application/research-phase3-execution.ts",
+      "category": "package:evolver",
+      "sha256": "15500e5936036aa53520110d2cd746e94b57c7bd07225a2cc0c2c79ac8076152",
+      "bytes": 7911
+    },
+    {
+      "path": "packages/evolver/src/application/research-query-service.ts",
+      "category": "package:evolver",
+      "sha256": "6ae4800d7c01a1bfc64eb07f4cde1048588d151fdfa89613beb9cbb681f39559",
+      "bytes": 8129
+    },
+    {
+      "path": "packages/evolver/src/application/research-result-manifest.ts",
+      "category": "package:evolver",
+      "sha256": "a7cd74897e9a8714189071e0aeeb0f05978a9e5dd6cd95a3319f9f2bc2956293",
+      "bytes": 5897
+    },
+    {
+      "path": "packages/evolver/src/application/research-service.ts",
+      "category": "package:evolver",
+      "sha256": "6eb569efbcfef8a65885462ac68d3f74a18a42183c22490ee5cf3b5327c9f07b",
+      "bytes": 49527
+    },
+    {
+      "path": "packages/evolver/src/application/research-workspace.ts",
+      "category": "package:evolver",
+      "sha256": "b5ee31308846336b9b1d13a474d739f8882615afb54d538d2a3f13a0887cea7a",
+      "bytes": 8437
+    },
+    {
+      "path": "packages/evolver/src/application/research-writeback-service.ts",
+      "category": "package:evolver",
+      "sha256": "31bd5b673311eeb2a968f7b37742c73a919ac7642b7c090734edbfc3a1a64c4d",
+      "bytes": 14227
+    },
+    {
+      "path": "packages/evolver/src/application/search-feedback-orchestration.ts",
+      "category": "package:evolver",
+      "sha256": "117d1079b069b541544b268d698e625352d14161234bf81787c47aaf4014063c",
+      "bytes": 15911
+    },
+    {
+      "path": "packages/evolver/src/application/search-partial-report.ts",
+      "category": "package:evolver",
+      "sha256": "61b7495baf56448b8de90a34f7f4791a9237f81ddcfb0cd885abe6e3ad7c1bcf",
+      "bytes": 5332
+    },
+    {
+      "path": "packages/evolver/src/application/search-state-store.ts",
+      "category": "package:evolver",
+      "sha256": "181c98c9bc9b35fb878775ac50bee89832a34f3faaa0e0fe4f9f30d6b826a4a5",
+      "bytes": 56938
+    },
+    {
+      "path": "packages/evolver/src/application/search-strategy-policy.ts",
+      "category": "package:evolver",
+      "sha256": "ac2f348a83e2da0f1e3f4be274e403fd123f2840176bc13585bcc9bdb7d5cec1",
+      "bytes": 20211
+    },
+    {
+      "path": "packages/evolver/src/application/takeover-adoption.ts",
+      "category": "package:evolver",
+      "sha256": "11b22b28dfffea26408513fe18f5c7e3da49f0ebd25307a9dac711c448e2e021",
+      "bytes": 34216
+    },
+    {
+      "path": "packages/evolver/src/application/takeover-scanner.ts",
+      "category": "package:evolver",
+      "sha256": "d44e19f1f42e43683e91c7361f8970959f036b622db66f383678e8a62911dfae",
+      "bytes": 26685
+    },
+    {
+      "path": "packages/evolver/src/application/takeover-service.ts",
+      "category": "package:evolver",
+      "sha256": "21675e049ea4207647464294bba20edc9c75b9e2e65ea087025de8c7c093d7b1",
+      "bytes": 21107
+    },
+    {
+      "path": "packages/evolver/src/application/team-model-budget.ts",
+      "category": "package:evolver",
+      "sha256": "9dd22043bcc80ff573bbbaec1c2ed0bca1b583f2d48711b0b935c62403c672ad",
+      "bytes": 4306
+    },
+    {
+      "path": "packages/evolver/src/application/team-research-service.ts",
+      "category": "package:evolver",
+      "sha256": "96300d3e352f19277485c0720afa022d5e7ed63abf6d20b282f5c158b9684e18",
+      "bytes": 48345
+    },
+    {
+      "path": "packages/evolver/src/application/workbench-publication-coordinator.ts",
+      "category": "package:evolver",
+      "sha256": "74019fa738b6a3212dc073c75194df73396b1066532ac7ccedec59e60d857a97",
+      "bytes": 28923
+    },
+    {
+      "path": "packages/evolver/src/application/workbench-research-service.ts",
+      "category": "package:evolver",
+      "sha256": "bc41a84a7603e87f3caf953bc18d4352cf5ab210ebfdb38fc911ed57e8213c1f",
+      "bytes": 72731
+    },
+    {
+      "path": "packages/evolver/src/contracts/acceptance-evidence.ts",
+      "category": "package:evolver",
+      "sha256": "5170773ebf65c6130a0f8a53f91b46743813b87fc7bf5216e947a5a4c59cb0f9",
+      "bytes": 35293
+    },
+    {
+      "path": "packages/evolver/src/contracts/experiments.ts",
+      "category": "package:evolver",
+      "sha256": "15fcaeb561f467eeb4b820c22e0b8e89cd03ab246243920ce250ac8ea473814f",
+      "bytes": 52515
+    },
+    {
+      "path": "packages/evolver/src/contracts/external-result-locator.ts",
+      "category": "package:evolver",
+      "sha256": "7468c405a6ca6595e9d40a03d865b2f8370a5c73908d49cfb0d80122d9d741db",
+      "bytes": 1024
+    },
+    {
+      "path": "packages/evolver/src/contracts/external-result.ts",
+      "category": "package:evolver",
+      "sha256": "002b2628d9b00a46cb360266db57ae0db6fda7e433fd0cac99b7752edaec7245",
+      "bytes": 6881
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-analysis.ts",
+      "category": "package:evolver",
+      "sha256": "f3f283b79e19e6f55a7af0f6f6d0bc6c039fc6a3b83e2c28701b4a999f777881",
+      "bytes": 20119
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-cycle.ts",
+      "category": "package:evolver",
+      "sha256": "303572b18b885e30807afe4378b1e09e8a60b01cfb8532f2cc49eb0ce86f3a9b",
+      "bytes": 5273
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-data.ts",
+      "category": "package:evolver",
+      "sha256": "ec6df7d8c0cb6511a28189341bd85f0a1c758b207eba3cc8b59b302ea23c514d",
+      "bytes": 11512
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-evidence.ts",
+      "category": "package:evolver",
+      "sha256": "d4a72a0e0476a2f840e2c59f6411c53e168abba4b96edb7df986d274d48250a3",
+      "bytes": 7285
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-import.ts",
+      "category": "package:evolver",
+      "sha256": "ac482b860351ed43faab50af2e8945c2b4fa90b0fcf6e9ca3e6b34aaa84ac04f",
+      "bytes": 3039
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-inference-records.ts",
+      "category": "package:evolver",
+      "sha256": "45cc9430b5286761479677f9c94cf9f8203e969bbf831021eb585c50dc561f89",
+      "bytes": 5886
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-inference.ts",
+      "category": "package:evolver",
+      "sha256": "5826a289e1d546e8a377d81ed32c0335141dec401659be9ea8a10b130040eaa3",
+      "bytes": 3408
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-knowledge.ts",
+      "category": "package:evolver",
+      "sha256": "eb7c5343656c9bb646f8d40fb68ae17feaa60393fd9026e57e1d6d5db8881f4f",
+      "bytes": 7669
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-metrics.ts",
+      "category": "package:evolver",
+      "sha256": "d7e3dcb119fc6d285b487a428fb379af308b974794268563901b18500741785e",
+      "bytes": 13988
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-report-html.ts",
+      "category": "package:evolver",
+      "sha256": "14562d2f21688865c10acde859226b3ad7d3a2ee8e58a09e9ed46b9009edd45f",
+      "bytes": 3814
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-report.ts",
+      "category": "package:evolver",
+      "sha256": "155cab9e5e172a549acc08cb5d851bb9b31b3cfdb03d4167b1349ef2fb296813",
+      "bytes": 21351
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-research.ts",
+      "category": "package:evolver",
+      "sha256": "1889add7c5c611e93112d16924e58f7a15e9adece3e1912510db37d42099bfb0",
+      "bytes": 38576
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-schedule.ts",
+      "category": "package:evolver",
+      "sha256": "9ef871b1c5f1ec6721f6ff6190168948b83f84e0c3daa85bd0a4313a90f9570d",
+      "bytes": 3567
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-wiki.ts",
+      "category": "package:evolver",
+      "sha256": "36ceffcd1c38f8c0c5704123f12a9ce3897f2afaf339d217c6cb5da67f045e91",
+      "bytes": 4562
+    },
+    {
+      "path": "packages/evolver/src/contracts/general-workflow.ts",
+      "category": "package:evolver",
+      "sha256": "f9fb3051cb75b0550cd12f7bc1e14fa77773754c0a4300efc78c75efa392c04e",
+      "bytes": 15775
+    },
+    {
+      "path": "packages/evolver/src/contracts/index.ts",
+      "category": "package:evolver",
+      "sha256": "2f5e15941662dedf036b48b2a59d4ca360e94f87e959f097da689670a335a415",
+      "bytes": 8391
+    },
+    {
+      "path": "packages/evolver/src/contracts/knowledge.ts",
+      "category": "package:evolver",
+      "sha256": "fd04b8eb308daa457e4a18e9f90f7d948f1414dce7ab0ac4e15afc12b1f5c286",
+      "bytes": 14426
+    },
+    {
+      "path": "packages/evolver/src/contracts/paper-library.ts",
+      "category": "package:evolver",
+      "sha256": "6d339cf68518ccd6a7397537fdbeb170cf8cc2cc3f3f042cbc698a0fd882b02e",
+      "bytes": 504
+    },
+    {
+      "path": "packages/evolver/src/contracts/phase3.ts",
+      "category": "package:evolver",
+      "sha256": "09484c252a905e5d6c10b4b5a2b7303d071241ab331c92823f0842d629b80343",
+      "bytes": 24963
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-asset-links.ts",
+      "category": "package:evolver",
+      "sha256": "42f0868df8454dc433a703e227ca00a01bd6e9a37b9b1552033764a5eb924215",
+      "bytes": 7619
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-assets.ts",
+      "category": "package:evolver",
+      "sha256": "84df101db97e3062d698b9b0003ac358fbef2721de5a9fd555ac46c7ca45fe1b",
+      "bytes": 9305
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-bootstrap.ts",
+      "category": "package:evolver",
+      "sha256": "444b72e2e9430be2b8c1d21e9fcf246581c9cfd2fc0c23fe159f9c89b24e28dd",
+      "bytes": 58810
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-command.ts",
+      "category": "package:evolver",
+      "sha256": "d0b4c84e9d3c86c03ef0372f7ef31490910d21e454b75cbebeb23766af3bb172",
+      "bytes": 1945
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-cycle.ts",
+      "category": "package:evolver",
+      "sha256": "442f5d35ae2cefdb2a77d7dbe00366190955b319daf9a4d37f3630d3daab5216",
+      "bytes": 49784
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-handoff.ts",
+      "category": "package:evolver",
+      "sha256": "9aef5f29eb28199aa3f6abe3ae31925e017555bf21fb062ad9b0a13aafdf44c2",
+      "bytes": 2429
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-observation.ts",
+      "category": "package:evolver",
+      "sha256": "0a35560aa808027467bd467f0fe70a18936d242428a4b4102027309ad7fc1322",
+      "bytes": 4755
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-review.ts",
+      "category": "package:evolver",
+      "sha256": "24c1131320afe8c8f86420a43a03dacf28fd9e691224587fea4363759b37b0ea",
+      "bytes": 1975
+    },
+    {
+      "path": "packages/evolver/src/contracts/research-takeover.ts",
+      "category": "package:evolver",
+      "sha256": "53aa730c7705f405f54f3ea99dae8b23028590d5f1bf1dd203a37891d1ffc601",
+      "bytes": 39124
+    },
+    {
+      "path": "packages/evolver/src/contracts/research.ts",
+      "category": "package:evolver",
+      "sha256": "8ed4f0ff7f5541aabf090c0ebcc7f51e6574fc55e4e36cfd2385f3c2e6f7741c",
+      "bytes": 74417
+    },
+    {
+      "path": "packages/evolver/src/contracts/search-feedback.ts",
+      "category": "package:evolver",
+      "sha256": "55bcb4254eb6aadf95009f1b6748e0808d958d21a43158623f82e9493debfd87",
+      "bytes": 27713
+    },
+    {
+      "path": "packages/evolver/src/contracts/search.ts",
+      "category": "package:evolver",
+      "sha256": "bf1882c2d833eb9e42698c2c564c7b97f693196a994a009f5b1a84cb796b9d31",
+      "bytes": 33269
+    },
+    {
+      "path": "packages/evolver/src/contracts/team-research.ts",
+      "category": "package:evolver",
+      "sha256": "03b044e95c54b7ac30142e0f167d0e7919625526663dbfa03dfe2c96432a7b5e",
+      "bytes": 7296
+    },
+    {
+      "path": "packages/evolver/src/contracts/workbench.ts",
+      "category": "package:evolver",
+      "sha256": "ab158748d8a0ffda8bcc4b72e83c76208426a7a77fa397c1d3212b584721ad9a",
+      "bytes": 47091
+    },
+    {
+      "path": "packages/evolver/src/domain/adaptation-plan.ts",
+      "category": "package:evolver",
+      "sha256": "e799c5c909ef78fa72a1f3a8bbe74c46859bf2fc787f5f53935a0564fde5983a",
+      "bytes": 18920
+    },
+    {
+      "path": "packages/evolver/src/domain/check-report.ts",
+      "category": "package:evolver",
+      "sha256": "b7c53e5e47e16c6b70af18c856af367edbbd5da24f55cbcd3404062c29cba33c",
+      "bytes": 7917
+    },
+    {
+      "path": "packages/evolver/src/domain/host-verifier.ts",
+      "category": "package:evolver",
+      "sha256": "ad40b689224fa1877561504aeb283d2f43330ad8542ffe5c202db02ca66708fe",
+      "bytes": 7664
+    },
+    {
+      "path": "packages/evolver/src/domain/index.ts",
+      "category": "package:evolver",
+      "sha256": "092f1d40c4754085ace543549fd599f354a6e10b882022bbf1fe0c42e9223833",
+      "bytes": 9071
+    },
+    {
+      "path": "packages/evolver/src/domain/knowledge.ts",
+      "category": "package:evolver",
+      "sha256": "73ff1a9a94162060005a4d76c53344db7a3e786fbcce855e37050c1d253fa925",
+      "bytes": 6192
+    },
+    {
+      "path": "packages/evolver/src/domain/lightweight-runner.ts",
+      "category": "package:evolver",
+      "sha256": "b24137346ed6bfa723fc6077e0433547f80cf6a946b77814f783296af52bccb4",
+      "bytes": 23994
+    },
+    {
+      "path": "packages/evolver/src/domain/mechanism-checks.ts",
+      "category": "package:evolver",
+      "sha256": "7ee8797ea8faeab2c0a86f930e29f3a105443e6dd9a47d2d66b70d4edb5da7e7",
+      "bytes": 91370
+    },
+    {
+      "path": "packages/evolver/src/domain/model-dataflow.ts",
+      "category": "package:evolver",
+      "sha256": "852ac7140517100fa8c4e3040a15ee7096f8cfdf138d86a25d57016ddd9ff386",
+      "bytes": 25275
+    },
+    {
+      "path": "packages/evolver/src/domain/module-registry.ts",
+      "category": "package:evolver",
+      "sha256": "b788f352dda6bb9b7cd29cccdd8a888da4824d2d5201326bf38d29cdcaca9e83",
+      "bytes": 9777
+    },
+    {
+      "path": "packages/evolver/src/domain/paper-discovery.ts",
+      "category": "package:evolver",
+      "sha256": "0187b249f801ab3fcf759a89ddd8e922e8b22b86e183c3134b572243ba486220",
+      "bytes": 42175
+    },
+    {
+      "path": "packages/evolver/src/domain/patch-workspace.ts",
+      "category": "package:evolver",
+      "sha256": "3841997ef23db506d93d03a27575fe64e32ff3737c4cd394fa34f4a107732485",
+      "bytes": 51357
+    },
+    {
+      "path": "packages/evolver/src/domain/proposal-ranking.ts",
+      "category": "package:evolver",
+      "sha256": "82ca5a0db6dd668f080ec980d8e85a9dc2648af855ffb2addadf7c22eb0d7bd6",
+      "bytes": 26199
+    },
+    {
+      "path": "packages/evolver/src/domain/recipe-builder.ts",
+      "category": "package:evolver",
+      "sha256": "6ddfe32c79d8f6a74448f5538d3699d980329e54014fb5bdbdd7843a902e38ff",
+      "bytes": 4281
+    },
+    {
+      "path": "packages/evolver/src/domain/research-candidate-resolver.ts",
+      "category": "package:evolver",
+      "sha256": "8622908fc886d694ccf653f7b0890cd91a9949972529ffd39d749b14454a9482",
+      "bytes": 10264
+    },
+    {
+      "path": "packages/evolver/src/domain/research-canonical.ts",
+      "category": "package:evolver",
+      "sha256": "8686f27ab3f4cd6dbc21890fdfaf4c8587b9040159d265e3abad27a268652785",
+      "bytes": 13788
+    },
+    {
+      "path": "packages/evolver/src/domain/research-metric-comparison.ts",
+      "category": "package:evolver",
+      "sha256": "8aeb87399351716eb11ba689be6a0e32c1237be368e4efca47dff9ef2275699f",
+      "bytes": 2534
+    },
+    {
+      "path": "packages/evolver/src/domain/research-synthesis.ts",
+      "category": "package:evolver",
+      "sha256": "c6a12c134e09073a47f9229854dfc721f6415779ec689d44c2a3ec8f101cb445",
+      "bytes": 27583
+    },
+    {
+      "path": "packages/evolver/src/domain/task-adapter.ts",
+      "category": "package:evolver",
+      "sha256": "b66b6ccb1f12ceede6bbb1a44097f0f1c247f59b1b2ddbf57116a246bd0a3427",
+      "bytes": 9467
+    },
+    {
+      "path": "packages/evolver/src/domain/task-profile.ts",
+      "category": "package:evolver",
+      "sha256": "7285263c1016869fcf11ba8d6423f40ad6a077eecf1827bee316a7e014affc90",
+      "bytes": 88704
+    },
+    {
+      "path": "packages/evolver/src/domain/workbench-research.ts",
+      "category": "package:evolver",
+      "sha256": "f912a756ba9a561b6449ef3b63b9cf0c58542779538e3c6cf49dc01491482a8a",
+      "bytes": 17808
+    },
+    {
+      "path": "packages/evolver/src/index.ts",
+      "category": "package:evolver",
+      "sha256": "8bb9734edc5bc0479309eda760da817e8d0c9aba7b928b67864aa3de61deb1e8",
+      "bytes": 268
+    },
+    {
+      "path": "packages/evolver/src/research-redesign-dsh.ts",
+      "category": "package:evolver",
+      "sha256": "67b65f983535a3f2bdd7dae80509d405a3401db500dcfab45fb73b70ff6bd8e9",
+      "bytes": 306
+    },
+    {
+      "path": "packages/evolver/src/research-redesign.ts",
+      "category": "package:evolver",
+      "sha256": "40a19631b1f8f257088f956f0cfeebda69b60ae30e94375e6909642b50e401be",
+      "bytes": 1735
+    },
+    {
+      "path": "packages/evolver/tsconfig.probe.json",
+      "category": "package:evolver",
+      "sha256": "017e317889dd749534244996a7644e223c5133f97d58522ab2d7898fef8bba90",
+      "bytes": 1666
+    },
+    {
+      "path": "packages/evolver/tsconfig.typecheck.json",
+      "category": "package:evolver",
+      "sha256": "ed52a200cf0b6691a7a02b1ca346a8e39784eb56e5276b9257638c5295ac99fd",
+      "bytes": 1352
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "category": "root-manifest",
+      "sha256": "477e6c5f8b033a1ecb7f8919ad2726e4328c7893c4ad6228d62471425b22dbe7",
+      "bytes": 27
+    },
+    {
+      "path": "protocols/research-synthesis-v2.public.json",
+      "category": "protocol",
+      "sha256": "69d04fa4fafffcde02df51a3574fad029fb37fa622d8fd3649fc786bf4f011ac",
+      "bytes": 21756
+    },
+    {
+      "path": "scripts/build-client-check.ts",
+      "category": "script",
+      "sha256": "80e676cb5089e699b00d7d5d93d4b4f004e426eef974c6b26008249193fcfa4f",
+      "bytes": 11972
+    },
+    {
+      "path": "scripts/build-node-half.mjs",
+      "category": "script",
+      "sha256": "abd6decf4fac9729b639472d3b9aca7b52e5b306f4dff4a4e064375f55b0b908",
+      "bytes": 2034
+    },
+    {
+      "path": "scripts/build-report-offline-runtime.ts",
+      "category": "script",
+      "sha256": "8f80e0ad901fcb3536177019012fcdf535af3639dd292b353b0b616c209f098b",
+      "bytes": 3254
+    },
+    {
+      "path": "scripts/release/copy-release-tree.mjs",
+      "category": "script",
+      "sha256": "6cb55092139cc319ca97094a0fe70feea7e3e502fc3575ed718ff48c06bcb659",
+      "bytes": 3900
+    },
+    {
+      "path": "scripts/release/evidence-binding.mjs",
+      "category": "script",
+      "sha256": "2aa390dbcc12de97af320045451c74c1327920fc8fe46c3753abd69688a411f5",
+      "bytes": 1508
+    },
+    {
+      "path": "scripts/release/export-verified-tree.mjs",
+      "category": "script",
+      "sha256": "c8eda75ec23bf697ee852b6175328619f62011d35ab8d771a82281cede4cd181",
+      "bytes": 1451
+    },
+    {
+      "path": "scripts/release/install-profile.mjs",
+      "category": "script",
+      "sha256": "bb6c02be4e02d3eaccbce135d945af8fb51c2e335a14a0a22e4a81a75c2da698",
+      "bytes": 11440
+    },
+    {
+      "path": "scripts/release/install-tools.mjs",
+      "category": "script",
+      "sha256": "167b4794bf7f7c9f4ab3ad4df8516e899490356b20f8ba8eedb6845852fb8414",
+      "bytes": 2501
+    },
+    {
+      "path": "scripts/release/link-host-modules.mjs",
+      "category": "script",
+      "sha256": "22ed4081d2b8a51eed6cf3532b865b49ec36ec17b1e0dc66d90def7f5e15c036",
+      "bytes": 11619
+    },
+    {
+      "path": "scripts/release/model-profile.mjs",
+      "category": "script",
+      "sha256": "1e4e738390058bb2c348b73854c6df262557b84be7fd118c71cc6315f77b70fd",
+      "bytes": 1923
+    },
+    {
+      "path": "scripts/release/neutralize-fixture-provenance.mjs",
+      "category": "script",
+      "sha256": "673a3cf4d00364e0871482d4c63b40811773fb01923cd964caba0943d3cfae70",
+      "bytes": 4489
+    },
+    {
+      "path": "scripts/release/probe-model.mjs",
+      "category": "script",
+      "sha256": "cf6df7936a8985838d1fd6fd9ca1eb248d941ee5e4a60dc57bc61a2f2fe70ff2",
+      "bytes": 3807
+    },
+    {
+      "path": "scripts/release/verify-beta.mjs",
+      "category": "script",
+      "sha256": "bdbc53622bacf7cd32745165145075cafa624ae52bb5cfbb25016075adc3e516",
+      "bytes": 14256
+    },
+    {
+      "path": "scripts/release/verify-host.mjs",
+      "category": "script",
+      "sha256": "75e6899a8f1bd89341c98dddeaa1324588a73e4629decc908a7ead54c0e3ce58",
+      "bytes": 14156
+    },
+    {
+      "path": "scripts/release/verify-licenses.mjs",
+      "category": "script",
+      "sha256": "0f7c4b0456758d1b90f06c7e814d80ce9fb6690271dbbe0e06441e1959ecdc61",
+      "bytes": 1222
+    },
+    {
+      "path": "scripts/release/write-release-manifest.mjs",
+      "category": "script",
+      "sha256": "23416fc938fff3f8a2c7412de05cb17a0ff39dbdd192c436e71da840086bd294",
+      "bytes": 9651
+    },
+    {
+      "path": "scripts/tsconfig.typecheck.json",
+      "category": "script",
+      "sha256": "e65ae7043edc88b536166ca147fc4581a6a861c93d704dcfcb70c4c488f0033b",
+      "bytes": 1909
+    },
+    {
+      "path": "skills/assembly-planning/SKILL.md",
+      "category": "skill:plugin-read",
+      "sha256": "f0ab708e9ae748b2c746a340b55e86018d05fb8b7e4ab0928fc22c4f6086a7de",
+      "bytes": 1344
+    },
+    {
+      "path": "skills/module-extraction/SKILL.md",
+      "category": "skill:plugin-read",
+      "sha256": "20b6d89e6a3635db066b29571a26eb366d36f36b888e2904448c9d5b4a5c554b",
+      "bytes": 962
+    },
+    {
+      "path": "skills/paper-discovery/SKILL.md",
+      "category": "skill:plugin-read",
+      "sha256": "df8881bd8da67cb57c39fcd1c48c2327fbd8db8a11754041bc0a3ad5f9fc0d55",
+      "bytes": 4504
+    },
+    {
+      "path": "skills/research-synthesis/SKILL.md",
+      "category": "skill:plugin-read",
+      "sha256": "79f76bcc0e8f739635317121147bc16c3ed5430555470ddbcac2141211b28a19",
+      "bytes": 3693
+    },
+    {
+      "path": "tests/frontend-redesign/paper-commands.test.ts",
+      "category": "test",
+      "sha256": "deb3925f4b4c8e023c26c00774eba1bcc52cc0ce0b0b20b387d9c04d8e1ee252",
+      "bytes": 59539
+    },
+    {
+      "path": "tests/frontend-redesign/paper-library.test.ts",
+      "category": "test",
+      "sha256": "a1d18b61c5c93f6a779a17fa953cd7cdb9bf54ced4b9660744c38a481a6ab748",
+      "bytes": 45745
+    },
+    {
+      "path": "tests/frontend-redesign/studio-model.test.ts",
+      "category": "test",
+      "sha256": "51797832ef155756cd909f243b802df5da19bd8f0a9a1f560d6efde25bf914cf",
+      "bytes": 9627
+    },
+    {
+      "path": "tests/frontend-redesign/studio-ui.test.ts",
+      "category": "test",
+      "sha256": "b986a6ffd69e16f6c5b728bb6dc436e67916a0ea178328972454f365146b202e",
+      "bytes": 11827
+    },
+    {
+      "path": "tests/helpers/general-prerequisites.ts",
+      "category": "test",
+      "sha256": "08a19dba7e46fbb5a31498584b0b1a967bc23644912169d86e455fa5bc0ec619",
+      "bytes": 1684
+    },
+    {
+      "path": "tests/integration/external-result.spec.ts",
+      "category": "test",
+      "sha256": "a27877a9341a45f31b01c0434f1b02d919edd42ecf311327974f890fe1d35038",
+      "bytes": 38446
+    },
+    {
+      "path": "tests/integration/general-metrics.spec.ts",
+      "category": "test",
+      "sha256": "c35d4165b7c73a420cb0a855ad45372584cc7a8a48fb94ee39fe6d17d4858fc3",
+      "bytes": 30601
+    },
+    {
+      "path": "tests/integration/general-package.spec.ts",
+      "category": "test",
+      "sha256": "b56808ec5d50e05bc8039f1c447fbea89e8e76b77d941f905e2de95308544e72",
+      "bytes": 14561
+    },
+    {
+      "path": "tests/integration/general-report-offline.spec.ts",
+      "category": "test",
+      "sha256": "6a0d26e927cbd003c747b4954b6753a552fa3312863e976b8ea09b2119ebc743",
+      "bytes": 5768
+    },
+    {
+      "path": "tests/integration/general-report.spec.ts",
+      "category": "test",
+      "sha256": "9f69011e77276e26cde216863f2a153b8a06491b32221532dd723f48127c0724",
+      "bytes": 32050
+    },
+    {
+      "path": "tests/integration/general-wiki-workspace.spec.ts",
+      "category": "test",
+      "sha256": "30ecb04f2477f8255b3796a90461466868c9321ce712f888c4c2d211c482615e",
+      "bytes": 18718
+    },
+    {
+      "path": "tests/integration/pdf-intake.spec.ts",
+      "category": "test",
+      "sha256": "caacb77beb7a107b75dd234f0d19cedc4829587117365f4c26eeae5938d9aa99",
+      "bytes": 1672
+    },
+    {
+      "path": "tests/integration/release-evidence.spec.mjs",
+      "category": "test",
+      "sha256": "c720ad07f521666a2a427ba42fe967bfc63207d9820cc6694b0d23a04209bdce",
+      "bytes": 966
+    },
+    {
+      "path": "tests/integration/research-bootstrap-host.spec.ts",
+      "category": "test",
+      "sha256": "6016b55cba9b896248c12e1e0cbdf7e4b588593037dcf03125ab6f283428863b",
+      "bytes": 66884
+    },
+    {
+      "path": "tests/integration/research-cycle-host.spec.ts",
+      "category": "test",
+      "sha256": "e88682becd9fd70d4f27055172320fe5e1ce11f5ecbeb39e25be4f3acc45e325",
+      "bytes": 10556
+    },
+    {
+      "path": "tests/integration/research-cycle-team.spec.ts",
+      "category": "test",
+      "sha256": "74055b990beca9e5ae47b0629d7322dd3443e63b4d8979e0031304acb5eb304b",
+      "bytes": 7502
+    },
+    {
+      "path": "tests/integration/research-guidance.spec.ts",
+      "category": "test",
+      "sha256": "1189ca87b01e98ff3b2aca004ef7cf50609ba219adeef7932da11064cbe4c6cf",
+      "bytes": 3844
+    },
+    {
+      "path": "tests/integration/research-skill-entries.spec.ts",
+      "category": "test",
+      "sha256": "c8c630c190e8e61d6a306a8d3deb223e7fd773cb29b79f6034b9de4b412dfe61",
+      "bytes": 2196
+    },
+    {
+      "path": "tests/integration/research-takeover-adopt.spec.ts",
+      "category": "test",
+      "sha256": "d5b450f76c881db3b245c5237600884bd34737ae11e5a03d327eb4a6c22de9b3",
+      "bytes": 19909
+    },
+    {
+      "path": "tests/integration/research-takeover.spec.ts",
+      "category": "test",
+      "sha256": "07910aa003837a9dfb3b613b03c850341dee1fa613bae482d75f1f967ce4cdf1",
+      "bytes": 30713
+    },
+    {
+      "path": "tools/mermaid/package-lock.json",
+      "category": "toolchain",
+      "sha256": "5fafcfa5478741dca13e4327794f089fbe5f1b4f9c86395e865dee952877e055",
+      "bytes": 44178
+    },
+    {
+      "path": "tools/mermaid/package.json",
+      "category": "toolchain",
+      "sha256": "af202cc81797e05f8b3c17846805afdc95bc7a45c69472c64a376349ef628988",
+      "bytes": 278
+    },
+    {
+      "path": "tools/ts-toolchain/compiler-pin.json",
+      "category": "toolchain",
+      "sha256": "14cde7e49358f5293a0f3e9a6351c0f73dc16d4fbee786b18f00d6a0a43b078a",
+      "bytes": 921
+    },
+    {
+      "path": "tools/ts-toolchain/package-lock.json",
+      "category": "toolchain",
+      "sha256": "1b155484b433bb4155b5b7a353c22d214b1e2e69cd7dee1d5b9e8b62653cde0e",
+      "bytes": 1464
+    },
+    {
+      "path": "tools/ts-toolchain/package.json",
+      "category": "toolchain",
+      "sha256": "6e6cd1ac40c5e5e8bb2ada13fa76c738d167063607563c300f3254e09d4d6941",
+      "bytes": 328
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/LICENSE",
+      "category": "vendor:type-pin",
+      "sha256": "034fb52b1d57360ecbae6cb1632a88f86fd7c3d3f5631a5f082710203dda0be7",
+      "bytes": 1071
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/lib/index.js",
+      "category": "vendor:type-pin",
+      "sha256": "1729cdbf8ee40b17c8839e06bf96491490548559e11ef7e411271e0754e751c5",
+      "bytes": 60378
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/context.ts",
+      "category": "vendor:type-pin",
+      "sha256": "96b388162d6013c1898de61e35f28917abb93809de24174980f2a1a348d0b115",
+      "bytes": 6153
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/events.ts",
+      "category": "vendor:type-pin",
+      "sha256": "96565a2b5fbf35c26b78cbdc785b2b2e3f01fa55a9fd1f6af5355ab35ccc343c",
+      "bytes": 14949
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/fiber.ts",
+      "category": "vendor:type-pin",
+      "sha256": "750555b47603f88e7ef7a05d1a8d629b355c176a1185af411aac6e3e1e2b7ba3",
+      "bytes": 24981
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/index.ts",
+      "category": "vendor:type-pin",
+      "sha256": "c2232f082c763488225eafcd33530640ad26af0c7d6ea871a4f7e8ebf0eb3704",
+      "bytes": 679
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/logger.ts",
+      "category": "vendor:type-pin",
+      "sha256": "5121e76fd9f55b9b90dfea09d6e60d122e7530246b8b19970ddebd9c35ccf7d8",
+      "bytes": 8638
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/reflect.ts",
+      "category": "vendor:type-pin",
+      "sha256": "6847b9781044023d65aebb5896a873b9f0a3d777eaf7fa0dd2a7a408eb6b74a6",
+      "bytes": 15434
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/registry.ts",
+      "category": "vendor:type-pin",
+      "sha256": "34bbd60ae502b4f85201c204afb52a9acabde6878d9278493478c1b2183debd3",
+      "bytes": 11753
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/service.ts",
+      "category": "vendor:type-pin",
+      "sha256": "614205c6ce7cf1a057b8b352e96aa4fcd734c967a3d2283a126c9c61f268e3be",
+      "bytes": 4263
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cordis/src/utils.ts",
+      "category": "vendor:type-pin",
+      "sha256": "8fe273424583d21267ef13f248840e97454d09d836a0ac08323a9482c2069263",
+      "bytes": 10236
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cosmokit/LICENSE",
+      "category": "vendor:type-pin",
+      "sha256": "034fb52b1d57360ecbae6cb1632a88f86fd7c3d3f5631a5f082710203dda0be7",
+      "bytes": 1071
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cosmokit/src/array.ts",
+      "category": "vendor:type-pin",
+      "sha256": "cf4de899ecffd66a90d8cef6f4c7d127d31f77f776d8e173d41c30d2d7632cf7",
+      "bytes": 1453
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cosmokit/src/index.ts",
+      "category": "vendor:type-pin",
+      "sha256": "51dd173c70001d7d7891d3aab7e26594da65f7cb6671253f6d457ac889326b3c",
+      "bytes": 399
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cosmokit/src/misc.ts",
+      "category": "vendor:type-pin",
+      "sha256": "117617943074ea57c15f216905dacd2f6d1c4c2ff16586f97a7a7a87dbf2141f",
+      "bytes": 3865
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cosmokit/src/string.ts",
+      "category": "vendor:type-pin",
+      "sha256": "5564272b3e15e49235cbe3a8b453f27306baf282d23a893982841670f65d3c04",
+      "bytes": 3928
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cosmokit/src/time.ts",
+      "category": "vendor:type-pin",
+      "sha256": "49957c4608465a1fbd738186a92c47fffcd1fc4ba59dbf89524f8a773fe16fe2",
+      "bytes": 3054
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/cosmokit/src/types.ts",
+      "category": "vendor:type-pin",
+      "sha256": "09d72a91052105e88500bfb99a8e8ce0c9ebf6f6e7df569053e114bc77aa019c",
+      "bytes": 5927
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-brand/LICENSE",
+      "category": "vendor:type-pin",
+      "sha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "bytes": 1065
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-brand/lib/index.js",
+      "category": "vendor:type-pin",
+      "sha256": "14feb59256b891982b2017d73ed03ee65e2a7365f48e4902a856acb0e52d5eb0",
+      "bytes": 1161
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/LICENSE",
+      "category": "vendor:type-pin",
+      "sha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "bytes": 1065
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/index.js",
+      "category": "vendor:type-pin",
+      "sha256": "f54d86572d4c0e8d9348cdc65e4c4684a4956a91162815d3c52ee7c0c58225ed",
+      "bytes": 100032
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/invariant.js",
+      "category": "vendor:type-pin",
+      "sha256": "8cb78641252b7a41523fef2c571dd42c698de4c9475dd91683191cefa4dced48",
+      "bytes": 3395
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/typert.host.js",
+      "category": "vendor:type-pin",
+      "sha256": "9d03dbcd76059bcf6100e2dd14ed462d84799778ad77c2fb1186f86590c81e27",
+      "bytes": 36658
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/typert.remote-client.js",
+      "category": "vendor:type-pin",
+      "sha256": "27d962486eb2057ab3a351324e3b938af7e00965c3d2811859240f0afde61229",
+      "bytes": 3410
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/adapter-failure.js",
+      "category": "vendor:type-pin",
+      "sha256": "646dbe1733795966cb21e7c299081ab091aaa6a1eca816b76c4aa80d884e3577",
+      "bytes": 4093
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/api-key.js",
+      "category": "vendor:type-pin",
+      "sha256": "254b774234c0bd38dd759765c0fd1e60788651a22106f5559ec2760a39935f2d",
+      "bytes": 1518
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/assembler.js",
+      "category": "vendor:type-pin",
+      "sha256": "3257b31b5b93156cb31d610296a505170527eda44e3f60d8277ad564a4418f65",
+      "bytes": 7965
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/assistant-stream.js",
+      "category": "vendor:type-pin",
+      "sha256": "7e0cc96a4d60aed34381b552f9cb4549d70df36dbd28c0630da4cd93fa44b7a1",
+      "bytes": 19887
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/attribution.js",
+      "category": "vendor:type-pin",
+      "sha256": "6f61d7b685175f7c74ed2a0498212258240f2a7fd93e939349cf7daccf33414b",
+      "bytes": 2091
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/brand.js",
+      "category": "vendor:type-pin",
+      "sha256": "6b70219e0478d3307d865309523e7e7be3f169b06c04f4eef0d49b54aaef72a2",
+      "bytes": 1650
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/call-config.js",
+      "category": "vendor:type-pin",
+      "sha256": "170f3ce7c7136b93087e2f5d50faa8b69815894ec3ebdf26c36d57e4c7a17a03",
+      "bytes": 1944
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/content.js",
+      "category": "vendor:type-pin",
+      "sha256": "0a838fe66ccab38cca48ebb1e4f3cb52516fdb90109edf9083a0c1a006e35519",
+      "bytes": 13790
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/error.js",
+      "category": "vendor:type-pin",
+      "sha256": "f5a61e6754e3b890cf0195274b850cd52401e9c636b51313f5733cd6c2d9a616",
+      "bytes": 7888
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/index.js",
+      "category": "vendor:type-pin",
+      "sha256": "25d66feee542337e4be07e9a5b2ae7e1bb0e670b7eac697b739b1ad2a027a906",
+      "bytes": 50377
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/invariant.js",
+      "category": "vendor:type-pin",
+      "sha256": "31e6ab4e29731d461b2bd49fd285666ea1a1fb96fa71ecd5c449c6c27e95d889",
+      "bytes": 4401
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/message.js",
+      "category": "vendor:type-pin",
+      "sha256": "3cc4fad513f747a9beeb1c25e6621a44367c1698c60a4640afcfffa1452f80d2",
+      "bytes": 3557
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/retry-policy.js",
+      "category": "vendor:type-pin",
+      "sha256": "f0a8fe075ac24c56ed2aa5d5e359a85539f5ffa237af54b68d3f4fc5124b5d83",
+      "bytes": 5591
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-llm/lib/types/types.js",
+      "category": "vendor:type-pin",
+      "sha256": "14106d660103de2db746964fbb5be90c5eb2a7ff736779e2501e9faff956cbf5",
+      "bytes": 284
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-scope/LICENSE",
+      "category": "vendor:type-pin",
+      "sha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "bytes": 1065
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-scope/lib/index.js",
+      "category": "vendor:type-pin",
+      "sha256": "2829df71d76e08941457d4dd173eac60783e55354921137c8b75e8b5c0d2ecca",
+      "bytes": 12151
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-scope/lib/invariant.js",
+      "category": "vendor:type-pin",
+      "sha256": "1580d3c01b442bb099040ef527e2ba7ac55c453dba0597eab9c9c32bcbdded59",
+      "bytes": 3528
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/LICENSE",
+      "category": "vendor:type-pin",
+      "sha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "bytes": 1065
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/index.js",
+      "category": "vendor:type-pin",
+      "sha256": "aaba52bf5d0149355407642b3965c06977d1e9143f5c61bc19429abbe6a11c5d",
+      "bytes": 151784
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/invariant.js",
+      "category": "vendor:type-pin",
+      "sha256": "41a09fa8d0e0857c6232e8d3b13c8658929b6b6300c6b3a2c53980c05309c282",
+      "bytes": 4751
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/index.js",
+      "category": "vendor:type-pin",
+      "sha256": "565e809adcc9897b45751b3c0e7df8326aa0b5e4e0ef8755f1fe4b9e3a84044f",
+      "bytes": 64169
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/invariant.js",
+      "category": "vendor:type-pin",
+      "sha256": "5c4dd2c8846dbadba15cdc4c3fb5fdc9a9d62f42e1dca5e40c60a6945d7b6608",
+      "bytes": 5513
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/json-schema.js",
+      "category": "vendor:type-pin",
+      "sha256": "912e04e68c2455cbb77651031449574f992720c90311e6cbecb1d35020bc1072",
+      "bytes": 25604
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/presentation.js",
+      "category": "vendor:type-pin",
+      "sha256": "253894265253e38fa9db12f3696d9dac9fd2bed1363c04ce3f95c0f19a6c16da",
+      "bytes": 347
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/ptc.js",
+      "category": "vendor:type-pin",
+      "sha256": "b9d7f3fdfedd806f2f8a3e9ad13d2d1f0ac4c0e649268c78bd211dfca51c1074",
+      "bytes": 31635
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/py-types.js",
+      "category": "vendor:type-pin",
+      "sha256": "62cf351dd1a513bb024676d5f73d23ae3f89c95bb5c8e630832443b1b836113f",
+      "bytes": 48350
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/schema.js",
+      "category": "vendor:type-pin",
+      "sha256": "1b70cbf3a33327ca34d0a9e60b3143735327918f74495cad33dbbde5b5cbfad7",
+      "bytes": 15252
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/testing.js",
+      "category": "vendor:type-pin",
+      "sha256": "c6784f546e950dc38323baaad4009bb197eb25acf3a16adaa2893a44c7b7a650",
+      "bytes": 978
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/ts-types.js",
+      "category": "vendor:type-pin",
+      "sha256": "3c2f80465d6a420f15c75dcd023daa73af97307c3e22478c0bae67cf71c50d1e",
+      "bytes": 14713
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-tools/lib/types/types.js",
+      "category": "vendor:type-pin",
+      "sha256": "d53c54d32353419ece121f485a5534ee054842b74ebab7b4a4d3325545d0179a",
+      "bytes": 161
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-util-values/LICENSE",
+      "category": "vendor:type-pin",
+      "sha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "bytes": 1065
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/dsh-util-values/lib/index.js",
+      "category": "vendor:type-pin",
+      "sha256": "5c86e3bdb285e94f89b693c9036f1f62b1ceee10c0bc72c664f21ad8a592b0b4",
+      "bytes": 8133
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/schemastery/LICENSE",
+      "category": "vendor:type-pin",
+      "sha256": "034fb52b1d57360ecbae6cb1632a88f86fd7c3d3f5631a5f082710203dda0be7",
+      "bytes": 1071
+    },
+    {
+      "path": "tools/vendor/@deepseek-ai/schemastery/src/index.ts",
+      "category": "vendor:type-pin",
+      "sha256": "cf8a4de0481969a1a6d44eac390015f3494be1ce19b84d4fcfb7e93e5072cee5",
+      "bytes": 33177
+    },
+    {
+      "path": "tools/vendor/dsh-tools-boundary.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "b97d575f61e1edd7f6a9b32cc118e7211873e7342dc37f9603d4d4f84a6df7d1",
+      "bytes": 2739
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/context.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "1e2e6cfcab26ae01d7f2dd1f78a1d25ddb7f3b2e27f50c9eb3b54ee206a87884",
+      "bytes": 4712
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/events.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "cc02bb2d9e410be2e12faa6de3c7cb4ceedc6b5cfa351acca999cc8ea51ad890",
+      "bytes": 12169
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/fiber.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "cdf2eac483851e38eb14ae80c2973b08e76ee6f226fed66ce8d2208841925a8a",
+      "bytes": 8413
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/index.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "c93dd79fae382105510c69cc8eef95a96c8c43e50b47e16efa98a3f9e76f304b",
+      "bytes": 686
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/logger.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "71087395cc862f52662ab2629a0f3838f8f2aaf84eb40c97f4f4004f2fcbbed6",
+      "bytes": 3706
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/reflect.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "83281d4b4bcb231803a7a86673f8c28695258f3b25f00c40e6405cda1432f76b",
+      "bytes": 8278
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/registry.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "67ce725149b51205cf339a3bb8717900a44e1d8894e369301ff83fe34c9e18aa",
+      "bytes": 8842
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/service.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "489ec23ef8dc0e869cf3d8d77a39ba83ab24e5e71362320f5662491b3dc5bd04",
+      "bytes": 2573
+    },
+    {
+      "path": "tools/vendor/gen/cordis/src/utils.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "a0dea5687b70a6210ceead1a094bf93565dad8aa4e7b13c6b08f1485b5b733ac",
+      "bytes": 2697
+    },
+    {
+      "path": "tools/vendor/gen/cosmokit/src/array.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "fb6f2007d60e8b519a2ef0c5a27026ddfe06418ae6261c4eb0cb670cca5e1bc2",
+      "bytes": 1034
+    },
+    {
+      "path": "tools/vendor/gen/cosmokit/src/index.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "f0421e04e2a5238754cf444bf2a56fe7e7a94a08c14c1f9d063ff51c85825823",
+      "bytes": 404
+    },
+    {
+      "path": "tools/vendor/gen/cosmokit/src/misc.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "ee31ad8a8426d12cd01f5d87e917de4cf1f5861257ce355d1e6107077e90a257",
+      "bytes": 2871
+    },
+    {
+      "path": "tools/vendor/gen/cosmokit/src/string.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "56210599298d6eca6285eab99c7e9333d7e275c3a73a7f401b3055e8d55c67e8",
+      "bytes": 2754
+    },
+    {
+      "path": "tools/vendor/gen/cosmokit/src/time.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "2845576622e416da9871e1f3c788ba41dc4f24eb764362b10eceeb0dbaa67208",
+      "bytes": 739
+    },
+    {
+      "path": "tools/vendor/gen/cosmokit/src/types.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "a48f1b69ec0b94b16c7ece2cf6d6003cc8d0c329538117c1c364d8525a100850",
+      "bytes": 1969
+    },
+    {
+      "path": "tools/vendor/gen/dsh-brand/lib/index.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "dc9d12540743c772f5c447a64510967075a9f266763985038fd865149592f08e",
+      "bytes": 1080
+    },
+    {
+      "path": "tools/vendor/gen/dsh-llm/lib/index.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "0d0d9ed049354ff5b6197df5b61e47eda7f7e8fd5cbf07b6620c2e8dc50bd216",
+      "bytes": 51851
+    },
+    {
+      "path": "tools/vendor/gen/dsh-scope/lib/index.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "12dfaf7da860aaff547998dbe880712dd6b3c6809ce74b09f85388f2058e7af5",
+      "bytes": 8097
+    },
+    {
+      "path": "tools/vendor/gen/dsh-tools/lib/index.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "3dcb18cb33760ccc69383c7f0aaa98ed1be8911440a4ec3f840225bc9a27514f",
+      "bytes": 32763
+    },
+    {
+      "path": "tools/vendor/gen/dsh-util-values/lib/index.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "b3e1f3233e24091471658534738fb57a8189bf47574d14416070839f6883285d",
+      "bytes": 1494
+    },
+    {
+      "path": "tools/vendor/gen/schemastery/src/index.d.ts",
+      "category": "vendor:type-pin",
+      "sha256": "bb2f86815e0ffd28aff945931828a38ab6e6b1eb33b93cbb108315c2e94f8b2b",
+      "bytes": 11081
+    },
+    {
+      "path": "tools/vendor/provenance.json",
+      "category": "vendor:type-pin",
+      "sha256": "d90d270f80c38d57ee701297ad19a847f86904edda82b8c9b70042c31ae5531d",
+      "bytes": 16665
+    },
+    {
+      "path": "tools/vendor/tsconfig.generate.json",
+      "category": "vendor:type-pin",
+      "sha256": "eef52a8d777aa27459563245872a4b0d58c549dc912e653067d00b8fc7d85a0d",
+      "bytes": 1335
+    },
+    {
+      "path": "tools/vendor/vendor-manifest.json",
+      "category": "vendor:type-pin",
+      "sha256": "f80015d3242782b2dd673f31bc8490bbd4729aefaecc6dafb6d712648b9cfcb5",
+      "bytes": 2862
+    },
+    {
+      "path": "verification/DSH-E2E-2026-10-18.md",
+      "category": "verification",
+      "sha256": "540be097a7b5f96aeb29c3375e72730fe5f19f2fc8c23d0430f792c31f2443f1",
+      "bytes": 5080
+    },
+    {
+      "path": "verification/cases.json",
+      "category": "verification",
+      "sha256": "d83ce7247395bbe5d20944620d0cb6252f8e2215dac90b15741c1ced12dca32a",
+      "bytes": 10383
+    },
+    {
+      "path": "verification/e2e-checklist.json",
+      "category": "verification",
+      "sha256": "954303ea718c1ed1d38d0ec18479d3f1820dbe8d5a3fa570c8aacd20c7e8d378",
+      "bytes": 4902
+    },
+    {
+      "path": "verification/release-files.json",
+      "category": "verification",
+      "sha256": null,
+      "bytes": null,
+      "note": "this manifest; a file cannot hash itself, so its digest is null by design"
+    }
+  ]
+}

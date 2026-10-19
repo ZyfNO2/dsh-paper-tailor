@@ -1,0 +1,124 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Temp scratch under work and artifacts
+work/tmp*
+work/piptmp*
+work/modetest_*
+work/pkg_probe*
+artifacts/test-scratch/
+
+# Disposable adaptation workspaces. Phase 2 copies pinned source here to apply a patch; the
+# point of the copy is that it is throwaway, and the emitted diff is the artifact of record.
+work/research-execution/
+
+# Runtime state, not source: the single-writer lease is host/PID specific and
+# stale by design after a crash, so archiving it would only record a dead PID.
+data/evolver/writer.lock
+
+# Local environment / OS
+.env.local
+Thumbs.db
+
+# Live-route material: names a personal provider route, points at local install
+# paths, and is only meaningful on this machine. Never publish these.
+#
+# The bundle patch carries the same route as work/dsh-live-*.yml, so it is
+# excluded too. The port itself stays tracked: it reads the route from config and
+# hardcodes no provider name, no local path and no credential.
+packages/evolver-bundle/cordis.patch.local.yml
+work/dsh-live-*.patch.yml
+work/dsh-live-*.yaml
+work/dsh-live-*.yml
+work/acl-recovery/
+docs/mvp/LIVE-ROUTE-SDK-PORT.md
+docs/mvp/ENVIRONMENT-READINESS.local.md
+
+# Machine-local DSH debug home (own profiles/credentials; never publish)
+.dsh-debug-home/
+
+# Upstream dataset archives. These are the raw downloads the real slice is
+# derived from: 773 MB of third-party data whose provenance (URL + SHA-256) is
+# recorded in fixtures/real-data/oxford-pet-trimap-v1/manifest.json. The derived
+# slice IS committed; the archives are not — re-fetch them with the URLs in that
+# manifest and verify against the recorded hashes.
+artifacts/external-downloads/
+
+# The unpacked archives, likewise third-party data and re-derivable.
+work/oxford-pet/
+
+# Workspace research assets: the user's real papers and source requests live
+# under <workspace>/.dsh/research/. Per the startup/acceptance spec they stay
+# on this machine and are never committed or published.
+.dsh/research/
+
+# DSH startup logs record the desktop instance's boot token URL.
+artifacts/dsh-startup/
+
+# Live-route evidence names the personal provider route and local install
+# paths; same class of material as work/dsh-live-*.yml above. Never publish.
+artifacts/live-route-evidence/
+
+# Machine-local ACL recovery backups.
+.acl-recovery/
+
+# Local browser-automation session artifacts and npm caches.
+.playwright-mcp/
+.rgf-npm-cache/
+
+# Acceptance/debug host boot logs carry the host's boot token URL.
+work/debug-host-*.log
+work/web-restart-*/
+
+# Typecheck probe scratch output.
+packages/evolver/.probe-ts/
+
+# ---- Beta release tree: runtime state produced by actually running the host ----
+# The verification host writes its storage root, artifact roots and its isolated
+# DSH home inside the tree. None of it is source, and none of it may be published:
+# the lock file names a live PID and the boot log carries a host token URL.
+data/
+artifacts/
+.dsh-verify-home/
+verification/results/initial/host.log
+*.log.err
+# Generated install/export receipts contain machine-local paths or duplicate the payload manifest.
+host-modules.json
+release-files.csv
+
+# Local gateway diagnostics contain authenticated host logs and profile backups.
+demo/findings/toolresult-fix/
+
+# Local natural-language guidance verification: private model/profile and research data.
+.dsh-guidance-verify-home/
+demo/guidance-smoke-20261018/
+demo/guidance-fixed-20261018/
+
+# Public source repository: local research/acceptance material stays on this machine.
+/.design/
+/demo/
+/docs/
+verification/results/
+release-files.txt
+.env
+.env.*
+!.env.example
+!.env.template
+**/.credentials.yaml
+**/.credentials.yml
+**/*vault*/
+*.private.*
+*.log
+*.err
+*.pid
+*.pem
+*.p12
+*.pfx

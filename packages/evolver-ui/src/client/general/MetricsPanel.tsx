@@ -1,0 +1,75 @@
+import { useEffect, useState, type FormEvent } from 'react';
+import type { GeneralResearch } from '../../../../evolver/src/contracts/general-research.ts';
+import type { GeneralMetric, GeneralMetricProtocol } from '../../../../evolver/src/contracts/general-metrics.ts';
+import type { GeneralMetricProjection } from '../../../../evolver/src/contracts/general-metrics.ts';
+import { newOperationId } from '../redesign/research-actions.ts';
+import { externalResultLocator } from '../../../../evolver/src/contracts/external-result-locator.ts';
+type Action = (type: string, payload: Record<string, unknown>) => Promise<Record<string, unknown> | null>;
+const ROLES = { primary: '主优化指标', auxiliary: '辅助观察', constraint: '硬约束' };
+const DIRECTIONS = { observe: '仅观察 / 方向待定', maximize: '越大越好', minimize: '越小越好', range: '目标区间' };
+const METHOD_LABEL_ONE_SAMPLE: Record<string, string> = { one_sample_t: '单样本 t（对照参考均值）', paired_t: '配对 t（真实身份配对）', welch_t: 'Welch t（两组）' };
+const format = (v: number | null) => v === null ? '未测 / 未知' : Number.isInteger(v) ? String(v) : v.toPrecision(7);
+const key = (p: GeneralMetricProtocol) => p.protocolId + ':' + p.version;
+export function MetricsPanel({ general: g, projection, researchId, action, busy }: { general: GeneralResearch; projection?: GeneralMetricProjection | null; researchId: string; action: Action; busy: boolean }): JSX.Element {
+  const [selected, setSelected] = useState(''), [draft, setDraft] = useState<GeneralMetricProtocol | null>(null), [dirty, setDirty] = useState(false), [error, setError] = useState('');
+  const protocol = g.metricProtocols.find(p => key(p) === selected) ?? g.metricProtocols.at(-1);
+  useEffect(() => { setDraft(protocol ? structuredClone(protocol) : null); setDirty(false); }, [protocol?.protocolId, protocol?.version]);
+  const update = (patch: Partial<GeneralMetricProtocol>) => { setDraft(v => v ? { ...v, ...patch } : v); setDirty(true); };
+  const metric = (i: number, patch: Partial<GeneralMetric>) => { if (draft) update({ metrics: draft.metrics.map((m, index) => index === i ? { ...m, ...patch } : m) }); };
+  const change = (next: string) => { if (dirty && g.requireHumanConfirmation && !window.confirm('指标草稿未保存，是否切换？')) return; setSelected(next); setError(''); };
+  const save = async (status: 'draft' | 'frozen') => {
+    if (!draft) return;
+    const { protocolId, version: _version, createdAt: _createdAt, contextHash: _contextHash, ...payload } = draft;
+    const saved = await action('save_general_metric_protocol', { researchId, protocolId, protocol: { ...payload, status } });
+    if (saved) { setDirty(false); setSelected(String(saved.protocolId) + ':' + saved.version); }
+  };
+  const suggest = async () => { if (dirty && g.requireHumanConfirmation && !window.confirm('未保存指标草稿不进入新建议，是否继续？')) return; const saved = await action('suggest_general_metrics', { researchId, protocolId: protocol?.protocolId ?? null }); if (saved) setSelected(String(saved.protocolId) + ':' + saved.version); };
+  const add = () => { if (draft) update({ metrics: [...draft.metrics, { metricId: newOperationId('metric'), name: '新指标', definition: '请明确公式和评价口径；定义改变须使用新 ID。', role: 'auxiliary', priority: Math.min(100, draft.metrics.length + 1), direction: 'observe', unit: null, required: false, target: { min: null, max: null }, rationale: '请说明与研究目标的关系，阈值无依据时留空。', binding: null }] }); };
+  const rows = projection?.rows.filter(r => r.protocolId === protocol?.protocolId && r.version === protocol?.version) ?? [];
+  const download = () => {
+    if (!protocol) return;
+    const csv = (v: unknown) => { let s = String(v ?? ''); if (/^[=+@-]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; };
+    const text = [['来源/计算', '方案', '角色', '输入性质', '状态', '指标版本', ...protocol.metrics.flatMap(m => [m.name + ' value', m.name + ' unit', m.name + ' delta'])], ...rows.map(r => [r.rowId, r.label, r.role, r.inputNature, r.status, r.version, ...r.cells.flatMap(c => [c.value, c.unit, c.delta])])].map(r => r.map(csv).join(',')).join('\n');
+    const url = URL.createObjectURL(new Blob(['﻿' + text], { type: 'text/csv;charset=utf-8' })), a = document.createElement('a'); a.href = url; a.download = 'research-matrix-v' + protocol.version + '.csv'; a.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  async function report(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); if (!protocol || protocol.status !== 'frozen') return; setError(''); const form = event.currentTarget, f = new FormData(form);
+    try {
+      const values = protocol.metrics.map(m => { const v = String(f.get('value-' + m.metricId) ?? '').trim(); return { metricId: m.metricId, value: v === '' ? null : Number(v), unit: String(f.get('unit-' + m.metricId) ?? '') }; });
+      if (values.some(v => v.value !== null && !Number.isFinite(v.value))) throw new Error('报告值必须是有限数值或留空，不能填 NaN/Infinity。');
+      const saved = await action('register_general_metric_report', { researchId, report: { protocolId: protocol.protocolId, version: protocol.version, label: String(f.get('label')), sourceId: String(f.get('sourceId')), locator: String(f.get('locator')), values, conditions: JSON.parse(String(f.get('conditions') || '[]')), note: String(f.get('note')) } });
+      if (saved) form.reset();
+    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
+  }
+  return <div className="stack" data-general-metrics>
+    <div className="page-head"><div><h1>指标协议与结果矩阵</h1><p className="muted">目标驱动草案 → 明确主/辅助/硬约束 → 冻结版本 → 方案绑定 → 实际结果自动入表。</p></div><button disabled={busy} onClick={() => void suggest()}>根据当前目标与字段生成新草案</button></div>
+    <div className="notice"><p className="small">建议指标不是用户已确认目标；缺单位、执行器或条件保留未知。建表/编辑不运行实验。冻结和改动均追加版本，旧结果不追改，不生成总分或无条件排名。</p></div>
+    <section className="panel"><div className="panel-head"><h2>指标定义与版本</h2><button disabled={busy || !draft || draft.metrics.length >= 50} onClick={add}>＋ 添加指标</button></div><div className="panel-body stack">
+      <label>历史指标协议<select value={protocol ? key(protocol) : ''} onChange={e => change(e.target.value)} disabled={busy}><option value="" disabled>尚无协议</option>{g.metricProtocols.map(p => <option key={key(p)} value={key(p)}>{p.protocolId} · v{p.version} · {p.status === 'frozen' ? '冻结' : '草案'}</option>)}</select></label>
+      {draft ? <>
+        <label>研究目标<textarea value={draft.goal} onChange={e => update({ goal: e.target.value })} maxLength={4000} /></label>
+        <div className="table-wrap"><table><thead><tr><th>指标 / 定义 / 依据</th><th>角色与优先级</th><th>方向 / 单位</th><th>明确目标界限</th><th>计算绑定</th><th>操作</th></tr></thead><tbody>{draft.metrics.map((m, i) => <tr key={i}>
+          <td><label>稳定指标 ID<input aria-label={'指标 ID ' + (i + 1)} value={m.metricId} onChange={e => metric(i, { metricId: e.target.value })} maxLength={200} /></label><label>名称<input value={m.name} onChange={e => metric(i, { name: e.target.value })} maxLength={300} /></label><label>定义<textarea value={m.definition} onChange={e => metric(i, { definition: e.target.value })} /></label><label>与目标的关系 / 来源依据<textarea value={m.rationale} onChange={e => metric(i, { rationale: e.target.value })} /></label></td>
+          <td><label>角色<select value={m.role} onChange={e => metric(i, { role: e.target.value as GeneralMetric['role'] })}>{Object.entries(ROLES).map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></label><label>优先级<input type="number" min={1} max={100} value={m.priority} onChange={e => metric(i, { priority: Number(e.target.value) })} /></label><label className="flex"><input type="checkbox" style={{ width: 'auto' }} checked={m.required} onChange={e => metric(i, { required: e.target.checked })} />必需测量</label></td>
+          <td><label>方向<select value={m.direction} onChange={e => metric(i, { direction: e.target.value as GeneralMetric['direction'] })}>{Object.entries(DIRECTIONS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></label><label>单位（无量纲填 1）<input value={m.unit ?? ''} onChange={e => metric(i, { unit: e.target.value || null })} maxLength={100} /></label></td>
+          <td>{(['min', 'max'] as const).map(k => <label key={k}>{k === 'min' ? '目标下界' : '目标上界'}<input type="number" step="any" value={m.target[k] ?? ''} onChange={e => metric(i, { target: { ...m.target, [k]: e.target.value === '' ? null : Number(e.target.value) } })} /></label>)}<p className="small muted">未知不补目标；硬约束冻结需界限、单位和必需标记。</p></td>
+          <td><label>结果字段名称<input value={m.binding?.fieldLabel ?? ''} onChange={e => metric(i, { binding: e.target.value ? { fieldLabel: e.target.value, statistic: m.binding?.statistic ?? 'mean' } : null })} /></label>{m.binding && <label>统计口径<select value={m.binding.statistic} onChange={e => metric(i, { binding: { ...m.binding!, statistic: e.target.value as NonNullable<GeneralMetric['binding']>['statistic'] } })}>{['mean', 'median', 'min', 'max', 'sampleSD', 'count'].map(s => <option key={s}>{s}</option>)}</select></label>}<p className="small muted">无绑定则待接 evaluator；不是已测量。</p></td>
+          <td><button disabled={busy || draft.metrics.length <= 1} onClick={() => update({ metrics: draft.metrics.filter((_, n) => n !== i) })}>移除草案指标</button></td>
+        </tr>)}</tbody></table></div>
+        <div className="field-grid"><label>必须一致的控制条件（每行一项）<textarea value={draft.requiredConditions.join('\n')} onChange={e => update({ requiredConditions: e.target.value.split('\n').filter(Boolean) })} /></label><label>允许变化的条件（每行一项）<textarea value={draft.variedConditions.join('\n')} onChange={e => update({ variedConditions: e.target.value.split('\n').filter(Boolean) })} /></label></div>
+        <label>比较口径与适用范围<textarea value={draft.comparisonScope} onChange={e => update({ comparisonScope: e.target.value })} /></label><label>本次变更理由<textarea value={draft.reason} onChange={e => update({ reason: e.target.value })} /></label>
+        <div className="flex"><button disabled={busy} onClick={() => void save('draft')}>保存新草案版本</button><button className="primary" disabled={busy} onClick={() => void save('frozen')}>确认并冻结新版本（不执行）</button>{dirty && <span className="badge amber">草稿未保存</span>}</div>
+      </> : <p>点击生成草案，不会补造指标或实验结果。</p>}
+    </div></section>
+    <section className="panel"><div className="panel-head"><h2>跨方案结果矩阵 · v{protocol?.version}</h2><button disabled={!rows.length} onClick={download}>导出矩阵 CSV</button></div><div className="panel-body stack"><p className="small muted">分析方案绑定冻结版本后，真实计算成功、阻塞和失败均自动登记；旧未绑定运行不伪造新列。来源报告单列，不替代本地观察。</p>{projection?.boundary && <p className="small muted">{projection.boundary}</p>}
+      {protocol && <div className="table-wrap"><table><thead><tr><th>方案 / 来源 / attempt</th><th>状态与边界</th>{protocol.metrics.map(m => <th key={m.metricId}>{m.name}<br />{ROLES[m.role]} · {m.unit ?? '单位未知'}</th>)}</tr></thead><tbody>{rows.map(r => <tr key={r.rowId}><td>{r.label} · {r.role}<p>{r.origin === 'source_reported' ? '来源报告' : '系统实际计算'} · {r.inputNature} · {r.attempt === null ? '非本地 attempt' : 'attempt ' + r.attempt}</p><details><summary>来源位置 / 比较依据</summary><p>{r.locator} · {r.sourceId}</p><p>{r.group}</p><p>对比：{r.comparedTo ?? '未生成差值'}</p>{r.comparisonReasons.map(s => <p key={s}>{s}</p>)}</details></td><td>{r.status} · {r.check}<p>硬约束：{r.constraintsStatus}</p><p>{r.selectionStatus === 'not_eligible' ? '不具备选优条件' : '仍需独立验证'}</p>{r.blockers.map((b, i) => <p className="small muted" key={i}>{b}</p>)}</td>{r.cells.map(c => <td key={c.metricId}>{format(c.value)} {c.unit}<p>差值：{format(c.delta)}</p><p>{c.status} / {c.targetStatus}</p></td>)}</tr>)}</tbody></table></div>}
+      {!rows.length && <p className="empty">本指标版本尚无已绑定运行或报告；不填 0 或预测值。</p>}{projection?.errors.map(e => <p className="error" key={e.calculationId}>{e.calculationId}：{e.message}</p>)}
+      {g.metricReports.some(r => r.match) && <div className="stack"><h3>外部结果</h3>{g.metricReports.filter(r => r.match).map(r => <p key={r.reportId}>{r.label} · {r.externalRunId ?? 'run 未知'}<br /><span className="small">实验归属 {r.match}{r.match === 'evidenced' ? '' : '（未确定，不是比较通过）'}</span><br /><span className="small">口径 {r.comparability ?? '未知'}</span><br /><span className="small muted">{r.matchReason} {r.comparabilityReason} · {externalResultLocator(r)}</span></p>)}</div>}
+      {g.resultReviews.map(review => <p key={review.reviewId}>建议 {review.reviewId} · {review.judgment} · 不排名<br /><span className="small muted">{review.boundary} {review.nextActions.map(a => a.title).join('、')}</span></p>)}
+      {g.resultDecisions.map(decision => <p key={decision.decisionId}>用户决定 {decision.choice}{decision.modifiedTitle ? ` · ${decision.modifiedTitle}` : ''}{decision.nodeId ? ` · 节点 ${decision.nodeId}（未开始）` : ''} · {decision.provenance === 'trusted' ? '来源已核对' : '来源未核实'}{decision.supersedes ? ` · 替代 ${decision.supersedes}` : ''}<br /><span className="small muted">{decision.utterance}</span></p>)}
+    </div></section>
+    {g.inferenceRuns.length > 0 ? <section className="panel"><div className="panel-head"><h2>推断检验（已登记运行 · 非描述统计行）</h2></div><div className="panel-body stack"><p className="small muted">以下 t 推断运行是独立引用类型，不属于上方协议矩阵的可比较单元格：估计值为均值（差）的数学执行结果，CI 是均值（差）的置信区间（不是效应量区间），completed 只代表数学执行完成，科学判断由审查给出。完整结果与授权在「推断检验」页。</p>{g.inferenceRuns.map(run => { const plan = g.inferencePlans.find(p => p.planId === run.planId && p.version === run.planVersion); return <div key={run.runId} style={{ borderBottom: '1px solid var(--line)', paddingBottom: 8 }}><div className="flex between"><strong>{plan?.title ?? run.planId} · v{run.planVersion}</strong><span className="badge">{run.status === 'completed' ? '已完成（数学执行）' : run.status === 'blocked' ? '被阻塞' : '失败'} · attempt {run.attempt}</span></div><p className="small muted">{plan ? `${METHOD_LABEL_ONE_SAMPLE[plan.spec.method] ?? plan.spec.method} · 置信 ${plan.spec.confidence} · 单位 ${plan.spec.unit}` : ''}{run.firstError ? ` · 首错 ${run.firstError.code}: ${run.firstError.message}` : ` · 工具 ${run.tool.name} ${run.tool.version}（${run.tool.runtime}）`}</p></div>; })}</div></section> : null}
+    {protocol?.status === 'frozen' && <details className="panel"><summary className="panel-head">登记论文 / 用户已有结果（不是本地运行）</summary><form className="panel-body stack" key={key(protocol)} onSubmit={report}><label>报告名称<input name="label" required maxLength={300} /></label><label>本研究已登记来源<select name="sourceId" required>{g.sources.map(s => <option key={s.sourceId} value={s.sourceId}>{s.filename} · {s.nature}</option>)}</select></label><label>原文页码 / 表格 / 行列定位<input name="locator" required maxLength={4000} /></label><div className="field-grid">{protocol.metrics.map(m => <div key={m.metricId}><label>{m.name} 数值（未测留空）<input name={'value-' + m.metricId} type="number" step="any" /></label><label>报告单位<input name={'unit-' + m.metricId} required defaultValue={m.unit ?? ''} /></label></div>)}</div><label>报告条件 JSON（name/value/unit，未知保留 null）<textarea name="conditions" defaultValue="[]" /></label><label>来源与评价限制说明<textarea name="note" required maxLength={4000} /></label><button disabled={busy || !g.sources.length}>保存来源报告，不登记为实测执行</button></form></details>}
+    {error && <p className="error" role="alert">{error}</p>}
+  </div>;
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "environmentId": "phase2-cpu-seg-v1-env-v1",
+  "capturedAt": "2026-10-04T00:40:00.000Z",
+  "captureMethod": "Read from this machine in this session: interpreter identity via Get-FileHash, versions via `G:\\Anaconda\\python.exe -c`, the package closure via `python -m pip freeze` (lines sorted, joined with LF, sha256), GPU/driver via `nvidia-smi --query-gpu`. Nothing here is copied from a template or from documentation.",
+  "device": "cpu",
+  "deviceReason": "phase2-cpu-seg-v1 is CPU-only. experiments/phase2-cpu-seg-v1/runner.py fails preflight with PREFLIGHT_DEVICE_MISMATCH when the manifest declares any device other than cpu. CUDA is present on this host but is deliberately NOT the declared device.",
+  "interpreter": {
+    "id": "python",
+    "path": "G:\\Anaconda\\python.exe",
+    "sha256": "388fe2cffda8a134e7d7dc4e978f7c478857ece6b69694daecbed25e51ec633a",
+    "version": "3.13.5",
+    "implementation": "CPython",
+    "compiler": "MSC v.1929 64 bit (AMD64)",
+    "sysVersion": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:37:03) [MSC v.1929 64 bit (AMD64)]"
+  },
+  "nodeInterpreter": {
+    "id": "node",
+    "path": "C:\\Program Files\\nodejs\\node.exe",
+    "sha256": "9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de",
+    "version": "v24.18.0",
+    "note": "Runs this profile's compiler/verifier and the verifier script with --experimental-strip-types. It does not run training."
+  },
+  "packageLock": {
+    "present": true,
+    "kind": "computed-closure-digest",
+    "command": "G:\\Anaconda\\python.exe -m pip freeze",
+    "normalization": "split on newlines, strip each line, drop empty lines, sort ascending, join with LF, append a trailing LF, sha256 over UTF-8",
+    "packageCount": 384,
+    "sha256": "d8315f3a5da468066b4e9d6798d17bbd9fcf9d6cebd3002ec5c16bf2d1fc17f0",
+    "stabilityCheck": "computed twice in the same session; both runs produced 384 packages and the identical digest",
+    "honestLimitation": "This is a computed digest of what is INSTALLED, not a checked-in lock file. No requirements.txt, environment.yml, pnpm-lock.yaml, package-lock.json or yarn.lock exists in the repository root (verified by directory listing), so no declared closure can be hashed. The digest therefore pins the observed environment exactly and detects drift, but it does not prove that a fresh machine would resolve to the same closure."
+  },
+  "packages": {
+    "torch": "2.9.1+cu126",
+    "torchvision": "0.24.1+cu126",
+    "numpy": "2.1.3"
+  },
+  "framework": {
+    "name": "pytorch",
+    "version": "2.9.1+cu126",
+    "cudaBuild": "12.6",
+    "cudnn": "91002",
+    "deterministicAlgorithmsSupported": true,
+    "declaredThreads": 1
+  },
+  "cuda": {
+    "availableOnHost": true,
+    "version": "12.6",
+    "driverVersion": "610.62",
+    "deviceCount": 1,
+    "deviceName": "NVIDIA GeForce RTX 4070 SUPER",
+    "computeCapability": [8, 9],
+    "note": "Recorded because SPEC section 5 requires framework/CUDA/driver to be recorded, and because a CPU/GPU mismatch must be refusable. It is not this profile's device: a manifest declaring cuda is rejected at preflight."
+  },
+  "host": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel"
+  },
+  "allowedDifferences": [
+    "Host name, current working directory, wall-clock time and output directory do not participate in this pin.",
+    "Absolute site-packages paths are evidence strings only and are not hashed: two machines with identical versions legitimately differ there.",
+    "GPU presence and driver version may differ without invalidating a cpu-device run. They WOULD matter for a GPU profile, which this pin does not declare.",
+    "Wall time of a run is not pinned; only the declared step limit and the per-attempt timeout are."
+  ],
+  "mustMatchExactly": [
+    "interpreter.sha256: a different interpreter binary is a different environment, even at the same version string.",
+    "interpreter.version: the runner reports it back in raw-result.environment.pythonVersion and verifyRun compares it.",
+    "packages.torch: the runner reports torch.__version__ and verifyRun compares it; a torch change can change CPU kernel results.",
+    "device: must be cpu. Any other declared device fails preflight.",
+    "packageLock.sha256: recorded so drift is detectable."
+  ],
+  "notVerified": [
+    "The package closure digest reflects what is installed on this one machine and does not prove another machine can reproduce it.",
+    "No byte-level reproducibility claim is made for a fresh machine; only the recorded per-run values are compared."
+  ]
+}

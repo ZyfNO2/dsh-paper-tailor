@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "policyId": "phase2-isolation-v1",
+  "enforcement": "checked, not declared",
+  "note": "isolationPolicyRef of profile-cpu-seg-v1 points at this file. SPEC section 3: directory separation alone is not evidence of isolation; the guard must see the actual resolved path. This policy is enforced in packages/evolver/src/domain/task-profile.ts by assertIsolationPolicy(), which resolves every candidate path to an absolute path and compares it against the roots below before any process is started.",
+  "backend": {
+    "id": "host-path-allowlist",
+    "kind": "in-process-path-allowlist",
+    "implementedIn": "packages/evolver/src/domain/task-profile.ts",
+    "mechanism": "resolved-absolute-path prefix check, with the deny list evaluated first",
+    "notClaimed": [
+      "This is not an OS sandbox and not a container. It constrains which files THIS host code will read, write or hand to a child process. It does not stop an arbitrary program that is already running from touching the filesystem.",
+      "No network isolation is provided. The pinned runner imports only argparse/importlib/json/os/platform/sys/time/datetime/torch, so the run itself makes no network call, but that is a property of the pinned runner, not of this policy."
+    ]
+  },
+  "readableRoots": [
+    "experiments/phase2-cpu-seg-v1",
+    "experiments/stitch-cpu-v1",
+    "fixtures/modules",
+    "fixtures/phase2-source-pack",
+    "fixtures/real-data",
+    "artifacts/weights"
+  ],
+  "writableRoots": [
+    "artifacts/runs",
+    "artifacts/test-scratch",
+    "work/research-execution"
+  ],
+  "deniedPaths": [
+    "data/sealed",
+    "fixtures/paper-only-v1/gold",
+    "fixtures/paper-only-v2/gold",
+    "fixtures/phase1-diagnostic/gold",
+    "fixtures/phase1-diagnostic-v2/gold",
+    "fixtures/paper-only-v1/protocol",
+    "fixtures/paper-only-v2/protocol",
+    "fixtures/phase1-diagnostic/protocol",
+    "fixtures/phase1-diagnostic-v2/protocol",
+    "isolation",
+    "work/incoming",
+    "docs/mvp/GOLDSET-REVIEW.md",
+    "configs/phase2/execution-config.json",
+    ".git"
+  ],
+  "deniedPathReasons": {
+    "data/sealed": "sealed evaluation inputs and gold; the training side must never read them",
+    "fixtures/paper-only-v1/gold": "dev-set gold annotations",
+    "fixtures/paper-only-v2/gold": "v2 gold annotations",
+    "fixtures/phase1-diagnostic/gold": "diagnostic gold expectations",
+    "fixtures/phase1-diagnostic-v2/gold": "v2 diagnostic gold expectations",
+    "fixtures/paper-only-v1/protocol": "protocol answers",
+    "fixtures/paper-only-v2/protocol": "protocol answers",
+    "fixtures/phase1-diagnostic/protocol": "protocol answers",
+    "fixtures/phase1-diagnostic-v2/protocol": "protocol answers",
+    "isolation": "the isolation policy itself; a patch under test may not re-allow itself",
+    "work/incoming": "staging area for unverified human-supplied material",
+    "docs/mvp/GOLDSET-REVIEW.md": "records gold-adjacent review detail",
+    "configs/phase2/execution-config.json": "the budget/isolation configuration table; not adaptation surface",
+    ".git": "repository internals"
+  },
+  "requestCannotSupply": [
+    "runnerPath",
+    "interpreterPath",
+    "workspaceRoot",
+    "outputDir outside writableRoots",
+    "any executable path",
+    "maxModules above the profile declaration",
+    "sourceContractMax above the profile declaration",
+    "a timeout above the declared per-attempt budget",
+    "any check rule or tolerance"
+  ],
+  "positiveControl": {
+    "description": "The policy must be demonstrably live, not a comment.",
+    "cases": [
+      "a path inside readableRoots is allowed",
+      "a path inside deniedPaths is refused even when it is also under a readable root",
+      "a path outside every root is refused",
+      "a relative path that resolves outside the repository is refused",
+      "a request-supplied executable path is refused with POLICY_DENIED"
+    ]
+  }
+}

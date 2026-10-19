@@ -1,0 +1,352 @@
+{
+  "schemaVersion": 1,
+  "toleranceId": "phase2-tolerances-v1",
+  "source": "host",
+  "generatedFrom": "packages/evolver/src/domain/mechanism-checks.ts (MECHANISM_TOLERANCES_V1, MECHANISM_RULES, COMBINATION_RULES)",
+  "generatedBy": "scripts/verify-phase2-profile.ts --regen-tolerances",
+  "rule": "Every numeric bound below is an explicit absolute (abs), relative (rel) or lower (min) bound for the stated dtype. There are no unexplained defaults: an entry either carries a numeric bound or is declared exact/count, which is a comparison rule rather than a tolerance. This file is derived from the check engine; scripts/verify-phase2-profile.ts fails if the two drift apart.",
+  "bounds": [
+    {
+      "id": "parameterized.shape_dtype_device",
+      "dtype": "exact",
+      "rationale": "shape/dtype/device are exact contract fields, not measurements"
+    },
+    {
+      "id": "parameterized.forward.participation",
+      "dtype": "count",
+      "min": 1,
+      "rationale": "a module that is attached must run at least once per declared forward pass"
+    },
+    {
+      "id": "parameterized.output.difference",
+      "dtype": "float32",
+      "min": 0.000001,
+      "rationale": "a real transformation of a fixed input must move the output by more than float32 noise"
+    },
+    {
+      "id": "parameterized.finiteness",
+      "dtype": "exact",
+      "rationale": "NaN/Inf is a defect, not a tolerance question"
+    },
+    {
+      "id": "parameterized.grad.norm",
+      "dtype": "float32",
+      "min": 1e-12,
+      "rationale": "a trainable parameter with an all-zero gradient is not being trained"
+    },
+    {
+      "id": "parameterized.optimizer.coverage",
+      "dtype": "count",
+      "rationale": "optimizer coverage compares two measured counts exactly; there is no tolerance band"
+    },
+    {
+      "id": "parameterized.param.update",
+      "dtype": "float32",
+      "min": 1e-7,
+      "rationale": "a parameter that does not move over the declared steps was never optimized"
+    },
+    {
+      "id": "parameter_free.reference.abs",
+      "dtype": "float32",
+      "abs": 0.000001,
+      "rationale": "an equivalent replacement is expected to stay close to the reference output"
+    },
+    {
+      "id": "parameter_free.reference.rel",
+      "dtype": "float32",
+      "rel": 0.00001,
+      "rationale": "the relative bound scales the absolute bound with the reference magnitude"
+    },
+    {
+      "id": "parameter_free.mask.zero",
+      "dtype": "float32",
+      "abs": 0.000001,
+      "rationale": "where the mask declares a position invalid the operator must emit zero"
+    },
+    {
+      "id": "parameter_free.mask.boundary",
+      "dtype": "float32",
+      "abs": 0.00001,
+      "rationale": "the worst disagreement is allowed at a mask boundary, but only within this bound"
+    },
+    {
+      "id": "parameter_free.mask.sensitivity",
+      "dtype": "float32",
+      "min": 1e-9,
+      "rationale": "an operator that ignores its mask produces the same tensor with and without it"
+    },
+    {
+      "id": "parameter_free.gradient",
+      "dtype": "float32",
+      "abs": 0.000001,
+      "rationale": "gradient equivalence is checked only when the operator is used in training"
+    },
+    {
+      "id": "parameter_free.finiteness",
+      "dtype": "exact",
+      "rationale": "NaN/Inf in an equivalence gradient is a defect, not a tolerance question"
+    },
+    {
+      "id": "parameter_free.parameter.count",
+      "dtype": "count",
+      "rationale": "a parameter-free operator declares exactly zero parameters"
+    },
+    {
+      "id": "loss.total.vs.ce",
+      "dtype": "float32",
+      "min": 1e-9,
+      "rationale": "the total loss must differ from the bare cross-entropy, or the term was never added"
+    },
+    {
+      "id": "loss.coefficient.abs",
+      "dtype": "float32",
+      "abs": 0.00001,
+      "rationale": "the effective coefficient is recovered from (total - ce) / term, so it is a measured number"
+    },
+    {
+      "id": "loss.coefficient.rel",
+      "dtype": "float32",
+      "rel": 0.0001,
+      "rationale": "the relative bound covers float32 cancellation when the term is much smaller than ce"
+    },
+    {
+      "id": "loss.gradient.contribution",
+      "dtype": "float32",
+      "min": 1e-9,
+      "rationale": "the term must reach backward, not only the forward total"
+    },
+    {
+      "id": "loss.gradient.logits",
+      "dtype": "float32",
+      "min": 1e-12,
+      "rationale": "a term that does not touch the specified logits has no gradient to contribute"
+    },
+    {
+      "id": "loss.reduction",
+      "dtype": "exact",
+      "rationale": "mean vs sum is a declared rule, not a tolerance"
+    },
+    {
+      "id": "loss.label.active.count",
+      "dtype": "count",
+      "rationale": "ignore-mask semantics are exact: the number of active labels is declared"
+    },
+    {
+      "id": "hook.fire.count",
+      "dtype": "count",
+      "min": 1,
+      "rationale": "a hook whose branch the training path never enters has a fire count of zero"
+    },
+    {
+      "id": "hook.position",
+      "dtype": "exact",
+      "rationale": "the declared hook position is an exact string"
+    },
+    {
+      "id": "hook.seed.reproducible",
+      "dtype": "exact",
+      "rationale": "a declared seed must reproduce the same draw"
+    },
+    {
+      "id": "hook.sample.coverage",
+      "dtype": "count",
+      "rationale": "coverage compares the observed sample set against the declared steps exactly"
+    },
+    {
+      "id": "hook.schedule.distinct",
+      "dtype": "count",
+      "min": 2,
+      "rationale": "a schedule that is declared but never applied leaves one distinct value"
+    },
+    {
+      "id": "data_policy.targets.constructed",
+      "dtype": "count",
+      "min": 1,
+      "rationale": "a target that is never constructed cannot drive a training step"
+    },
+    {
+      "id": "combination.order",
+      "dtype": "exact",
+      "rationale": "the observed module order must equal the declared order"
+    },
+    {
+      "id": "combination.member.alone",
+      "dtype": "exact",
+      "rationale": "each member must have its own passing report; a per-module ready is not a combination result"
+    },
+    {
+      "id": "combination.run",
+      "dtype": "exact",
+      "rationale": "the combination must have a real run of its own; there is no tolerance for reusing per-module results"
+    },
+    {
+      "id": "combination.function.ownership",
+      "dtype": "exact",
+      "rationale": "function ownership is a declared mapping, compared exactly"
+    },
+    {
+      "id": "combination.shared_state",
+      "dtype": "exact",
+      "rationale": "shared state is a declared set, compared exactly"
+    },
+    {
+      "id": "combination.parameter_sources",
+      "dtype": "count",
+      "rationale": "parameter attribution compares an owner whitelist and its counts exactly"
+    }
+  ],
+  "ruleToTolerance": {
+    "parameterized_feature": [
+      {
+        "rule": "parameterized.shape_dtype_device",
+        "toleranceId": "parameterized.shape_dtype_device"
+      },
+      {
+        "rule": "parameterized.forward_participation",
+        "toleranceId": "parameterized.forward.participation"
+      },
+      {
+        "rule": "parameterized.finiteness",
+        "toleranceId": "parameterized.finiteness"
+      },
+      {
+        "rule": "parameterized.output_difference",
+        "toleranceId": "parameterized.output.difference"
+      },
+      {
+        "rule": "parameterized.optimizer_covers_parameters",
+        "toleranceId": "parameterized.optimizer.coverage"
+      },
+      {
+        "rule": "parameterized.gradients_finite",
+        "toleranceId": "parameterized.finiteness"
+      },
+      {
+        "rule": "parameterized.gradient_norm",
+        "toleranceId": "parameterized.grad.norm"
+      },
+      {
+        "rule": "parameterized.parameter_update",
+        "toleranceId": "parameterized.param.update"
+      }
+    ],
+    "parameter_free_operator": [
+      {
+        "rule": "parameter_free.reference_output_tolerance",
+        "toleranceId": "parameter_free.reference.abs"
+      },
+      {
+        "rule": "parameter_free.mask_is_read",
+        "toleranceId": "parameter_free.mask.sensitivity"
+      },
+      {
+        "rule": "parameter_free.mask_boundary",
+        "toleranceId": "parameter_free.mask.zero"
+      },
+      {
+        "rule": "parameter_free.input_output_equivalence",
+        "toleranceId": "parameter_free.gradient"
+      },
+      {
+        "rule": "parameter_free.gradient_finite",
+        "toleranceId": "parameter_free.finiteness"
+      },
+      {
+        "rule": "parameter_free.parameter_count",
+        "toleranceId": "parameter_free.parameter.count"
+      }
+    ],
+    "loss": [
+      {
+        "rule": "loss.term_added_to_total",
+        "toleranceId": "loss.total.vs.ce"
+      },
+      {
+        "rule": "loss.coefficient",
+        "toleranceId": "loss.coefficient.abs"
+      },
+      {
+        "rule": "loss.reduction_rule",
+        "toleranceId": "loss.reduction"
+      },
+      {
+        "rule": "loss.gradient_wrt_logits",
+        "toleranceId": "loss.gradient.logits"
+      },
+      {
+        "rule": "loss.gradient_wrt_parameters",
+        "toleranceId": "loss.gradient.contribution"
+      },
+      {
+        "rule": "loss.gradient_contribution",
+        "toleranceId": "loss.gradient.contribution"
+      },
+      {
+        "rule": "loss.label_and_ignore_mask",
+        "toleranceId": "loss.label.active.count"
+      },
+      {
+        "rule": "loss.finite",
+        "toleranceId": "parameterized.finiteness"
+      }
+    ],
+    "training_hook": [
+      {
+        "rule": "hook.fires_at_declared_position",
+        "toleranceId": "hook.fire.count"
+      },
+      {
+        "rule": "hook.seed_reproducible",
+        "toleranceId": "hook.seed.reproducible"
+      },
+      {
+        "rule": "hook.batch_and_sample_coverage",
+        "toleranceId": "hook.sample.coverage"
+      },
+      {
+        "rule": "hook.schedule_effective",
+        "toleranceId": "hook.schedule.distinct"
+      }
+    ],
+    "data_policy": [
+      {
+        "rule": "data_policy.targets_constructed",
+        "toleranceId": "data_policy.targets.constructed"
+      },
+      {
+        "rule": "data_policy.sample_coverage",
+        "toleranceId": "hook.sample.coverage"
+      },
+      {
+        "rule": "data_policy.seed_reproducible",
+        "toleranceId": "hook.seed.reproducible"
+      }
+    ],
+    "combination": [
+      {
+        "rule": "combination.members_pass_alone",
+        "toleranceId": "combination.member.alone"
+      },
+      {
+        "rule": "combination.run_present",
+        "toleranceId": "combination.run"
+      },
+      {
+        "rule": "combination.order",
+        "toleranceId": "combination.order"
+      },
+      {
+        "rule": "combination.duplicate_function",
+        "toleranceId": "combination.function.ownership"
+      },
+      {
+        "rule": "combination.shared_state",
+        "toleranceId": "combination.shared_state"
+      },
+      {
+        "rule": "combination.extra_parameter_sources",
+        "toleranceId": "combination.parameter_sources"
+      }
+    ]
+  }
+}

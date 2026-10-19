@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "environmentId": "phase2-cpu-env-v1",
+  "capturedAt": "2026-10-04T00:35:26.209Z",
+  "captureMethod": "Every value below was read from this machine in the session that wrote this file: python/torch/numpy via `G:\\Anaconda\\python.exe -c`, the GPU driver via `nvidia-smi --query-gpu`, executable digests via Get-FileHash, and file presence via the filesystem. Nothing is copied from documentation or from a template.",
+  "device": "cpu",
+  "deviceReason": "The first Phase 2 profile (phase2-cpu-seg-v1) is CPU-only; experiments/phase2-cpu-seg-v1/runner.py fails preflight with PREFLIGHT_DEVICE_MISMATCH for any declared device other than cpu. CUDA is present on this machine but is deliberately not the declared device of this environment pin.",
+  "interpreter": {
+    "id": "python",
+    "path": "G:\\Anaconda\\python.exe",
+    "sha256": "388fe2cffda8a134e7d7dc4e978f7c478857ece6b69694daecbed25e51ec633a",
+    "version": "3.13.5",
+    "implementation": "CPython",
+    "build": "main, Jun 12 2025 16:37:03",
+    "compiler": "MSC v.1929 64 bit (AMD64)",
+    "sysVersion": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:37:03) [MSC v.1929 64 bit (AMD64)]"
+  },
+  "nodeInterpreter": {
+    "id": "node",
+    "path": "C:\\Program Files\\nodejs\\node.exe",
+    "sha256": "9a4eb5f1c29c6a2e93852ead46b999e284a6a5ca8bab4d4e241d587d025a52de",
+    "version": "v24.18.0",
+    "note": "Runs the Phase 2 verifiers and the DSH tool layer with --experimental-strip-types; it does not run training."
+  },
+  "packages": {
+    "torch": "2.9.1+cu126",
+    "torchvision": "0.24.1+cu126",
+    "torchaudio": "2.9.1+cu126",
+    "numpy": "2.1.3"
+  },
+  "packageLock": {
+    "present": false,
+    "searchedFor": [
+      "pnpm-lock.yaml",
+      "package-lock.json",
+      "yarn.lock",
+      "requirements.txt",
+      "environment.yml"
+    ],
+    "reason": "No lock file of any of these kinds exists in the repository root, so no lock digest can be recorded. PHASE2-SPEC section 5 requires the environment to record a package lock; the honest value here is absent, and this is recorded as an unresolved pin rather than filled with a fabricated digest. Until a lock exists, package versions in this file are the pin of record and are only as strong as the packages actually installed."
+  },
+  "cuda": {
+    "available": true,
+    "version": "12.6",
+    "cudnn": "91002",
+    "driverVersion": "610.62",
+    "deviceCount": 1,
+    "deviceName": "NVIDIA GeForce RTX 4070 SUPER",
+    "computeCapability": [8, 9],
+    "note": "Recorded for completeness. It does not make this pin a GPU environment: the declared device is cpu."
+  },
+  "host": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+    "torchNumThreads": 10
+  },
+  "runtimeLicenses": [
+    {
+      "component": "torch",
+      "version": "2.9.1+cu126",
+      "license": "BSD-3-Clause",
+      "evidence": "G:\\Anaconda\\Lib\\site-packages\\torch-2.9.1+cu126.dist-info\\METADATA line 6: \"License: BSD-3-Clause\"; the bundled LICENSE file also lists BSD-2-Clause for some vendored components.",
+      "verified": true
+    },
+    {
+      "component": "numpy",
+      "version": "2.1.3",
+      "license": "BSD-3-Clause",
+      "evidence": "G:\\Anaconda\\Lib\\site-packages\\numpy-2.1.3.dist-info\\LICENSE.txt is the three-clause BSD text (clause 3: \"Neither the name of the NumPy Developers ... may be used to endorse or promote products\").",
+      "verified": true
+    }
+  ],
+  "allowedDifferences": [
+    "Host name, current working directory and wall-clock time do not participate in this pin.",
+    "Absolute site-packages paths are recorded as evidence strings only; they are not hashed, because two machines with the same package versions legitimately differ there.",
+    "GPU presence and driver version may differ without invalidating a cpu-device run; they would matter for a GPU profile, which this pin does not declare.",
+    "Package versions are pinned to the exact strings above. A different torch or numpy version invalidates byte reproducibility of fixtures/phase2-source-pack/data/, whose .npy bytes depend on the numpy PCG64 draw."
+  ],
+  "notVerified": [
+    "No lock file exists, so no dependency closure is pinned (see packageLock).",
+    "This file records what is installed on this one machine. It is not evidence that another machine can reproduce the environment."
+  ]
+}

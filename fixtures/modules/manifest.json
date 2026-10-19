@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "fixtureId": "modules-stitch-cpu-v1",
+  "modules": [
+    {
+      "id": "module-aspp-v1",
+      "revision": 1,
+      "name": "ASPPBlock",
+      "mechanism": "spatial_pyramid_pooling",
+      "implementationId": "impl-aspp-8ch-v1",
+      "implementationPath": "fixtures/modules/aspp_block.py",
+      "implementationHash": "9bd94a7c105cea93ca79c66f7b4794e840541bec8c9c6729a80ec5bb2f38cf6b",
+      "sourceRefs": [
+        {
+          "paperId": "ASPP_1706.05587.snapshot",
+          "sourceUri": "https://arxiv.org/abs/1706.05587",
+          "documentArtifactId": "artifact-aspp-snapshot",
+          "documentHash": "1a0608a2fef8d07f38cf18bbf9104d3e727b2eb766b8d6b68da7041bb65cabab",
+          "locator": "3.3 Atrous Spatial Pyramid Pooling",
+          "excerptHash": "436d676bc258b22382b71d6e9fb377ca46a5de4e6bcca1d451ada17accdd9a30"
+        }
+      ],
+      "inputContract": {
+        "tensorShape": [4, 8, 16, 16],
+        "dtype": "float32",
+        "channels": 8
+      },
+      "outputContract": {
+        "tensorShape": [4, 8, 16, 16],
+        "dtype": "float32",
+        "channels": 8
+      },
+      "allowedSlots": ["features.pre_pool"],
+      "readyReportId": "ready-aspp-8ch-v1",
+      "status": "ready"
+    },
+    {
+      "id": "module-se-v1",
+      "revision": 1,
+      "name": "SEBlock",
+      "mechanism": "channel_attention",
+      "implementationId": "impl-se-8ch-v1",
+      "implementationPath": "fixtures/modules/se_block.py",
+      "implementationHash": "8b78fc50e35cecb967d66bfb1c1226606584da7ad0023013d3d660a949371d61",
+      "sourceRefs": [
+        {
+          "paperId": "SE_1709.01507.snapshot",
+          "sourceUri": "https://arxiv.org/abs/1709.01507",
+          "documentArtifactId": "artifact-se-snapshot",
+          "documentHash": "778bae36203ba16862697a8761e2011fe372122cd0f947dd8011dd7e320774b6",
+          "locator": "III Squeeze-and-Excitation Blocks",
+          "excerptHash": "a259d2efb519cd914ed4b0f416a5344bca102810d22d5b434a4740b298a3f591"
+        }
+      ],
+      "inputContract": {
+        "tensorShape": [4, 8, 16, 16],
+        "dtype": "float32",
+        "channels": 8
+      },
+      "outputContract": {
+        "tensorShape": [4, 8, 16, 16],
+        "dtype": "float32",
+        "channels": 8
+      },
+      "allowedSlots": ["features.pre_pool"],
+      "readyReportId": "ready-se-8ch-v1",
+      "status": "ready"
+    },
+    {
+      "id": "module-attention-gate-v1",
+      "revision": 1,
+      "name": "AttentionGate",
+      "mechanism": "attention_gate",
+      "implementationId": "impl-attention-gate-8ch-v1",
+      "implementationPath": "fixtures/modules/attention_gate_block.py",
+      "implementationHash": "e405220c210ffba1771cd064d00819624bb55ca4171951fe7104618eea2068d0",
+      "sourceRefs": [
+        {
+          "paperId": "P002",
+          "sourceUri": "research-card:paper-only-v1-module-P002-83368396d7b6",
+          "documentArtifactId": "p5-card:P002",
+          "documentHash": "9ca1b48afffa215aec10e2e5f990b0a2e3097295ecd0033dd6de485f831061dd",
+          "locator": "moduleCard.name: attention gate (AG); moduleCard.mechanism: learned focus/suppress of salient structures",
+          "excerptHash": "3925226493b6bb5cf6fa9ae4ec84f866b4936cdc7f8301c7066a9e94024dcbbb"
+        }
+      ],
+      "provenanceNote": "NO-UPSTREAM-CODE: this is this repository's own 8-channel implementation of the attention-gate mechanism the P5 card (P002) describes; it is not the paper authors' code. The card's interventionAxis label (attention_implementation) is NOT the Phase 2 mechanism class; the class is parameterized_feature because the module is learned parameters applied to a forward feature tensor (PHASE2-SPEC section 4).",
+      "candidateBinding": {
+        "p6CandidateId": "candidate-P002",
+        "synthesisResultId": "p6-synthesis-result-2026-10-06",
+        "producerOperationId": "rop-p6_synthesize-c09e4dbe354274ae"
+      },
+      "inputContract": {
+        "tensorShape": [4, 8, 16, 16],
+        "dtype": "float32",
+        "channels": 8
+      },
+      "outputContract": {
+        "tensorShape": [4, 8, 16, 16],
+        "dtype": "float32",
+        "channels": 8
+      },
+      "allowedSlots": ["features.pre_pool"],
+      "readyReportId": "ready-attention-gate-8ch-v1",
+      "status": "ready"
+    }
+  ]
+}

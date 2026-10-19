@@ -1,0 +1,10 @@
+{
+  "name": "dsh-paper-ts-toolchain",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Pinned TypeScript toolchain for the RG-F preflight typecheck (F1). Never installed through the workspace junction; locked by package-lock.json.",
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "typescript": "5.9.3"
+  }
+}

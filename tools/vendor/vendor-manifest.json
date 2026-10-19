@@ -1,0 +1,67 @@
+﻿[
+    {
+        "file":  "tools/vendor/@deepseek-ai/cordis/lib/index.js",
+        "sha256":  "1729cdbf8ee40b17c8839e06bf96491490548559e11ef7e411271e0754e751c5",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/index.js",
+        "sha256":  "aaba52bf5d0149355407642b3965c06977d1e9143f5c61bc19429abbe6a11c5d",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/invariant.js",
+        "sha256":  "41a09fa8d0e0857c6232e8d3b13c8658929b6b6300c6b3a2c53980c05309c282",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/index.js",
+        "sha256":  "565e809adcc9897b45751b3c0e7df8326aa0b5e4e0ef8755f1fe4b9e3a84044f",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/invariant.js",
+        "sha256":  "5c4dd2c8846dbadba15cdc4c3fb5fdc9a9d62f42e1dca5e40c60a6945d7b6608",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/json-schema.js",
+        "sha256":  "912e04e68c2455cbb77651031449574f992720c90311e6cbecb1d35020bc1072",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/presentation.js",
+        "sha256":  "253894265253e38fa9db12f3696d9dac9fd2bed1363c04ce3f95c0f19a6c16da",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/ptc.js",
+        "sha256":  "b9d7f3fdfedd806f2f8a3e9ad13d2d1f0ac4c0e649268c78bd211dfca51c1074",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/py-types.js",
+        "sha256":  "62cf351dd1a513bb024676d5f73d23ae3f89c95bb5c8e630832443b1b836113f",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/schema.js",
+        "sha256":  "1b70cbf3a33327ca34d0a9e60b3143735327918f74495cad33dbbde5b5cbfad7",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/testing.js",
+        "sha256":  "c6784f546e950dc38323baaad4009bb197eb25acf3a16adaa2893a44c7b7a650",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/ts-types.js",
+        "sha256":  "3c2f80465d6a420f15c75dcd023daa73af97307c3e22478c0bae67cf71c50d1e",
+        "matchesJunctionSource":  true
+    },
+    {
+        "file":  "tools/vendor/@deepseek-ai/dsh-tools/lib/types/types.js",
+        "sha256":  "d53c54d32353419ece121f485a5534ee054842b74ebab7b4a4d3325545d0179a",
+        "matchesJunctionSource":  true
+    }
+]

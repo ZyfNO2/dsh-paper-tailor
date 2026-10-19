@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "registryId": "phase2-profile-registry-v1",
+  "note": "HOST-OWNED. TaskProfile.runnerRef / compilerRef / verifierRef are opaque strings. This file maps them to concrete in-repo implementations. Nothing here is ever taken from a request: a caller names a profile id, and the host resolves the executable from this table. A request that carries its own runnerPath / interpreterPath / argv / executable is refused with POLICY_DENIED before any other validation runs.",
+  "rule": "A ref that is not present in this file, or whose symbol is not registered in packages/evolver/src/domain/task-profile.ts, is UNSUPPORTED_CAPABILITY. There is no fallback runner.",
+  "profiles": {
+    "phase2-cpu-seg-v1": {      "profileFile": "configs/phase2/profile-cpu-seg-v1.json",
+      "environmentRef": "configs/phase2/environment-cpu-seg-v1.json",
+      "isolationPolicyRef": "configs/phase2/isolation-policy.json",
+      "slotSchemaRef": "configs/phase2/slot-schemas.json",
+      "orderRuleRef": "configs/phase2/order-rules.json",
+      "toleranceRef": "configs/phase2/tolerances.json",
+      "budgetRef": "configs/phase2/budget-measurement.json",
+      "executionConfigRef": "configs/phase2/execution-config.json",
+      "pins": {
+        "maxModules": 3,
+        "sourceContractMax": 1,
+        "device": "cpu",
+        "dtype": "float32",
+        "maxSourceModules": 3
+      },
+      "runtime": {
+        "baselineImplementationPath": "experiments/stitch-cpu-v1/model.py",
+        "baselineImplementationSha256": "f8a8bc32a729bb1c20e9a9f3fb2d8b66bbff7c30aca2d81da3f849c2283aa6c4",
+        "baseWeightPath": "artifacts/weights/baseline_seed20260929.pt",
+        "baseWeightSha256": "af18b92ff025c17699b7e7f1bc866a9f267f6bee4bba8b4b042b081d2503a06d",
+        "timeoutMs": 120000,
+        "learningRate": 0.01,
+        "batchSize": 4,
+        "slotChannels": 8,
+        "dataSpec": {
+          "kind": "real_slice",
+          "seed": 20261004,
+          "sampleCount": 16,
+          "shape": [3, 64, 64],
+          "numClasses": 2,
+          "slicePath": "fixtures/real-data/oxford-pet-trimap-v1/slice.json",
+          "sliceSha256": "bc6258000f8b6be512949cb90d6776a86bf7d4bbd3d4459e27d6515b1ae07cbc"
+        },
+        "note": "Runtime pins are host-owned. A request may not change the timeout, the learning rate, the batch size or the data spec; prepareRun reads them from here. slotChannels=8 is the baseline Conv2d(3->8) output width and is asserted against the slot schema on load. The data spec is a REAL licensed dataset (Oxford-IIIT Pet trimap annotations, CC BY-SA 4.0), prepared once by scripts/prepare-phase3-real-data.ts and pinned by hash: the runner verifies those bytes before reading them, so a slice that changed on disk is CONTRACT_DATA_MISMATCH rather than a different experiment under the same run identity."
+      },
+      "pinnedModules": [
+        {
+          "id": "module-aspp-v1",
+          "className": "ASPPBlock",
+          "implementationPath": "fixtures/modules/aspp_block.py",
+          "sha256": "9bd94a7c105cea93ca79c66f7b4794e840541bec8c9c6729a80ec5bb2f38cf6b",
+          "mechanismKind": "parameterized_feature",
+          "mechanismLabel": "spatial_pyramid_pooling",
+          "slotIds": ["features.pre_pool"],
+          "provenance": "fixtures/modules/manifest.json id/name/implementationPath/implementationHash; mechanismKind is the host's classification under MECHANISM_KINDS, not the P6 interventionAxis label"
+        },
+        {
+          "id": "module-se-v1",
+          "className": "SEBlock",
+          "implementationPath": "fixtures/modules/se_block.py",
+          "sha256": "8b78fc50e35cecb967d66bfb1c1226606584da7ad0023013d3d660a949371d61",
+          "mechanismKind": "parameterized_feature",
+          "mechanismLabel": "channel_attention",
+          "slotIds": ["features.pre_pool"],
+          "provenance": "fixtures/modules/manifest.json id/name/implementationPath/implementationHash; mechanismKind is the host's classification under MECHANISM_KINDS, not the P6 interventionAxis label"
+        },
+        {
+          "id": "module-attention-gate-v1",
+          "className": "AttentionGate",
+          "implementationPath": "fixtures/modules/attention_gate_block.py",
+          "sha256": "e405220c210ffba1771cd064d00819624bb55ca4171951fe7104618eea2068d0",
+          "mechanismKind": "parameterized_feature",
+          "mechanismLabel": "attention_gate",
+          "slotIds": ["features.pre_pool"],
+          "provenance": "fixtures/modules/manifest.json id/name/implementationPath/implementationHash + candidateBinding; mechanismKind is the host's classification under MECHANISM_KINDS, NOT the P6 interventionAxis label attention_implementation, which is not a MECHANISM_KINDS member"
+        }
+      ],
+      "pinnedModuleRule": "Only the modules in this table may appear in a binding. A module id that is not here is NOT_FOUND, and a module path supplied by a request is refused by assertNoRequestSuppliedExecutable. Adding a module is a host configuration change, not a request parameter.",
+      "refs": {
+        "runner:phase2-cpu-seg-v1": {
+          "kind": "runner",
+          "module": "packages/evolver/src/domain/task-profile.ts",
+          "symbol": "runPhase2CpuSegRunner",
+          "description": "Spawns the pinned CPU runner as a real child process using the argv this registry builds, and returns real process facts.",
+          "script": "experiments/phase2-cpu-seg-v1/runner.py",
+          "scriptSha256": "ba3b2f9c7ac27bbaf0431ba37dd8fa46446a7efa64cd792ec12c6a316412fa45",
+          "interpreter": {
+            "path": "G:\\Anaconda\\python.exe",
+            "sha256": "388fe2cffda8a134e7d7dc4e978f7c478857ece6b69694daecbed25e51ec633a",
+            "version": "3.13.5"
+          },
+          "argvTemplate": ["<interpreter>", "<script>", "--manifest", "<manifestPath>"],
+          "argvRule": "Every argv element comes from this registry or from the host-built manifest path. No element is request-supplied."
+        },
+        "compiler:phase2-cpu-seg-v1": {
+          "kind": "compiler",
+          "module": "packages/evolver/src/domain/task-profile.ts",
+          "symbol": "compilePhase2CpuSegRecipe",
+          "description": "Builds a variant recipe from module ids + bindings. Never from hardcoded A/B names."
+        },
+        "verifier:phase2-cpu-seg-v1": {
+          "kind": "verifier",
+          "module": "packages/evolver/src/domain/task-profile.ts",
+          "symbol": "verifyPhase2CpuSegRun",
+          "description": "Host-side verification of one run: identity, hashes, declared budget, environment pin and per-module mechanism facts."
+        }
+      }
+    }
+  }
+}

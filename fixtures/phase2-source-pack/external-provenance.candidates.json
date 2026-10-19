@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "purpose": "External official-source provenance for Phase 2, recast into the frozen SourceEntry shape.",
+  "sourceOfFacts": "phase2-source-pack-2026-10-04.zip (SHA-256 C4087725600665A0ADA2866060C83B5830DEC9B9E75C34F90F083D62D4544494), verified/source-entries.verified.json + unresolved/source-entries.unresolved.json.",
+  "status": "NOT_IN_BUNDLE",
+  "whyNotInBundle": [
+    "These are remote VCS repositories that have not been fetched to this machine. The frozen SourceEntry contract requires sourceUri+commit+treeRef+entrypoint to describe a source the runner can actually consume; recording them as bundle modules would claim a runnable source that is not on disk.",
+    "They therefore mirror the existing provenanceArchives pattern: pinned as provenance/evidence, inBundle=false, and NOT passed to validateSourceBundle as baseline/modules.",
+    "Their runnerCompatibility is recorded per entry so the profile can make an explicit preflight decision instead of discovering it at import time."
+  ],
+  "contractNote": "Every entry below was passed through the frozen validateSourceEntry from packages/evolver/src/contracts/experiments.ts. Fields outside the closed SourceEntry key set (officiality, runnerCompatibility, reason, verifiedAt, tier, paper) are carried in the sibling metadata object for each entry, never inside the SourceEntry itself.",
+  "entries": [
+    {
+      "entry": {
+        "id": "aspp-deeplabv3",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "https://github.com/tensorflow/models",
+        "commit": "930a6f98f7debcc32ca7afbca4a176dbf9211e03",
+        "contentHash": null,
+        "treeRef": "research/deeplab",
+        "entrypoint": "research/deeplab/model.py",
+        "licenseRef": "Apache-2.0:LICENSE",
+        "weightRefs": []
+      },
+      "metadata": {
+        "tier": "A",
+        "paper": { "arxiv": "1706.05587v3", "title": "Rethinking Atrous Convolution for Semantic Image Segmentation" },
+        "officiality": "official TensorFlow DeepLab implementation; DeepLab README includes the paper and lists maintainers including Liang-Chieh Chen",
+        "runnerCompatibility": "BLOCKED_FOR_CURRENT_RUNNER",
+        "reason": "Legacy TensorFlow DeepLab code uses TensorFlow/tf.contrib; not directly importable as a PyTorch module in the stated Python 3.13 + torch 2.9.1 CPU runner.",
+        "verifiedAt": "2026-10-04"
+      }
+    },
+    {
+      "entry": {
+        "id": "senet",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "https://github.com/hujie-frank/SENet",
+        "commit": "0262d43d44c561fd53c3dba210cc8bacfc60500d",
+        "contentHash": null,
+        "treeRef": "models",
+        "entrypoint": "models/SE-ResNet-50.prototxt",
+        "licenseRef": "Apache-2.0:LICENSE",
+        "weightRefs": []
+      },
+      "metadata": {
+        "tier": "A",
+        "paper": { "arxiv": "1709.01507v4", "title": "Squeeze-and-Excitation Networks" },
+        "officiality": "author repository; README states the implementation is Caffe",
+        "runnerCompatibility": "BLOCKED_FOR_CURRENT_RUNNER",
+        "reason": "Official implementation is Caffe/prototxt + custom C++/CUDA layers, not a directly importable PyTorch module.",
+        "verifiedAt": "2026-10-04"
+      }
+    },
+    {
+      "entry": {
+        "id": "attention-unet",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "https://github.com/ozan-oktay/Attention-Gated-Networks",
+        "commit": "eee4881fdc31920efd873773e0b744df8dacbfb6",
+        "contentHash": null,
+        "treeRef": "models",
+        "entrypoint": "models/networks/unet_grid_attention_3D.py",
+        "licenseRef": "MIT:LICENSE",
+        "weightRefs": []
+      },
+      "metadata": {
+        "tier": "B",
+        "paper": { "arxiv": "1804.03999v3", "title": "Attention U-Net: Learning Where to Look for the Pancreas" },
+        "officiality": "author repository; README explicitly references Attention U-Net",
+        "runnerCompatibility": "NEEDS_PREFLIGHT",
+        "reason": "PyTorch source, but the repository is old and declares legacy dependencies (including torchsample); validate against Python 3.13 / torch 2.9.1 before execution.",
+        "verifiedAt": "2026-10-04"
+      }
+    },
+    {
+      "entry": {
+        "id": "transformer-tensor2tensor",
+        "role": "baseline",
+        "sourceKind": "vcs",
+        "sourceUri": "https://github.com/tensorflow/tensor2tensor",
+        "commit": "bafdc1b67730430d38d6ab802cbd51f9d053ba2e",
+        "contentHash": null,
+        "treeRef": "tensor2tensor/models",
+        "entrypoint": "tensor2tensor/models/transformer.py",
+        "licenseRef": "Apache-2.0:LICENSE",
+        "weightRefs": []
+      },
+      "metadata": {
+        "tier": "C",
+        "paper": { "arxiv": "1706.03762", "title": "Attention Is All You Need" },
+        "officiality": "Google/TensorFlow Tensor2Tensor implementation; transformer.py names the paper",
+        "runnerCompatibility": "BLOCKED_FOR_CURRENT_RUNNER",
+        "reason": "TensorFlow/Tensor2Tensor implementation, not directly importable as a PyTorch module in the current runner.",
+        "verifiedAt": "2026-10-04"
+      }
+    },
+    {
+      "entry": {
+        "id": "lora",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "https://github.com/microsoft/LoRA",
+        "commit": "c4593f060e6a368d7bb5af5273b8e42810cdef90",
+        "contentHash": null,
+        "treeRef": "loralib",
+        "entrypoint": "loralib/layers.py",
+        "licenseRef": "MIT:LICENSE.md",
+        "weightRefs": []
+      },
+      "metadata": {
+        "tier": "C",
+        "paper": { "arxiv": "2106.09685", "title": "LoRA: Low-Rank Adaptation of Large Language Models" },
+        "officiality": "Microsoft paper implementation; README states it contains loralib source code and paper examples",
+        "runnerCompatibility": "LIKELY_COMPATIBLE_WITH_ADAPTER",
+        "reason": "PyTorch code. It is a library module rather than a drop-in segmentation module, so the experiment runner still needs a wrapper/adapter contract.",
+        "verifiedAt": "2026-10-04"
+      }
+    },
+    {
+      "entry": {
+        "id": "flashattention",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "https://github.com/Dao-AILab/flash-attention",
+        "commit": "e9515d5dee6ade134a33d6020d38d01ef0596996",
+        "contentHash": null,
+        "treeRef": "flash_attn",
+        "entrypoint": "flash_attn/flash_attn_interface.py",
+        "licenseRef": "BSD-3-Clause:LICENSE",
+        "weightRefs": []
+      },
+      "metadata": {
+        "tier": "C",
+        "paper": { "arxiv": "2205.14135", "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness" },
+        "officiality": "official implementation; README explicitly identifies the repository as official",
+        "runnerCompatibility": "DEVICE_MISMATCH_CPU_PROFILE",
+        "reason": "Requires CUDA or ROCm toolkit. A CPU-only Phase 2 profile should reject before import/execute.",
+        "verifiedAt": "2026-10-04"
+      }
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "unet-original-2015",
+      "tier": "B",
+      "paper": { "arxiv": "1505.04597v1", "title": "U-Net: Convolutional Networks for Biomedical Image Segmentation" },
+      "intendedSourceKind": "offline_archive",
+      "archiveUrl": "https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-release-2015-10-02.tar.gz",
+      "contentHash": null,
+      "licenseRef": "no-license-declared",
+      "runnerCompatibility": "BLOCKED_FOR_CURRENT_RUNNER",
+      "unresolved": [
+        "The 185 MB gzip archive could not be fetched by the current toolchain, so SHA-256 contentHash was not computed. It is NOT fabricated here; run scripts/hash_file.py from the pack after a local download.",
+        "The author page does not state a software license. Inspect the archive before redistribution/use; do not invent an SPDX identifier.",
+        "Original release is Caffe/Matlab, not PyTorch."
+      ],
+      "verifiedAt": "2026-10-04"
+    }
+  ],
+  "notVerified": [
+    "The commits above were recorded from the supplied pack; they were not re-resolved against the live remotes in this session (no network egress from this environment).",
+    "No claim is made that any of these entries is importable by the current phase2-cpu-seg-v1 runner; runnerCompatibility records the opposite for most of them.",
+    "licenceRef values are as supplied; they were not cross-checked against each repository's LICENSE file contents here."
+  ]
+}

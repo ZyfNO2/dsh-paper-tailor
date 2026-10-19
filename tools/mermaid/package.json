@@ -1,0 +1,9 @@
+{
+  "name": "dsh-paper-mermaid",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Pinned Mermaid renderer for the FE3 work-tree (BR-FE3). Never installed through the workspace junction; locked by package-lock.json.",
+  "dependencies": {
+    "mermaid": "11.17.2"
+  }
+}

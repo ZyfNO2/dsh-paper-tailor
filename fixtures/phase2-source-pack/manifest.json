@@ -1,0 +1,458 @@
+{
+  "schemaVersion": 1,
+  "packId": "phase2-source-pack-v1",
+  "builtAt": "2026-10-05T23:47:57.758Z",
+  "builtBy": "fixtures/phase2-source-pack/build-manifest.ts",
+  "repository": {
+    "headAtBuild": "a4045da1d280236d97328f2b69e7d4affe2e9b65",
+    "headSubject": "chore(phase2): repin the source pack with the attention-gate entry (4 entries)",
+    "remoteUrl": null,
+    "remoteUrlNote": "null means no remote is configured. No upstream URL is invented to fill the field; see bundle.unresolved.",
+    "licenseFilesFound": [],
+    "licenseFilesNote": "Scanned the repository (excluding node_modules, .git and .pnpm-store) for LICENSE, COPYING, NOTICE and COPYRIGHT files: none exist."
+  },
+  "hashRule": {
+    "file": "plain SHA-256 over the raw bytes of the file; no normalization, no line-ending rewrite",
+    "gitBlob": "git blob id (SHA-1) of the file at the recorded commit, for cross-checking against the object store",
+    "tree": "git tree object id at the recorded commit for the entry treeRef",
+    "excerpt": "not used by this manifest; no excerpt is hashed here"
+  },
+  "contract": {
+    "module": "packages/evolver/src/contracts/experiments.ts",
+    "shapes": [
+      "SourceEntry",
+      "SourceBundle"
+    ],
+    "validatedBy": "validateSourceBundle (frozen) at build time and again by scripts/verify-phase2-sources.ts"
+  },
+  "bundle": {
+    "schemaVersion": 1,
+    "proposal": {
+      "kind": "manual",
+      "proposalRef": {
+        "id": "docs/mvp/phases/PHASE2-RPD.md",
+        "sha256": "be2a137febe6d6da5ccce4c6d5343fbd893ffa53297f8f5f5eea11bbbea20ff6"
+      },
+      "selectionReason": "Workstream A (来源与数据准备) of PHASE2-RPD \"Worker 开工边界\" row 1: verify code/license/version and prepare the small data slice, preprocessing and manifest before a candidate exists. The contract this pack is built against is docs/mvp/phases/PHASE2-SPEC.md section 2 (SourceBundle)."
+    },
+    "baseline": {
+      "id": "phase2-baseline-stitch-cpu-v1",
+      "role": "baseline",
+      "sourceKind": "vcs",
+      "sourceUri": "repo-relative:source-checkout",
+      "commit": "1f0344ca3a7bdc3b7f7a0dc619abd36722869e62",
+      "contentHash": null,
+      "treeRef": "experiments/stitch-cpu-v1",
+      "entrypoint": "experiments/stitch-cpu-v1/model.py",
+      "licenseRef": "no-license-declared",
+      "weightRefs": [
+        "artifacts/weights/baseline_seed20260929.pt"
+      ]
+    },
+    "modules": [
+      {
+        "id": "phase2-module-aspp-v1",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "repo-relative:source-checkout",
+        "commit": "39e730408d4037352344e8abbf3dc0f9b095aaa6",
+        "contentHash": null,
+        "treeRef": "fixtures/modules",
+        "entrypoint": "fixtures/modules/aspp_block.py",
+        "licenseRef": "no-license-declared",
+        "weightRefs": []
+      },
+      {
+        "id": "phase2-module-se-v1",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "repo-relative:source-checkout",
+        "commit": "39e730408d4037352344e8abbf3dc0f9b095aaa6",
+        "contentHash": null,
+        "treeRef": "fixtures/modules",
+        "entrypoint": "fixtures/modules/se_block.py",
+        "licenseRef": "no-license-declared",
+        "weightRefs": []
+      },
+      {
+        "id": "phase2-module-attention-gate-v1",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "repo-relative:source-checkout",
+        "commit": "85440333aaf3d63994238c91092a947930629da5",
+        "contentHash": null,
+        "treeRef": "fixtures/modules",
+        "entrypoint": "fixtures/modules/attention_gate_block.py",
+        "licenseRef": "no-license-declared",
+        "weightRefs": []
+      }
+    ],
+    "dataRef": {
+      "id": "phase2-cpu-slice-v1",
+      "sha256": "27d82d46318bb7d32f25c6380a503f1905d22f3f5e633334a887e33b16ab2016"
+    },
+    "environmentRef": {
+      "id": "phase2-cpu-env-v1",
+      "sha256": "495125b4c8f39e2dd1f190a5e4abbd9af6d126c44e9ddb67df6300f3a0b3df5c"
+    },
+    "qualityStatus": "provisional",
+    "unresolved": [
+      "NO-LICENSE: this repository contains no LICENSE, COPYING or NOTICE file outside node_modules, so every entry carries licenseRef=\"no-license-declared\". Under PHASE2-DATA-REQUEST section 1.5 that means all rights reserved by default and the sources must not be treated as freely reusable.",
+      "NO-REMOTE: `git remote -v` is empty for this checkout, so no public upstream URL or upstream commit can be recorded. sourceUri records that the entry came from the source checkout (a release export does not carry that path) and the commits are local commit ids.",
+      "NO-UPSTREAM-CODE: fixtures/modules/aspp_block.py, se_block.py and attention_gate_block.py are this repository's own 8-channel simplified implementations. They are not the DeepLabv3, SENet or attention-gate paper official code; arXiv:1706.05587, arXiv:1709.01507 and the P5 research card paper-only-v1-module-P002-83368396d7b6 are recorded only as the mechanism reference, per PHASE2-DATA-REQUEST section 1.2.",
+      "NO-LOCKFILE: no pnpm-lock.yaml, package-lock.json, requirements.txt or environment.yml exists, so no dependency closure is pinned. PHASE2-SPEC section 5 asks the environment record to carry a package lock; fixtures/phase2-source-pack/environment.json records its absence instead of a fabricated digest.",
+      "NO-TEST-SPLIT: Phase 2 declares no test split, so the data slice has train and validation only. A test handle belongs to the Phase 3 DataSplitManifest and was not manufactured here.",
+      "CANDIDATE-BOUND-P002: fixtures/modules/attention_gate_block.py is bound to the REAL P5 research card paper-only-v1-module-P002-83368396d7b6 (published by operation rop-p5_discover-3b3dc696e35e1390) and to the REAL P6 candidate candidate-P002 (work/phase2-candidate-2026-10-06/p6-synthesis-result.json). The binding is recorded on the module manifest entry; the implementation is still this repository's own code, not the paper's."
+    ],
+    "sourceBundleHash": "4afe33e315536ae4f7b66fc7738089b28e7cbf904ba8f94eea4dfd055c45d2a7"
+  },
+  "researchBundle": {
+    "schemaVersion": 1,
+    "proposal": {
+      "kind": "research",
+      "synthesisResultRef": {
+        "id": "work/phase2-candidate-2026-10-06/p6-synthesis-result.json",
+        "sha256": "af1c88281298e6348a989afb88fb3008433925da523337d87ee94ad8024c46ce"
+      },
+      "candidateId": "candidate-P002",
+      "candidateHash": "6adb45bb56a814b4017cdc2e7212d9762c4c6da24b4ea741ab99697196bb509a"
+    },
+    "baseline": {
+      "id": "phase2-baseline-stitch-cpu-v1",
+      "role": "baseline",
+      "sourceKind": "vcs",
+      "sourceUri": "repo-relative:source-checkout",
+      "commit": "1f0344ca3a7bdc3b7f7a0dc619abd36722869e62",
+      "contentHash": null,
+      "treeRef": "experiments/stitch-cpu-v1",
+      "entrypoint": "experiments/stitch-cpu-v1/model.py",
+      "licenseRef": "no-license-declared",
+      "weightRefs": [
+        "artifacts/weights/baseline_seed20260929.pt"
+      ]
+    },
+    "modules": [
+      {
+        "id": "phase2-module-aspp-v1",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "repo-relative:source-checkout",
+        "commit": "39e730408d4037352344e8abbf3dc0f9b095aaa6",
+        "contentHash": null,
+        "treeRef": "fixtures/modules",
+        "entrypoint": "fixtures/modules/aspp_block.py",
+        "licenseRef": "no-license-declared",
+        "weightRefs": []
+      },
+      {
+        "id": "phase2-module-se-v1",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "repo-relative:source-checkout",
+        "commit": "39e730408d4037352344e8abbf3dc0f9b095aaa6",
+        "contentHash": null,
+        "treeRef": "fixtures/modules",
+        "entrypoint": "fixtures/modules/se_block.py",
+        "licenseRef": "no-license-declared",
+        "weightRefs": []
+      },
+      {
+        "id": "phase2-module-attention-gate-v1",
+        "role": "module",
+        "sourceKind": "vcs",
+        "sourceUri": "repo-relative:source-checkout",
+        "commit": "85440333aaf3d63994238c91092a947930629da5",
+        "contentHash": null,
+        "treeRef": "fixtures/modules",
+        "entrypoint": "fixtures/modules/attention_gate_block.py",
+        "licenseRef": "no-license-declared",
+        "weightRefs": []
+      }
+    ],
+    "dataRef": {
+      "id": "phase2-cpu-slice-v1",
+      "sha256": "27d82d46318bb7d32f25c6380a503f1905d22f3f5e633334a887e33b16ab2016"
+    },
+    "environmentRef": {
+      "id": "phase2-cpu-env-v1",
+      "sha256": "495125b4c8f39e2dd1f190a5e4abbd9af6d126c44e9ddb67df6300f3a0b3df5c"
+    },
+    "qualityStatus": "provisional",
+    "unresolved": [
+      "NO-LICENSE: this repository contains no LICENSE, COPYING or NOTICE file outside node_modules, so every entry carries licenseRef=\"no-license-declared\". Under PHASE2-DATA-REQUEST section 1.5 that means all rights reserved by default and the sources must not be treated as freely reusable.",
+      "NO-REMOTE: `git remote -v` is empty for this checkout, so no public upstream URL or upstream commit can be recorded. sourceUri records that the entry came from the source checkout (a release export does not carry that path) and the commits are local commit ids.",
+      "NO-UPSTREAM-CODE: fixtures/modules/aspp_block.py, se_block.py and attention_gate_block.py are this repository's own 8-channel simplified implementations. They are not the DeepLabv3, SENet or attention-gate paper official code; arXiv:1706.05587, arXiv:1709.01507 and the P5 research card paper-only-v1-module-P002-83368396d7b6 are recorded only as the mechanism reference, per PHASE2-DATA-REQUEST section 1.2.",
+      "NO-LOCKFILE: no pnpm-lock.yaml, package-lock.json, requirements.txt or environment.yml exists, so no dependency closure is pinned. PHASE2-SPEC section 5 asks the environment record to carry a package lock; fixtures/phase2-source-pack/environment.json records its absence instead of a fabricated digest.",
+      "NO-TEST-SPLIT: Phase 2 declares no test split, so the data slice has train and validation only. A test handle belongs to the Phase 3 DataSplitManifest and was not manufactured here.",
+      "CANDIDATE-BOUND-P002: fixtures/modules/attention_gate_block.py is bound to the REAL P5 research card paper-only-v1-module-P002-83368396d7b6 (published by operation rop-p5_discover-3b3dc696e35e1390) and to the REAL P6 candidate candidate-P002 (work/phase2-candidate-2026-10-06/p6-synthesis-result.json). The binding is recorded on the module manifest entry; the implementation is still this repository's own code, not the paper's."
+    ],
+    "sourceBundleHash": "b0e7d7d8e77ba4e529261ba6b9899815ae3a376c73dd72c663e8303a23dea73e"
+  },
+  "pins": [
+    {
+      "entryId": "phase2-baseline-stitch-cpu-v1",
+      "commit": "1f0344ca3a7bdc3b7f7a0dc619abd36722869e62",
+      "treeRef": "experiments/stitch-cpu-v1",
+      "treeObjectId": "456881e7f51e7cb84748591185d17ccc1d2f41a2",
+      "commitIsAncestorOfHead": true,
+      "files": [
+        {
+          "path": "experiments/stitch-cpu-v1/model.py",
+          "role": "entrypoint",
+          "sha256": "f8a8bc32a729bb1c20e9a9f3fb2d8b66bbff7c30aca2d81da3f849c2283aa6c4",
+          "bytes": 894,
+          "gitBlobSha1": "ec91fbb14d7b31419a78865bd0fbdfe32110f39a",
+          "commit": "1f0344ca3a7bdc3b7f7a0dc619abd36722869e62",
+          "treeRef": "experiments/stitch-cpu-v1",
+          "blobMatchesWorkingTree": true
+        },
+        {
+          "path": "experiments/stitch-cpu-v1/data.py",
+          "role": "pinned-dependency",
+          "sha256": "bd9284db8010f1c7aed0b4923c70f5aea8ae5b6fb7ccaed940a72e25cceabefa",
+          "bytes": 811,
+          "gitBlobSha1": "a5941734a354623fc84259c27282c653b7c6f122",
+          "commit": "1f0344ca3a7bdc3b7f7a0dc619abd36722869e62",
+          "treeRef": "experiments/stitch-cpu-v1",
+          "blobMatchesWorkingTree": true
+        },
+        {
+          "path": "artifacts/weights/baseline_seed20260929.pt",
+          "role": "weight",
+          "sha256": "af18b92ff025c17699b7e7f1bc866a9f267f6bee4bba8b4b042b081d2503a06d",
+          "bytes": 3561,
+          "gitBlobSha1": "0d29605a084fa46c845dc7087f865b750175cf0c",
+          "commit": "1f0344ca3a7bdc3b7f7a0dc619abd36722869e62",
+          "treeRef": "artifacts/weights",
+          "blobMatchesWorkingTree": true
+        }
+      ]
+    },
+    {
+      "entryId": "phase2-module-aspp-v1",
+      "commit": "39e730408d4037352344e8abbf3dc0f9b095aaa6",
+      "treeRef": "fixtures/modules",
+      "treeObjectId": "e413c51930325971e2631713a58ea46dccfc2625",
+      "commitIsAncestorOfHead": true,
+      "files": [
+        {
+          "path": "fixtures/modules/aspp_block.py",
+          "role": "entrypoint",
+          "sha256": "9bd94a7c105cea93ca79c66f7b4794e840541bec8c9c6729a80ec5bb2f38cf6b",
+          "bytes": 1109,
+          "gitBlobSha1": "bfa40ee48d5f5e298adfa0c607ba4fa08490ed32",
+          "commit": "39e730408d4037352344e8abbf3dc0f9b095aaa6",
+          "treeRef": "fixtures/modules",
+          "blobMatchesWorkingTree": true
+        }
+      ]
+    },
+    {
+      "entryId": "phase2-module-se-v1",
+      "commit": "39e730408d4037352344e8abbf3dc0f9b095aaa6",
+      "treeRef": "fixtures/modules",
+      "treeObjectId": "e413c51930325971e2631713a58ea46dccfc2625",
+      "commitIsAncestorOfHead": true,
+      "files": [
+        {
+          "path": "fixtures/modules/se_block.py",
+          "role": "entrypoint",
+          "sha256": "8b78fc50e35cecb967d66bfb1c1226606584da7ad0023013d3d660a949371d61",
+          "bytes": 813,
+          "gitBlobSha1": "97bfa625860093a4d008946b7a133cb2b1d8bc5e",
+          "commit": "39e730408d4037352344e8abbf3dc0f9b095aaa6",
+          "treeRef": "fixtures/modules",
+          "blobMatchesWorkingTree": true
+        },
+        {
+          "path": "fixtures/modules/manifest.json",
+          "role": "pinned-dependency",
+          "sha256": "24ebc6419f2037745709c3ca5a925d4560cb1e606ee15d9bb978a5299e9b2ada",
+          "bytes": 4289,
+          "gitBlobSha1": "9041c7ca3f0e89fd48647bf3794741bf5901f2ad",
+          "commit": "85440333aaf3d63994238c91092a947930629da5",
+          "treeRef": "fixtures/modules",
+          "blobMatchesWorkingTree": true
+        }
+      ]
+    }
+  ],
+  "provenanceArchives": [
+    {
+      "entry": {
+        "id": "phase2-archive-academic-stitch-mvp",
+        "role": "module",
+        "sourceKind": "offline_archive",
+        "sourceUri": "repo-relative:source-checkout/work/incoming/academic_stitch_mvp.zip",
+        "commit": null,
+        "contentHash": "e0fce65617da675f53c8a89f1c32df6819a6605207fa1cd6a207c76427104ea0",
+        "treeRef": "mnt/data/academic_stitch_mvp",
+        "entrypoint": "mnt/data/academic_stitch_mvp/toy_model.py",
+        "licenseRef": "no-license-declared",
+        "weightRefs": []
+      },
+      "inBundle": false,
+      "inBundleReason": "Its entrypoint lives inside the archive, not on disk, so no runner can import it by path. Recording it as a bundle module would claim a runnable source that does not exist. It is pinned as provenance for the ASPP/SE paper snapshots instead.",
+      "modelReadable": false,
+      "modelReadableReason": "work/incoming is listed in fixtures/paper-only-v1/isolation/readable-roots.json deniedPaths, so the model-side isolation protocol cannot read it. This pin is a host-side record; the verifier that recomputes it is a host tool, not a model-side read.",
+      "archivePath": "work/incoming/academic_stitch_mvp.zip",
+      "archiveSha256": "e0fce65617da675f53c8a89f1c32df6819a6605207fa1cd6a207c76427104ea0",
+      "archiveBytes": 10716,
+      "corroboratedBy": {
+        "path": "fixtures/mvp-source-pack/manifest.json",
+        "field": "sourceArchive.sha256",
+        "note": "The pre-existing MVP pack recorded the same digest, which is corroboration, not proof of origin."
+      },
+      "containerEntries": [
+        {
+          "name": "mnt/data/academic_stitch_mvp/",
+          "compressionMethod": 0,
+          "compressedSize": 0,
+          "uncompressedSize": 0,
+          "crc32": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/mvp_case.yaml",
+          "compressionMethod": 8,
+          "compressedSize": 661,
+          "uncompressedSize": 1337,
+          "crc32": 2810999891,
+          "sha256": "b76b21f2a49c1c4a0c0895edaa9a2880a30fdc7d2a25dddd1baaaad3fce65383",
+          "bytes": 1337
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/__pycache__/",
+          "compressionMethod": 0,
+          "compressedSize": 0,
+          "uncompressedSize": 0,
+          "crc32": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/__pycache__/toy_model.cpython-313.pyc",
+          "compressionMethod": 8,
+          "compressedSize": 2455,
+          "uncompressedSize": 5158,
+          "crc32": 2477489439,
+          "sha256": "f68a2b747ea83c18033db70c3afe360de9c930c5005f5c774a8d985bc57d5298",
+          "bytes": 5158
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/README.md",
+          "compressionMethod": 8,
+          "compressedSize": 912,
+          "uncompressedSize": 1303,
+          "crc32": 1507068359,
+          "sha256": "15f8340ada17240f17895ed1dd0708150753d475a939bce33661346c2e24b822",
+          "bytes": 1303
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/toy_model.py",
+          "compressionMethod": 8,
+          "compressedSize": 710,
+          "uncompressedSize": 2318,
+          "crc32": 613455416,
+          "sha256": "714b8ad171d95bd3f3fdc4200a88de3b0a20378073f2a94cebaeeed6009f61db",
+          "bytes": 2318
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/sources/",
+          "compressionMethod": 0,
+          "compressedSize": 0,
+          "uncompressedSize": 0,
+          "crc32": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/sources/references.bib",
+          "compressionMethod": 8,
+          "compressedSize": 307,
+          "uncompressedSize": 547,
+          "crc32": 2410323870,
+          "sha256": "cd4dc12c97f678dfafffc9b0c439dcbe6a00b3cce672a445ab9aa77d748406a9",
+          "bytes": 547
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/sources/SE_1709.01507.snapshot.md",
+          "compressionMethod": 8,
+          "compressedSize": 716,
+          "uncompressedSize": 1304,
+          "crc32": 2175372839,
+          "sha256": "778bae36203ba16862697a8761e2011fe372122cd0f947dd8011dd7e320774b6",
+          "bytes": 1304
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/sources/ASPP_1706.05587.snapshot.md",
+          "compressionMethod": 8,
+          "compressedSize": 777,
+          "uncompressedSize": 1415,
+          "crc32": 1102280598,
+          "sha256": "1a0608a2fef8d07f38cf18bbf9104d3e727b2eb766b8d6b68da7041bb65cabab",
+          "bytes": 1415
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/module_cards.jsonl",
+          "compressionMethod": 8,
+          "compressedSize": 481,
+          "uncompressedSize": 1051,
+          "crc32": 1117472194,
+          "sha256": "48d4b166739c5a22c9e6b7404315fcc0077277177622c828e1462a0e73a09e6b",
+          "bytes": 1051
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/result.json",
+          "compressionMethod": 8,
+          "compressedSize": 250,
+          "uncompressedSize": 434,
+          "crc32": 1393216672,
+          "sha256": "0a09d1c4781c2ac8c8995ed50b1ce7c78995ebfc1c8d483fecf48c12a04e13e4",
+          "bytes": 434
+        },
+        {
+          "name": "mnt/data/academic_stitch_mvp/run_mvp.py",
+          "compressionMethod": 8,
+          "compressedSize": 567,
+          "uncompressedSize": 1112,
+          "crc32": 4254030591,
+          "sha256": "d09e6c466cfcfa400976fb01f7f9fbedcd09a42450500ada4bbe6a4b8050d524",
+          "bytes": 1112
+        }
+      ]
+    }
+  ],
+  "data": {
+    "ref": {
+      "id": "phase2-cpu-slice-v1",
+      "sha256": "27d82d46318bb7d32f25c6380a503f1905d22f3f5e633334a887e33b16ab2016"
+    },
+    "manifestPath": "fixtures/phase2-source-pack/data/data-manifest.json",
+    "manifestSha256": "27d82d46318bb7d32f25c6380a503f1905d22f3f5e633334a887e33b16ab2016",
+    "generatorPath": "fixtures/phase2-source-pack/data/generate_data.py",
+    "generatorSha256": "b2ce42a717e7262def9e4879d2d10ae010cb41bf248010ede86fe28360fbe940",
+    "preprocessingPath": "fixtures/phase2-source-pack/data/preprocessing.json",
+    "preprocessingSha256": "75b8c33690490c559a67b8c109982cd64450005529a062d36b699cb4d2cb6e7f",
+    "declaredSplits": [
+      "train",
+      "validation"
+    ],
+    "testSplit": null
+  },
+  "environment": {
+    "ref": {
+      "id": "phase2-cpu-env-v1",
+      "sha256": "495125b4c8f39e2dd1f190a5e4abbd9af6d126c44e9ddb67df6300f3a0b3df5c"
+    },
+    "path": "fixtures/phase2-source-pack/environment.json",
+    "sha256": "495125b4c8f39e2dd1f190a5e4abbd9af6d126c44e9ddb67df6300f3a0b3df5c"
+  },
+  "notVerified": [
+    "No claim is made that any source here is the official implementation of any paper.",
+    "No claim is made that any module improves any baseline; that is Phase 3 work and needs a frozen eval.",
+    "No claim is made that another machine reproduces these digests; the environment pin is single-host.",
+    "The archive provenance pin records where the bytes are, not who authored them."
+  ]
+}

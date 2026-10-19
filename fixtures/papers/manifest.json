@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "fixtureId": "papers-stitch-cpu-v1",
+  "documents": [
+    {
+      "paperId": "ASPP_1706.05587.snapshot",
+      "title": "Rethinking Atrous Convolution for Semantic Image Segmentation",
+      "arxivId": "1706.05587v3",
+      "canonicalUrl": "https://arxiv.org/abs/1706.05587",
+      "sourceUri": "https://arxiv.org/abs/1706.05587",
+      "locator": "3.3 Atrous Spatial Pyramid Pooling",
+      "excerpt": "ASPP with different atrous rates effectively captures multi-scale information.",
+      "excerptHash": "436d676bc258b22382b71d6e9fb377ca46a5de4e6bcca1d451ada17accdd9a30",
+      "documentArtifactId": "artifact-aspp-snapshot",
+      "documentHash": "1a0608a2fef8d07f38cf18bbf9104d3e727b2eb766b8d6b68da7041bb65cabab",
+      "snapshotPath": "fixtures/papers/sources/ASPP_1706.05587.snapshot.md",
+      "mechanism": "spatial_pyramid_pooling"
+    },
+    {
+      "paperId": "SE_1709.01507.snapshot",
+      "title": "Squeeze-and-Excitation Networks",
+      "arxivId": "1709.01507v4",
+      "canonicalUrl": "https://arxiv.org/abs/1709.01507",
+      "sourceUri": "https://arxiv.org/abs/1709.01507",
+      "locator": "III Squeeze-and-Excitation Blocks",
+      "excerpt": "A Squeeze-and-Excitation block is a computational unit which can be built upon a transformation",
+      "excerptHash": "a259d2efb519cd914ed4b0f416a5344bca102810d22d5b434a4740b298a3f591",
+      "documentArtifactId": "artifact-se-snapshot",
+      "documentHash": "778bae36203ba16862697a8761e2011fe372122cd0f947dd8011dd7e320774b6",
+      "snapshotPath": "fixtures/papers/sources/SE_1709.01507.snapshot.md",
+      "mechanism": "channel_attention"
+    }
+  ]
+}

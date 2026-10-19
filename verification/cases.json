@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "generatedFor": "Beta release candidate (DSH host extension)",
+  "note": "Each case is a command with an expected outcome. `verify-beta.mjs` runs them and records exit code, pass/fail, and evidence kind. `kind` distinguishes a real host check from a service-level test: a service test passing does NOT imply the host mounts the plugin, and a route answering HTTP 200 does NOT imply the feature works.",
+  "cases": [
+    {
+      "id": "install/host-modules",
+      "kind": "install",
+      "command": "node scripts/release/link-host-modules.mjs",
+      "expected": "exit 0 and host-modules.json lists the platform modules with versions",
+      "why": "The release is a host extension: without the host's platform modules nothing else can run. This must fail loudly when no host install is found, never fall back to a developer store."
+    },
+    {
+      "id": "install/tools",
+      "kind": "install",
+      "command": "node scripts/release/install-tools.mjs",
+      "expected": "exit 0; tools/mermaid and tools/ts-toolchain installed from their own lockfiles",
+      "why": "Mermaid and TypeScript are pinned in two separate tool closures with their own package-lock.json; the root install does not cover them."
+    },
+    {
+      "id": "build/runtime",
+      "kind": "build",
+      "command": "node --experimental-strip-types scripts/build-report-offline-runtime.ts",
+      "expected": "exit 0 and the generated offline runtime matches the committed source",
+      "why": "The offline report runtime is a generated artifact with a pinned CSP hash. The original workspace shipped a stale copy, which is exactly the failure this check exists to catch."
+    },
+    {
+      "id": "build/client",
+      "kind": "build",
+      "command": "node --experimental-strip-types scripts/build-client-check.ts",
+      "expected": "exit 0; module-table banner, factory footer and external contract all pass",
+      "why": "The client bundle is loaded through the DSH module table. A wrong banner id or a missing external breaks the host UI while the build still 'succeeds'."
+    },
+    {
+      "id": "build/node-half",
+      "kind": "build",
+      "command": "node scripts/build-node-half.mjs",
+      "expected": "exit 0 and packages/evolver-ui/lib/index.js is written",
+      "why": "The package's `main` points at lib/index.js; without it the Loader entry cannot import and the client scanner never sees the dsh.client declaration."
+    },
+    {
+      "id": "typecheck/backend",
+      "kind": "typecheck",
+      "command": "tsc --noEmit -p packages/evolver/tsconfig.typecheck.json",
+      "expected": "exit 0 under strict mode",
+      "why": "The backend is the bulk of the product. It typechecks against the vendored platform declarations, which are the type pin (the published @deepseek-ai packages do not reproduce the host's Events interface)."
+    },
+    {
+      "id": "typecheck/scripts",
+      "kind": "typecheck",
+      "command": "tsc --noEmit -p scripts/tsconfig.typecheck.json",
+      "expected": "exit 0 under strict mode",
+      "why": "The build scripts are part of the release closure; an untypechecked script is an unverified build step."
+    },
+    {
+      "id": "typecheck/ui-subconfigs",
+      "kind": "typecheck",
+      "command": "tsc --noEmit -p packages/evolver-ui/src/client/{redesign,integration,general}/tsconfig.json",
+      "expected": "all three exit 0",
+      "why": "Three strict product subconfigurations, in addition to the full UI root check."
+    },
+    {
+      "id": "test/domain",
+      "kind": "service_test",
+      "command": "npm run test:domain",
+      "expected": "exit 0; report the actual pass/fail/skip counts (do not hard-code 73)",
+      "why": "Six related suites cover external results, metrics, packages, takeover, takeover adoption and wiki workspaces. These are the domain regression baseline."
+    },
+    {
+      "id": "test/wiring",
+      "kind": "service_test",
+      "command": "npm run test:wiring",
+      "expected": "exit 0; report the actual pass/fail/skip counts",
+      "why": "Covers the research cycle host/team adapters, general reports (including the offline runtime), paper commands and the paper library. These are service-level tests: they do NOT prove the host mounts anything."
+    },
+    {
+      "id": "host/profile-install",
+      "kind": "real_host",
+      "command": "node scripts/release/install-profile.mjs --profile <profile>",
+      "expected": "exit 0; the profile patch gains the six evolver entries with their config blocks",
+      "why": "The overlay must be generated from the tree's real location and must carry the config; an entry without config fails activation."
+    },
+    {
+      "id": "host/boot",
+      "kind": "real_host",
+      "command": "dsh --profile <profile> --port <port> --no-open",
+      "expected": "the host prints its URL and logs NO 'entries did not activate' warning",
+      "why": "This is the only check that proves the plugin actually loads in a real DSH host. A silent activation failure still serves the web UI, so the warning line is the signal."
+    },
+    {
+      "id": "host/route-status",
+      "kind": "real_host",
+      "command": "GET /evolver/api/status with the session cookie",
+      "expected": "HTTP 200 with a JSON body naming the service and the resolved artifact roots",
+      "why": "Proves the workbench route is mounted AND that repo-relative config resolved against the repository rather than the process working directory."
+    },
+    {
+      "id": "host/auth-fence",
+      "kind": "real_host",
+      "command": "GET /evolver/api/modules without a scope grant",
+      "expected": "HTTP 403 with SCOPE_DENIED",
+      "why": "A read route that answers 200 without a grant would be a security regression. The fence must be observed, not assumed."
+    },
+    {
+      "id": "host/session-required",
+      "kind": "real_host",
+      "command": "GET /evolver/paper-library and /evolver/research-bootstrap without a session",
+      "expected": "HTTP 400 with SESSION_REQUIRED",
+      "why": "Proves both routes are mounted (an unmounted route returns 404) while still refusing to serve without an owner session."
+    },
+    {
+      "id": "release/no-machine-paths",
+      "kind": "static",
+      "command": "grep for F:/, F:\\\\, G:\\\\Anaconda, C:\\\\Users in the release tree (excluding node_modules and build output)",
+      "expected": "no hits in shipped source, config, scripts or fixtures",
+      "why": "The whole point of the cleanup. A hit is either a real leak or an explanatory comment; the check reports them so a human decides which."
+    },
+    {
+      "id": "release/frozen-manifest-provenance",
+      "kind": "static",
+      "command": "node scripts/release/neutralize-fixture-provenance.mjs",
+      "expected": "exit 0; the frozen phase2 manifest carries no machine-local sourceUri",
+      "why": "The frozen manifest ships as-is (its digests need the source git history to re-derive), so its one machine-local field is rewritten rather than silently dropped."
+    },
+    {
+      "id": "release/file-manifest",
+      "kind": "static",
+      "command": "node scripts/release/copy-release-tree.mjs --verify",
+      "expected": "every path in verification/release-files.json exists with the recorded SHA-256",
+      "why": "Proves the delivered tree matches the recorded snapshot."
+    },
+    {
+      "id": "typecheck/ui-root",
+      "kind": "typecheck",
+      "command": "npm run typecheck:frontend",
+      "expected": "Actual assertions pass against current release; absent evidence is not_run"
+    },
+    {
+      "id": "build/types",
+      "kind": "build",
+      "command": "npm run build:types",
+      "expected": "Actual assertions pass against current release; absent evidence is not_run"
+    },
+    {
+      "id": "release/licenses",
+      "kind": "static",
+      "command": "npm run verify:licenses",
+      "expected": "Actual assertions pass against current release; absent evidence is not_run"
+    },
+    {
+      "id": "test/release-evidence",
+      "kind": "service_test",
+      "command": "node --test tests/integration/release-evidence.spec.mjs",
+      "expected": "Actual assertions pass against current release; absent evidence is not_run"
+    },
+    {
+      "id": "host/entry-resolution",
+      "kind": "real_host",
+      "command": "npm run verify:host",
+      "expected": "Actual assertions pass against current release; absent evidence is not_run"
+    },
+    {
+      "id": "host/authentication",
+      "kind": "real_host",
+      "command": "npm run verify:host",
+      "expected": "Actual assertions pass against current release; absent evidence is not_run"
+    },
+    {
+      "id": "e2e/native-model",
+      "kind": "real_host_e2e",
+      "command": "npm run verify:model -- <local isolated model options>",
+      "expected": "Actual current-release scenario assertions pass; user-deferred scenarios remain not_run"
+    },
+    {
+      "id": "e2e/abc-a",
+      "kind": "real_host_e2e",
+      "command": "See verification/e2e-checklist.json#e2e/abc-a",
+      "expected": "Actual current-release scenario assertions pass; user-deferred scenarios remain not_run"
+    },
+    {
+      "id": "e2e/abc-b",
+      "kind": "real_host_e2e",
+      "command": "See verification/e2e-checklist.json#e2e/abc-b",
+      "expected": "Actual current-release scenario assertions pass; user-deferred scenarios remain not_run"
+    },
+    {
+      "id": "e2e/abc-c",
+      "kind": "real_host_e2e",
+      "command": "See verification/e2e-checklist.json#e2e/abc-c",
+      "expected": "Actual current-release scenario assertions pass; user-deferred scenarios remain not_run"
+    },
+    {
+      "id": "e2e/native-team",
+      "kind": "real_host_e2e",
+      "command": "See verification/e2e-checklist.json#e2e/native-team",
+      "expected": "Actual current-release scenario assertions pass; user-deferred scenarios remain not_run"
+    },
+    {
+      "id": "e2e/restart",
+      "kind": "real_host_e2e",
+      "command": "See verification/e2e-checklist.json#e2e/restart",
+      "expected": "Actual current-release scenario assertions pass; user-deferred scenarios remain not_run"
+    },
+    {
+      "id": "e2e/ui-report",
+      "kind": "real_host_e2e",
+      "command": "See verification/e2e-checklist.json#e2e/ui-report",
+      "expected": "Actual current-release scenario assertions pass; user-deferred scenarios remain not_run"
+    }
+  ]
+}

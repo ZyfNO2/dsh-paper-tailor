@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "id": "phase3-research-constraints-v1",
+  "_note": "Host-owned planning constraints for the Phase 3 research pilot. Separate from configs/phase2/host-constraints.json so the Phase 2 chain keeps binding aspp+se exactly as before. The ONE difference is the binding order: the attention gate (the real P5 card P002 / P6 candidate-P002 mechanism) is FIRST, so the runner's prefix rule makes `a` the attention gate alone and `ab` aspp + attention gate. The runner refuses any other variant name (CONTRACT_UNKNOWN_VARIANT), so the arms are the runner's own frozen vocabulary; the module set of each arm comes from this binding, never from the arm name. A patch cannot reorder this binding (the service refuses one that tries).",
+
+  "bindings": [
+    {
+      "slotId": "features.pre_pool",
+      "orderedModuleIds": [
+        "phase2-module-attention-gate-v1",
+        "phase2-module-aspp-v1"
+      ],
+      "configRef": "cfg://features-pre-pool-phase3"
+    }
+  ],
+
+  "moduleIdMap": {
+    "phase2-module-attention-gate-v1": "module-attention-gate-v1",
+    "phase2-module-aspp-v1": "module-aspp-v1"
+  },
+
+  "allowedPaths": ["attention_gate_block.py", "aspp_block.py"],
+  "forbiddenPaths": ["experiments/**", "configs/**"],
+
+  "dependencyPolicyRef": "policy:phase2-deps-frozen-v1",
+
+  "mechanismChecks": [
+    "parameterized.shape_dtype_device",
+    "parameterized.forward_participation",
+    "parameterized.finiteness",
+    "parameterized.output_difference",
+    "parameterized.optimizer_covers_parameters",
+    "parameterized.gradients_finite",
+    "parameterized.gradient_norm",
+    "parameterized.parameter_update",
+    "parameter_free.reference_output_tolerance",
+    "parameter_free.mask_is_read",
+    "parameter_free.mask_boundary",
+    "parameter_free.input_output_equivalence",
+    "parameter_free.gradient_finite",
+    "parameter_free.parameter_count",
+    "loss.term_added_to_total",
+    "loss.coefficient",
+    "loss.reduction_rule",
+    "loss.gradient_wrt_logits",
+    "loss.gradient_wrt_parameters",
+    "loss.gradient_contribution",
+    "loss.label_and_ignore_mask",
+    "loss.finite",
+    "hook.fires_at_declared_position",
+    "hook.seed_reproducible",
+    "hook.batch_and_sample_coverage",
+    "hook.schedule_effective",
+    "data_policy.targets_constructed",
+    "data_policy.sample_coverage",
+    "data_policy.seed_reproducible",
+    "combination.members_pass_alone",
+    "combination.run_present",
+    "combination.order",
+    "combination.duplicate_function",
+    "combination.shared_state",
+    "combination.extra_parameter_sources"
+  ],
+
+  "mechanismSteps": 3,
+  "maxRepairAttempts": 1,
+
+  "combination": {
+    "_provenance": "The member list and its ORDER are host-declared (this binding's order). The per-member function names and the parameter attribution are what the combination.* mechanism checks compare the OBSERVED run against; they are declared here as the host's claim, and a mismatch fails the check. The Phase 2 constraints file records a measured record for aspp+se; this file declares the same SHAPE for attention-gate+aspp, and the first real combination probe over this member list must confirm (or correct) it. Until that probe runs, a combination result is NOT verified — which is why the mechanism check, not this file, is the gate.",
+    "functions": [
+      {
+        "function": "attention-gate-recalibration",
+        "moduleIds": ["module-attention-gate-v1"]
+      },
+      {
+        "function": "aspp-multiscale-context",
+        "moduleIds": ["module-aspp-v1"]
+      }
+    ],
+    "sharedState": [],
+    "_sharedStateNote": "Empty is a claim the check will verify: the attention gate and aspp each read only their own input and return a new tensor. If either starts writing shared state, combination.shared_state fails.",
+    "parameterSources": [
+      { "owner": "module-attention-gate-v1", "parameterCount": 7 },
+      { "owner": "module-aspp-v1", "parameterCount": 9 },
+      { "owner": "combination-owned", "parameterCount": 2 }
+    ],
+    "declaredOrder": ["module-attention-gate-v1", "module-aspp-v1"]
+  },
+
+  "_bindingScope": "This binding is the Phase 3 RESEARCH pilot: attention gate first, aspp second. The Phase 2 chain reads configs/phase2/host-constraints.json (aspp + se) and is unaffected by this file. Both files pin the same required mechanism-check set; only the binding order and allowedPaths differ, and both name only host-pinned modules."
+}

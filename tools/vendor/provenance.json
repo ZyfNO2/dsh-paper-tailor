@@ -1,0 +1,431 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-17T06:14:17.234Z",
+  "note": "Source files match installed packages byte-for-byte. MIT notices retained per package. gen declarations are local mechanical derivatives, NOT official SDK declarations. The original generation config currently emits diagnostics and cannot regenerate the whole frozen pin without repair; runtime and strict product typechecks do not use that generator.",
+  "packages": [
+    {
+      "name": "@deepseek-ai/cordis",
+      "version": "4.0.2",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+        "type": "git",
+        "directory": "vendor/cordis"
+      },
+      "registry": "https://registry.npmjs.org/@deepseek-ai%2fcordis/4.0.2",
+      "npmIntegrity": "sha512-asOnXP1TzFSFQlHb1iegDZp0z/8WD1c7YNrwJR/Tx2bzNuMXfcekE/I67Iv6SQXeLB4csxqCngzQKANP7gdw0g==",
+      "licenseSha256": "034fb52b1d57360ecbae6cb1632a88f86fd7c3d3f5631a5f082710203dda0be7",
+      "sourceFiles": [
+        {
+          "path": "lib/index.js",
+          "sha256": "1729cdbf8ee40b17c8839e06bf96491490548559e11ef7e411271e0754e751c5"
+        },
+        {
+          "path": "src/context.ts",
+          "sha256": "96b388162d6013c1898de61e35f28917abb93809de24174980f2a1a348d0b115"
+        },
+        {
+          "path": "src/events.ts",
+          "sha256": "96565a2b5fbf35c26b78cbdc785b2b2e3f01fa55a9fd1f6af5355ab35ccc343c"
+        },
+        {
+          "path": "src/fiber.ts",
+          "sha256": "750555b47603f88e7ef7a05d1a8d629b355c176a1185af411aac6e3e1e2b7ba3"
+        },
+        {
+          "path": "src/index.ts",
+          "sha256": "c2232f082c763488225eafcd33530640ad26af0c7d6ea871a4f7e8ebf0eb3704"
+        },
+        {
+          "path": "src/logger.ts",
+          "sha256": "5121e76fd9f55b9b90dfea09d6e60d122e7530246b8b19970ddebd9c35ccf7d8"
+        },
+        {
+          "path": "src/reflect.ts",
+          "sha256": "6847b9781044023d65aebb5896a873b9f0a3d777eaf7fa0dd2a7a408eb6b74a6"
+        },
+        {
+          "path": "src/registry.ts",
+          "sha256": "34bbd60ae502b4f85201c204afb52a9acabde6878d9278493478c1b2183debd3"
+        },
+        {
+          "path": "src/service.ts",
+          "sha256": "614205c6ce7cf1a057b8b352e96aa4fcd734c967a3d2283a126c9c61f268e3be"
+        },
+        {
+          "path": "src/utils.ts",
+          "sha256": "8fe273424583d21267ef13f248840e97454d09d836a0ac08323a9482c2069263"
+        }
+      ],
+      "generatedDeclarations": [
+        {
+          "path": "tools/vendor/gen/cordis/src/context.d.ts",
+          "sha256": "1e2e6cfcab26ae01d7f2dd1f78a1d25ddb7f3b2e27f50c9eb3b54ee206a87884"
+        },
+        {
+          "path": "tools/vendor/gen/cordis/src/events.d.ts",
+          "sha256": "cc02bb2d9e410be2e12faa6de3c7cb4ceedc6b5cfa351acca999cc8ea51ad890"
+        },
+        {
+          "path": "tools/vendor/gen/cordis/src/fiber.d.ts",
+          "sha256": "cdf2eac483851e38eb14ae80c2973b08e76ee6f226fed66ce8d2208841925a8a"
+        },
+        {
+          "path": "tools/vendor/gen/cordis/src/index.d.ts",
+          "sha256": "c93dd79fae382105510c69cc8eef95a96c8c43e50b47e16efa98a3f9e76f304b"
+        },
+        {
+          "path": "tools/vendor/gen/cordis/src/logger.d.ts",
+          "sha256": "71087395cc862f52662ab2629a0f3838f8f2aaf84eb40c97f4f4004f2fcbbed6"
+        },
+        {
+          "path": "tools/vendor/gen/cordis/src/reflect.d.ts",
+          "sha256": "83281d4b4bcb231803a7a86673f8c28695258f3b25f00c40e6405cda1432f76b"
+        },
+        {
+          "path": "tools/vendor/gen/cordis/src/registry.d.ts",
+          "sha256": "67ce725149b51205cf339a3bb8717900a44e1d8894e369301ff83fe34c9e18aa"
+        },
+        {
+          "path": "tools/vendor/gen/cordis/src/service.d.ts",
+          "sha256": "489ec23ef8dc0e869cf3d8d77a39ba83ab24e5e71362320f5662491b3dc5bd04"
+        },
+        {
+          "path": "tools/vendor/gen/cordis/src/utils.d.ts",
+          "sha256": "a0dea5687b70a6210ceead1a094bf93565dad8aa4e7b13c6b08f1485b5b733ac"
+        }
+      ]
+    },
+    {
+      "name": "@deepseek-ai/cosmokit",
+      "version": "1.8.3",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+        "type": "git",
+        "directory": "vendor/cosmokit"
+      },
+      "registry": "https://registry.npmjs.org/@deepseek-ai%2fcosmokit/1.8.3",
+      "npmIntegrity": "sha512-qBo+ronVM6Eu2WNVJXi8JcMiqZ19T9BRIpV+5qJUFPXjGH/Z0QKcQMC/IZJ7L394YTOtJgcovbk9qP0w2GsBXQ==",
+      "licenseSha256": "034fb52b1d57360ecbae6cb1632a88f86fd7c3d3f5631a5f082710203dda0be7",
+      "sourceFiles": [
+        {
+          "path": "src/array.ts",
+          "sha256": "cf4de899ecffd66a90d8cef6f4c7d127d31f77f776d8e173d41c30d2d7632cf7"
+        },
+        {
+          "path": "src/index.ts",
+          "sha256": "51dd173c70001d7d7891d3aab7e26594da65f7cb6671253f6d457ac889326b3c"
+        },
+        {
+          "path": "src/misc.ts",
+          "sha256": "117617943074ea57c15f216905dacd2f6d1c4c2ff16586f97a7a7a87dbf2141f"
+        },
+        {
+          "path": "src/string.ts",
+          "sha256": "5564272b3e15e49235cbe3a8b453f27306baf282d23a893982841670f65d3c04"
+        },
+        {
+          "path": "src/time.ts",
+          "sha256": "49957c4608465a1fbd738186a92c47fffcd1fc4ba59dbf89524f8a773fe16fe2"
+        },
+        {
+          "path": "src/types.ts",
+          "sha256": "09d72a91052105e88500bfb99a8e8ce0c9ebf6f6e7df569053e114bc77aa019c"
+        }
+      ],
+      "generatedDeclarations": [
+        {
+          "path": "tools/vendor/gen/cosmokit/src/array.d.ts",
+          "sha256": "fb6f2007d60e8b519a2ef0c5a27026ddfe06418ae6261c4eb0cb670cca5e1bc2"
+        },
+        {
+          "path": "tools/vendor/gen/cosmokit/src/index.d.ts",
+          "sha256": "f0421e04e2a5238754cf444bf2a56fe7e7a94a08c14c1f9d063ff51c85825823"
+        },
+        {
+          "path": "tools/vendor/gen/cosmokit/src/misc.d.ts",
+          "sha256": "ee31ad8a8426d12cd01f5d87e917de4cf1f5861257ce355d1e6107077e90a257"
+        },
+        {
+          "path": "tools/vendor/gen/cosmokit/src/string.d.ts",
+          "sha256": "56210599298d6eca6285eab99c7e9333d7e275c3a73a7f401b3055e8d55c67e8"
+        },
+        {
+          "path": "tools/vendor/gen/cosmokit/src/time.d.ts",
+          "sha256": "2845576622e416da9871e1f3c788ba41dc4f24eb764362b10eceeb0dbaa67208"
+        },
+        {
+          "path": "tools/vendor/gen/cosmokit/src/types.d.ts",
+          "sha256": "a48f1b69ec0b94b16c7ece2cf6d6003cc8d0c329538117c1c364d8525a100850"
+        }
+      ]
+    },
+    {
+      "name": "@deepseek-ai/dsh-brand",
+      "version": "0.1.5-rc.2",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+        "type": "git",
+        "directory": "packages/util/brand"
+      },
+      "registry": "https://registry.npmjs.org/@deepseek-ai%2fdsh-brand/0.1.5-rc.2",
+      "npmIntegrity": "sha512-/+3TzQRYT4M8NINZ9OrsL5VWNyQSXof8mFLx3txiosWA7Bt0H6UcxUdKGXVwj6gCXhsQ74mzEHm2ucsflG0mYA==",
+      "licenseSha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "sourceFiles": [
+        {
+          "path": "lib/index.js",
+          "sha256": "14feb59256b891982b2017d73ed03ee65e2a7365f48e4902a856acb0e52d5eb0"
+        }
+      ],
+      "generatedDeclarations": [
+        {
+          "path": "tools/vendor/gen/dsh-brand/lib/index.d.ts",
+          "sha256": "dc9d12540743c772f5c447a64510967075a9f266763985038fd865149592f08e"
+        }
+      ]
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm",
+      "version": "0.1.5-rc.2",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+        "type": "git",
+        "directory": "packages/llm/llm"
+      },
+      "registry": "https://registry.npmjs.org/@deepseek-ai%2fdsh-llm/0.1.5-rc.2",
+      "npmIntegrity": "sha512-Z7BVsBkK24SE4EItQeow8PHms/9GP0DSTi337vTAa/RY7tNg2Snz3INcXUj6CPZfvntQr1in9op9wLI+rfNsqA==",
+      "licenseSha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "sourceFiles": [
+        {
+          "path": "lib/index.js",
+          "sha256": "f54d86572d4c0e8d9348cdc65e4c4684a4956a91162815d3c52ee7c0c58225ed"
+        },
+        {
+          "path": "lib/invariant.js",
+          "sha256": "8cb78641252b7a41523fef2c571dd42c698de4c9475dd91683191cefa4dced48"
+        },
+        {
+          "path": "lib/typert.host.js",
+          "sha256": "9d03dbcd76059bcf6100e2dd14ed462d84799778ad77c2fb1186f86590c81e27"
+        },
+        {
+          "path": "lib/typert.remote-client.js",
+          "sha256": "27d962486eb2057ab3a351324e3b938af7e00965c3d2811859240f0afde61229"
+        },
+        {
+          "path": "lib/types/adapter-failure.js",
+          "sha256": "646dbe1733795966cb21e7c299081ab091aaa6a1eca816b76c4aa80d884e3577"
+        },
+        {
+          "path": "lib/types/api-key.js",
+          "sha256": "254b774234c0bd38dd759765c0fd1e60788651a22106f5559ec2760a39935f2d"
+        },
+        {
+          "path": "lib/types/assembler.js",
+          "sha256": "3257b31b5b93156cb31d610296a505170527eda44e3f60d8277ad564a4418f65"
+        },
+        {
+          "path": "lib/types/assistant-stream.js",
+          "sha256": "7e0cc96a4d60aed34381b552f9cb4549d70df36dbd28c0630da4cd93fa44b7a1"
+        },
+        {
+          "path": "lib/types/attribution.js",
+          "sha256": "6f61d7b685175f7c74ed2a0498212258240f2a7fd93e939349cf7daccf33414b"
+        },
+        {
+          "path": "lib/types/brand.js",
+          "sha256": "6b70219e0478d3307d865309523e7e7be3f169b06c04f4eef0d49b54aaef72a2"
+        },
+        {
+          "path": "lib/types/call-config.js",
+          "sha256": "170f3ce7c7136b93087e2f5d50faa8b69815894ec3ebdf26c36d57e4c7a17a03"
+        },
+        {
+          "path": "lib/types/content.js",
+          "sha256": "0a838fe66ccab38cca48ebb1e4f3cb52516fdb90109edf9083a0c1a006e35519"
+        },
+        {
+          "path": "lib/types/error.js",
+          "sha256": "f5a61e6754e3b890cf0195274b850cd52401e9c636b51313f5733cd6c2d9a616"
+        },
+        {
+          "path": "lib/types/index.js",
+          "sha256": "25d66feee542337e4be07e9a5b2ae7e1bb0e670b7eac697b739b1ad2a027a906"
+        },
+        {
+          "path": "lib/types/invariant.js",
+          "sha256": "31e6ab4e29731d461b2bd49fd285666ea1a1fb96fa71ecd5c449c6c27e95d889"
+        },
+        {
+          "path": "lib/types/message.js",
+          "sha256": "3cc4fad513f747a9beeb1c25e6621a44367c1698c60a4640afcfffa1452f80d2"
+        },
+        {
+          "path": "lib/types/retry-policy.js",
+          "sha256": "f0a8fe075ac24c56ed2aa5d5e359a85539f5ffa237af54b68d3f4fc5124b5d83"
+        },
+        {
+          "path": "lib/types/types.js",
+          "sha256": "14106d660103de2db746964fbb5be90c5eb2a7ff736779e2501e9faff956cbf5"
+        }
+      ],
+      "generatedDeclarations": [
+        {
+          "path": "tools/vendor/gen/dsh-llm/lib/index.d.ts",
+          "sha256": "0d0d9ed049354ff5b6197df5b61e47eda7f7e8fd5cbf07b6620c2e8dc50bd216"
+        }
+      ]
+    },
+    {
+      "name": "@deepseek-ai/dsh-scope",
+      "version": "0.1.5-rc.2",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+        "type": "git",
+        "directory": "packages/core/scope"
+      },
+      "registry": "https://registry.npmjs.org/@deepseek-ai%2fdsh-scope/0.1.5-rc.2",
+      "npmIntegrity": "sha512-JwItISje52iVIjlGMNayRVMZrvZU/0i3Gr0s+coND5nBp5lS+pOj9Zf1RQzA5cWjHYCWKmDuQc+m6zGlwmtAeQ==",
+      "licenseSha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "sourceFiles": [
+        {
+          "path": "lib/index.js",
+          "sha256": "2829df71d76e08941457d4dd173eac60783e55354921137c8b75e8b5c0d2ecca"
+        },
+        {
+          "path": "lib/invariant.js",
+          "sha256": "1580d3c01b442bb099040ef527e2ba7ac55c453dba0597eab9c9c32bcbdded59"
+        }
+      ],
+      "generatedDeclarations": [
+        {
+          "path": "tools/vendor/gen/dsh-scope/lib/index.d.ts",
+          "sha256": "12dfaf7da860aaff547998dbe880712dd6b3c6809ce74b09f85388f2058e7af5"
+        }
+      ]
+    },
+    {
+      "name": "@deepseek-ai/dsh-tools",
+      "version": "0.1.5-rc.2",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+        "type": "git",
+        "directory": "packages/core/tools"
+      },
+      "registry": "https://registry.npmjs.org/@deepseek-ai%2fdsh-tools/0.1.5-rc.2",
+      "npmIntegrity": "sha512-k2yZuJJtszaU9lzr2aBtdeFMINrkdlk4ellbtrMokA2oySVqJmAM8dv+u9RtzduD3aRRqyr2i2hWrTACz0qOrA==",
+      "licenseSha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "sourceFiles": [
+        {
+          "path": "lib/index.js",
+          "sha256": "aaba52bf5d0149355407642b3965c06977d1e9143f5c61bc19429abbe6a11c5d"
+        },
+        {
+          "path": "lib/invariant.js",
+          "sha256": "41a09fa8d0e0857c6232e8d3b13c8658929b6b6300c6b3a2c53980c05309c282"
+        },
+        {
+          "path": "lib/types/index.js",
+          "sha256": "565e809adcc9897b45751b3c0e7df8326aa0b5e4e0ef8755f1fe4b9e3a84044f"
+        },
+        {
+          "path": "lib/types/invariant.js",
+          "sha256": "5c4dd2c8846dbadba15cdc4c3fb5fdc9a9d62f42e1dca5e40c60a6945d7b6608"
+        },
+        {
+          "path": "lib/types/json-schema.js",
+          "sha256": "912e04e68c2455cbb77651031449574f992720c90311e6cbecb1d35020bc1072"
+        },
+        {
+          "path": "lib/types/presentation.js",
+          "sha256": "253894265253e38fa9db12f3696d9dac9fd2bed1363c04ce3f95c0f19a6c16da"
+        },
+        {
+          "path": "lib/types/ptc.js",
+          "sha256": "b9d7f3fdfedd806f2f8a3e9ad13d2d1f0ac4c0e649268c78bd211dfca51c1074"
+        },
+        {
+          "path": "lib/types/py-types.js",
+          "sha256": "62cf351dd1a513bb024676d5f73d23ae3f89c95bb5c8e630832443b1b836113f"
+        },
+        {
+          "path": "lib/types/schema.js",
+          "sha256": "1b70cbf3a33327ca34d0a9e60b3143735327918f74495cad33dbbde5b5cbfad7"
+        },
+        {
+          "path": "lib/types/testing.js",
+          "sha256": "c6784f546e950dc38323baaad4009bb197eb25acf3a16adaa2893a44c7b7a650"
+        },
+        {
+          "path": "lib/types/ts-types.js",
+          "sha256": "3c2f80465d6a420f15c75dcd023daa73af97307c3e22478c0bae67cf71c50d1e"
+        },
+        {
+          "path": "lib/types/types.js",
+          "sha256": "d53c54d32353419ece121f485a5534ee054842b74ebab7b4a4d3325545d0179a"
+        }
+      ],
+      "generatedDeclarations": [
+        {
+          "path": "tools/vendor/gen/dsh-tools/lib/index.d.ts",
+          "sha256": "3dcb18cb33760ccc69383c7f0aaa98ed1be8911440a4ec3f840225bc9a27514f"
+        }
+      ]
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-values",
+      "version": "0.1.5-rc.2",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+        "type": "git",
+        "directory": "packages/util/values"
+      },
+      "registry": "https://registry.npmjs.org/@deepseek-ai%2fdsh-util-values/0.1.5-rc.2",
+      "npmIntegrity": "sha512-Cr0TkM6dFAD+Iy4sNXH/afJVMHwJXoOztivj+RflkYoACsOq+Ix0vdHn36hwW7mayU8OK3ZKIZUQ6BPo1fHvUg==",
+      "licenseSha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+      "sourceFiles": [
+        {
+          "path": "lib/index.js",
+          "sha256": "5c86e3bdb285e94f89b693c9036f1f62b1ceee10c0bc72c664f21ad8a592b0b4"
+        }
+      ],
+      "generatedDeclarations": [
+        {
+          "path": "tools/vendor/gen/dsh-util-values/lib/index.d.ts",
+          "sha256": "b3e1f3233e24091471658534738fb57a8189bf47574d14416070839f6883285d"
+        }
+      ]
+    },
+    {
+      "name": "@deepseek-ai/schemastery",
+      "version": "3.18.2",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+        "type": "git",
+        "directory": "vendor/schemastery"
+      },
+      "registry": "https://registry.npmjs.org/@deepseek-ai%2fschemastery/3.18.2",
+      "npmIntegrity": "sha512-njDtZsznjYxok7KLLlHOPyuv2efdWVbSflAHgztSfbMsg+CVraEoRe2DjOCgClYv3ZCSm7WXoaUkbB/+RY7tWQ==",
+      "licenseSha256": "034fb52b1d57360ecbae6cb1632a88f86fd7c3d3f5631a5f082710203dda0be7",
+      "sourceFiles": [
+        {
+          "path": "src/index.ts",
+          "sha256": "cf8a4de0481969a1a6d44eac390015f3494be1ce19b84d4fcfb7e93e5072cee5"
+        }
+      ],
+      "generatedDeclarations": [
+        {
+          "path": "tools/vendor/gen/schemastery/src/index.d.ts",
+          "sha256": "bb2f86815e0ffd28aff945931828a38ab6e6b1eb33b93cbb108315c2e94f8b2b"
+        }
+      ]
+    }
+  ]
+}

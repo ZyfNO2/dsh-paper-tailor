@@ -1,0 +1,55 @@
+{
+  "id": "phase3-comparison-v1",
+  "body": {
+    "profileRef": "phase2-cpu-seg-v1@1",
+    "dataSubsetRef": {
+      "id": "oxford-pet-trimap-v1",
+      "sha256": "bc6258000f8b6be512949cb90d6776a86bf7d4bbd3d4459e27d6515b1ae07cbc"
+    },
+    "variants": [
+      "baseline",
+      "a",
+      "ab"
+    ],
+    "seeds": [
+      20261004,
+      20261006
+    ],
+    "limit": {
+      "kind": "steps",
+      "value": 50
+    },
+    "metricSpecs": [
+      {
+        "id": "validation_loss",
+        "direction": "minimize",
+        "unit": "cross_entropy",
+        "validRange": [
+          0,
+          100
+        ],
+        "split": "validation",
+        "aggregation": "mean",
+        "evaluatorOutputKey": "validation_loss"
+      },
+      {
+        "id": "validation_accuracy",
+        "direction": "maximize",
+        "unit": "fraction",
+        "validRange": [
+          0,
+          1
+        ],
+        "split": "validation",
+        "aggregation": "mean",
+        "evaluatorOutputKey": "validation_accuracy"
+      }
+    ],
+    "toleranceRef": {
+      "id": "phase2-tolerances-v1",
+      "sha256": "a92c25db28cb91b85e8c51a9664bfc6eb274d1d4916c0ba6fc249a3fc22cf2c6"
+    },
+    "protocolHash": "a47a265301944bb245e429d0c70e2941ebaaddd11109a9e0bcc883c5ec4a3074"
+  },
+  "note": "Phase 3 comparison matrix, HOST-FROZEN (trusted config, never a request parameter). The arm names are the RUNNER's own frozen vocabulary: baseline (no module), a (one module), ab (two modules) — the runner refuses any other name with CONTRACT_UNKNOWN_VARIANT, and the module set of each arm comes from the adaptation plan's bindings, not from the variant name. For this pilot the bindings resolve to: a = attention gate (the research candidate P002), ab = aspp + attention gate. The two seeds are the pre-declared paired seeds from configs/phase3/pilot-config.json. The data is the REAL, licensed Oxford-IIIT Pet trimap slice (CC BY-SA 4.0), pinned by hash; the runner verifies those bytes before reading them. The 50-step limit was MEASURED, not inherited: the 5-step budget that carried the synthetic Phase 2 chain leaves a from-scratch baseline at 0.25 validation accuracy, which is below the 0.5 random rate and therefore not a valid baseline at all. scripts/probe-phase3-baseline-budget.ts measured the curve (5 steps 0.2500, 20 steps 0.4375, 50 steps 0.7500) and 50 is the smallest budget at which the baseline clears both the 0.5 random rate and the 0.6875 majority-class rate of this slice. Still a mechanism matrix on a 16-sample slice, not a benchmark."
+}
