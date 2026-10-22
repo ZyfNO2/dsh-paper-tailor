@@ -207,6 +207,15 @@ try {
     }
   }
   record('host/session-required', 'pass', 'both session-scoped routes mounted and ownerless requests refused');
+  const foundations = await httpGet(`http://127.0.0.1:${options.port}/evolver/research-foundations`, cookie);
+  if (foundations.status !== 400 || JSON.parse(foundations.body).error !== 'Invalid id') {
+    throw new Error(`foundations route answered ${foundations.status}, expected scoped input rejection: ${foundations.body.slice(0, 200)}`);
+  }
+  const foundationsUnauthenticated = await httpGet(`http://127.0.0.1:${options.port}/evolver/research-foundations`);
+  if (![401, 403].includes(foundationsUnauthenticated.status)) {
+    throw new Error(`unauthenticated foundations route answered ${foundationsUnauthenticated.status}`);
+  }
+  record('host/foundations-scope', 'pass', 'foundations route mounted; ownerless and unauthenticated requests refused');
   if (options.e2e) { const { runModelPreflight } = await import('./probe-model.mjs'); const passed=await runModelPreflight({repoRoot,port:options.port,cookie,privateRoot:options.dshHome}); if(!passed) modelAcceptanceIncomplete = true; }
 } catch (error) {
   failure = error instanceof Error ? error.message : String(error);

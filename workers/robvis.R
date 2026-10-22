@@ -1,0 +1,6 @@
+args <- commandArgs(trailingOnly=TRUE)
+if(length(args)!=3 || !args[3] %in% c('ROB2','ROBINS-I')) stop('input.csv output.pdf tool required')
+if(!requireNamespace('robvis',quietly=TRUE)) stop('robvis is not installed')
+data <- read.csv(args[1],check.names=FALSE)
+plot <- robvis::rob_traffic_light(data, tool=args[3])
+ggplot2::ggsave(args[2],plot=plot,width=10,height=6)

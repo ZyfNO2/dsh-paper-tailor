@@ -1,0 +1,7 @@
+args <- commandArgs(trailingOnly=TRUE)
+if(length(args)!=2) stop('PRISMA template CSV and output SVG required')
+if(!requireNamespace('PRISMA2020',quietly=TRUE)) stop('PRISMA2020 is not installed')
+data <- PRISMA2020::PRISMA_data(read.csv(args[1],stringsAsFactors=FALSE))
+diagram <- PRISMA2020::PRISMA_flowdiagram(data,interactive=FALSE)
+if(!requireNamespace('DiagrammeRsvg',quietly=TRUE)) stop('DiagrammeRsvg is not installed')
+writeLines(DiagrammeRsvg::export_svg(diagram),args[2])

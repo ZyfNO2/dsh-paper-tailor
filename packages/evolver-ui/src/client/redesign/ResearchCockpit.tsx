@@ -1,3 +1,4 @@
+import { ResearchFoundationsPanel } from '../general/ResearchFoundationsPanel.tsx';
 import { useEffect, useState } from 'react';
 import { useWorkbench } from './WorkbenchView.tsx';
 import { BrainstormPage } from './BrainstormPage.tsx';
@@ -97,6 +98,7 @@ export function ResearchCockpit(): JSX.Element {
       ].map((s) => <button className="rc-stat" key={s.label} onClick={s.action}><b>{s.value}</b><span className="rc-muted">{s.label}</span></button>)}
     </div>
     {snapshot.bootstrap?.state.status === 'error' && <div className="rc-alert" role="alert">研究状态读取失败：{snapshot.bootstrap.state.reason}</div>}
+    {active && <ResearchFoundationsPanel sessionId={snapshot.task.taskKey} researchId={active.researchId} />}
     <div className="rc-grid">
       <aside className="rc-card rc-contract"><header>Research Contract<button className="rc-btn" onClick={() => setOverlay('brainstorm')}>编辑</button></header>
         <div className="rc-section"><h4>研究问题 / 目标</h4>{contract?.question ?? contract?.objective ?? '先整理已有研究输入，未知项保留为空。'}</div>

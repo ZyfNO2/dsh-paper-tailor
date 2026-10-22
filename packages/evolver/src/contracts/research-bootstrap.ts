@@ -20,6 +20,7 @@
 
 import * as crypto from 'node:crypto';
 import { validateGeneralResearch, type GeneralResearch } from './general-research.ts';
+import { validateFoundations, type FoundationState } from './research-foundations.ts';
 import { validateTakeoverList, type TakeoverRecord } from './research-takeover.ts';
 import { canonicalJsonV1, sha256Hex } from '../domain/research-canonical.ts';
 
@@ -900,6 +901,7 @@ export interface OperationReceipt {
 }
 
 export interface ResearchBootstrap {
+  foundations?: FoundationState;
   /** Optional, strict generic extension. Legacy projects remain byte-semantically unchanged. */
   general?: GeneralResearch;
   researchId: string;
@@ -965,7 +967,7 @@ function validateBrainstormRun(raw: unknown, label: string): BrainstormRun {
 }
 
 function validateResearchBootstrap(raw: unknown, label: string): ResearchBootstrap {
-  const o = keys(raw, ['researchId', 'title', 'contract', 'environment', 'brainstormRuns', 'ideas', 'graph', 'selectionProof', 'updatedAt', 'general'], label);
+  const o = keys(raw, ['researchId', 'title', 'contract', 'environment', 'brainstormRuns', 'ideas', 'graph', 'selectionProof', 'updatedAt', 'general', 'foundations'], label);
   let general: GeneralResearch | undefined;
   if (o.general !== undefined) {
     try { general = validateGeneralResearch(o.general); }
@@ -982,6 +984,7 @@ function validateResearchBootstrap(raw: unknown, label: string): ResearchBootstr
     };
   }
   return {
+    ...(o.foundations === undefined ? {} : { foundations: validateFoundations(o.foundations) }),
     ...(general === undefined ? {} : { general }),
     researchId: reqId(o.researchId, `${label}.researchId`),
     title: reqText(o.title, `${label}.title`, 300),

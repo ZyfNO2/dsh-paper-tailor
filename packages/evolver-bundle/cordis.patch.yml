@@ -152,3 +152,7 @@
     # Native Skill catalog: slash-menu and model on-demand invocation in any workspace.
     - id: evolver-research-skills
       name: './../evolver/src/adapters/dsh/research-skill-entries.ts'
+
+    # Scientific protocol, evidence, execution and review extensions.
+    - id: evolver-research-foundations
+      name: './../evolver/src/adapters/dsh/research-foundations-host.ts'

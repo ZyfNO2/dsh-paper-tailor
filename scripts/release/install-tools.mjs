@@ -1,9 +1,10 @@
 /**
- * Install the two pinned tool closures that are deliberately NOT part of the
+ * Install the pinned tool closures that are deliberately NOT part of the
  * root npm workspace:
  *
  *   tools/mermaid      — Mermaid 11.17.2 (BR-FE3: vendored, never a runtime CDN)
  *   tools/ts-toolchain — TypeScript 5.9.3 + @types/node 24.10.1
+ *   tools/host-test    — provenance-matched DSH SDK test dependencies
  *
  * They each carry their own package-lock.json, so `npm ci` inside the tool
  * directory is the reproducible install. This script only drives that; it
@@ -19,7 +20,7 @@ import { spawnSync } from 'node:child_process';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
-const TOOLS = ['tools/mermaid', 'tools/ts-toolchain'];
+const TOOLS = ['tools/mermaid', 'tools/ts-toolchain', 'tools/host-test'];
 
 function parseArgs(argv) {
   const options = { registry: undefined };
