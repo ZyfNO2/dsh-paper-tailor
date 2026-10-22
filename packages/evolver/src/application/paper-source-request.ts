@@ -22,20 +22,28 @@ const MAX_VISITED = 2000, MAX_DEPTH = 8, MAX_FILES = 100, EXCLUDED = ['.git', '.
 /** One bounded walk. `strict` reproduces the human-command behaviour of failing fast. */
 function walk(source: string, filter: SourceFilter, signal: AbortSignal | undefined, strict: boolean,
   onFile: (absolute: string, stat: fs.Stats) => void, onError: (absolute: string, code: string, message: string) => void): { truncated: boolean } {
-  let visited = 0, truncated = false;
+  let visited = 0, admitted = 0, truncated = false;
   function visit(file: string, depth: number): void {
     signal?.throwIfAborted();
     const fail = (code: string, message: string) => { if (strict) throw new Error(`${code}: ${message}`); onError(file, code, message); };
     if (++visited > MAX_VISITED || depth > MAX_DEPTH) { truncated = true; return fail('SOURCE_LIMIT', 'directory is too large/deep; select a smaller paper directory'); }
-    const stat = fs.lstatSync(file);
+    const ioFailure = (error: unknown) => fail((error as NodeJS.ErrnoException).code ?? 'SOURCE_IO', error instanceof Error ? error.message : String(error));
+    let stat: fs.Stats;
+    try { stat = fs.lstatSync(file); }
+    catch (error) { return ioFailure(error); }
     if (stat.isSymbolicLink()) return fail('SOURCE_SYMLINK', `select the actual source instead: ${file}`);
     if (stat.isDirectory()) {
-      for (const name of fs.readdirSync(file).sort()) { if (EXCLUDED.includes(name)) continue; visit(path.join(file, name), depth + 1); if (truncated) return; }
+      let names: string[];
+      try { names = fs.readdirSync(file).sort(); }
+      catch (error) { return ioFailure(error); }
+      for (const name of names) { if (EXCLUDED.includes(name)) continue; visit(path.join(file, name), depth + 1); if (truncated) return; }
       return;
     }
     if (!stat.isFile() || !supported(file)) return;
     if (filter === 'pdf' && !isPdf(file)) return;
     if (!stat.size || stat.size > 25 * 1024 * 1024) return fail('SOURCE_SIZE', `${file} must be nonempty and at most 25 MiB`);
+    if (admitted >= MAX_FILES) { truncated = true; return fail('SOURCE_LIMIT', `select at most ${MAX_FILES} papers`); }
+    admitted++;
     onFile(file, stat);
   }
   visit(source, 0);
@@ -77,7 +85,6 @@ export function discoverPaperSources(workspace: string, source = '.', signal?: A
   const errors: SourceScanError[] = [];
   const files: PaperSourceRequest['files'] = [];
   const { truncated } = walk(resolved, filter, signal, false, (absolute, stat) => {
-    if (files.length >= MAX_FILES) { errors.push({ path: absolute, code: 'SOURCE_LIMIT', message: `select at most ${MAX_FILES} papers` }); return; }
     files.push({ sourceId: `file-${files.length + 1}`, name: path.basename(absolute), path: absolute, relativePath: path.relative(root, absolute).split(path.sep).join('/'),
       bytes: stat.size, modified: stat.mtimeMs });
   }, (absolute, code, message) => errors.push({ path: path.relative(root, absolute).split(path.sep).join('/'), code, message }));
@@ -92,7 +99,6 @@ export function admitPaperSource(workspace: string, source: string, signal?: Abo
   const root = path.resolve(workspace, source), resolved = fs.realpathSync(root);
   const files: PaperSourceRequest['files'] = [];
   walk(resolved, 'all', signal, true, (absolute, stat) => {
-    if (files.length >= MAX_FILES) throw new Error(`SOURCE_LIMIT: select at most ${MAX_FILES} papers`);
     files.push({ sourceId: `file-${files.length + 1}`, name: path.basename(absolute), path: fs.realpathSync(absolute), relativePath: path.relative(fs.realpathSync(workspace), absolute).split(path.sep).join('/'),
       bytes: stat.size, modified: stat.mtimeMs });
   }, () => undefined);
