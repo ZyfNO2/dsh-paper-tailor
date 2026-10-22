@@ -122,3 +122,7 @@ release-files.txt
 *.pem
 *.p12
 *.pfx
+
+# Internal execution notes are local; public usage lives in RESEARCH_FOUNDATIONS.md.
+/GOAL.md
+/RESEARCH_UPGRADE_PLAN.md

@@ -24,12 +24,15 @@
     "check:client": "node --experimental-strip-types scripts/build-client-check.ts",
     "verify:beta": "node scripts/release/verify-beta.mjs",
     "verify:host": "node scripts/release/verify-host.mjs",
-    "test:domain": "node --experimental-strip-types --test tests/integration/external-result.spec.ts tests/integration/general-metrics.spec.ts tests/integration/general-package.spec.ts tests/integration/research-takeover.spec.ts tests/integration/research-takeover-adopt.spec.ts tests/integration/general-wiki-workspace.spec.ts",
-    "test:wiring": "node --experimental-strip-types --test tests/integration/research-guidance.spec.ts tests/integration/research-cycle-host.spec.ts tests/integration/research-cycle-team.spec.ts tests/integration/general-report.spec.ts tests/integration/general-report-offline.spec.ts tests/frontend-redesign/paper-commands.test.ts tests/frontend-redesign/paper-library.test.ts tests/integration/research-bootstrap-host.spec.ts tests/frontend-redesign/studio-model.test.ts tests/frontend-redesign/studio-ui.test.ts tests/integration/pdf-intake.spec.ts tests/integration/research-skill-entries.spec.ts",
-    "test": "npm run test:domain && npm run test:wiring",
+    "test:domain": "node --import ./scripts/release/host-test-loader.mjs --experimental-strip-types --test tests/integration/external-result.spec.ts tests/integration/general-metrics.spec.ts tests/integration/general-package.spec.ts tests/integration/research-takeover.spec.ts tests/integration/research-takeover-adopt.spec.ts tests/integration/general-wiki-workspace.spec.ts",
+    "test:wiring": "node --import ./scripts/release/host-test-loader.mjs --experimental-strip-types --test tests/integration/research-guidance.spec.ts tests/integration/research-cycle-host.spec.ts tests/integration/research-cycle-team.spec.ts tests/integration/general-report.spec.ts tests/integration/general-report-offline.spec.ts tests/frontend-redesign/paper-commands.test.ts tests/frontend-redesign/paper-library.test.ts tests/integration/research-bootstrap-host.spec.ts tests/frontend-redesign/studio-model.test.ts tests/frontend-redesign/studio-ui.test.ts tests/integration/pdf-intake.spec.ts tests/integration/research-skill-entries.spec.ts",
+    "test": "npm run test:domain && npm run test:wiring && npm run test:foundations",
     "verify:licenses": "node scripts/release/verify-licenses.mjs",
     "verify:model": "node scripts/release/verify-host.mjs --e2e",
-    "test:skills": "node --experimental-strip-types --test tests/integration/research-skill-entries.spec.ts tests/integration/general-wiki-workspace.spec.ts"
+    "test:skills": "node --import ./scripts/release/host-test-loader.mjs --experimental-strip-types --test tests/integration/research-skill-entries.spec.ts tests/integration/general-wiki-workspace.spec.ts",
+    "test:foundations": "node --import ./scripts/release/host-test-loader.mjs --test tests/integration/research-foundations.spec.ts tests/integration/research-foundations-host.spec.ts tests/frontend-redesign/research-foundations.test.ts",
+    "research:doctor": "node scripts/research-foundations.mjs doctor",
+    "research:demo": "node scripts/research-foundations.mjs demo"
   },
   "dependencies": {
     "fflate": "0.8.3",

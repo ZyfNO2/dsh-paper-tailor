@@ -1,3 +1,4 @@
+import { ResearchFoundationsPanel } from './ResearchFoundationsPanel.tsx';
 import type { ResearchCycleData } from '../integration/research-cycle-view.ts';
 import { useEffect, useRef, useState, Fragment, type ReactNode, type FormEvent } from 'react';
 import type { BootstrapReadPayload } from '../integration/research-bootstrap-view.ts';
@@ -556,6 +557,7 @@ export function GeneralWorkbench(props: { initialPage?: Page; cycle?: ResearchCy
         {props.read && general && <div hidden={page !== 'tree'} className="page">{visited.has('tree') && treeContent()}</div>}
         {props.read && general && <div hidden={page !== 'agent'} className="page">{visited.has('agent') && agentContent()}</div>}
         {props.read && general && <div hidden={page !== 'wiki'} className="page wiki-page">{visited.has('wiki') && wikiContent()}</div>}
+        {research && identity && page === 'home' && <div className="page"><ResearchFoundationsPanel sessionId={props.sessionId} researchId={identity}/></div>}
         {props.read && !research && (page === 'tree' || page === 'agent' || page === 'wiki') && <div className="page"><div className="empty">请先新建或选择通用研究；现有论文 / 算法路径在历史功能中保留。</div></div>}
         </div>
       </div>
