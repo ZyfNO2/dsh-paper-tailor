@@ -40,6 +40,8 @@ import { ResearchBootstrapStore, type MutationResult } from './research-bootstra
 import { scanTakeoverDirectory, type TakeoverScanOptions } from './takeover-scanner.ts';
 
 export interface TakeoverServiceOptions {
+  /** Trusted original workspace when persistence lives in a compatibility directory. */
+  sourceWorkspaceRoot?: string;
   /** Injected in tests; defaults to the real read-only scanner. */
   scan?: (options: TakeoverScanOptions) => Promise<TakeoverScan>;
   now?: () => Date;
@@ -160,6 +162,7 @@ function placeholderSnapshot(input: {
 
 export class TakeoverService {
   readonly store: ResearchBootstrapStore;
+  readonly sourceWorkspaceRoot: string;
   private readonly scanImpl: (options: TakeoverScanOptions) => Promise<TakeoverScan>;
   private readonly clock: () => Date;
   private readonly mintImpl: (prefix: string) => string;
@@ -168,6 +171,7 @@ export class TakeoverService {
 
   constructor(store: ResearchBootstrapStore, options: TakeoverServiceOptions = {}) {
     this.store = store;
+    this.sourceWorkspaceRoot = path.resolve(options.sourceWorkspaceRoot ?? store.workspaceRoot);
     this.scanImpl = options.scan ?? ((request) => scanTakeoverDirectory(request));
     this.clock = options.now ?? (() => new Date());
     this.mintImpl = options.mint ?? ((prefix: string) => `${prefix}-${randomUUID()}`);
@@ -338,11 +342,21 @@ export class TakeoverService {
     const record = this.read(takeoverId);
     if (record === null) return emptyTakeoverFreshness();
     const freshness = emptyTakeoverFreshness();
-    for (const watched of record.snapshot.watchedEntries) {
-      const absolute = path.resolve(this.store.workspaceRoot, watched.relativePath);
+    watchedLoop: for (const watched of record.snapshot.watchedEntries) {
+      const absolute = path.resolve(this.sourceWorkspaceRoot, watched.relativePath);
       let stats: fs.Stats;
       try {
+        let candidate = this.sourceWorkspaceRoot;
+        for (const part of path.relative(this.sourceWorkspaceRoot, absolute).split(path.sep)) {
+          candidate = path.join(candidate, part);
+          if (fs.lstatSync(candidate).isSymbolicLink()) {
+            freshness.checked += 1;
+            freshness.changed.push({ entryId: watched.entryId, relativePath: watched.relativePath, reason: 'missing' });
+            continue watchedLoop;
+          }
+        }
         stats = fs.statSync(absolute);
+        if (!stats.isFile()) { freshness.checked += 1; freshness.changed.push({ entryId: watched.entryId, relativePath: watched.relativePath, reason: 'missing' }); continue; }
       } catch (error) {
         if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
           freshness.checked += 1;
@@ -419,7 +433,7 @@ export class TakeoverService {
   private async settle(scoped: { roots: string[]; scopeNote: string }): Promise<ScanSettled> {
     try {
       const scan = await this.scanImpl({
-        workspaceRoot: this.store.workspaceRoot,
+        workspaceRoot: this.sourceWorkspaceRoot,
         roots: scoped.roots,
         scopeNote: scoped.scopeNote,
         now: this.clock,

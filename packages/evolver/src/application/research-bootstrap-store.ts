@@ -25,6 +25,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { randomUUID } from 'node:crypto';
+import { activeStore } from '../../../research-core/src/active-store.ts';
 import {
   BootstrapError,
   emptyBootstrapState,
@@ -38,7 +39,7 @@ import {
 export interface ResearchBootstrapStoreOptions {
   /** How long a writer waits for a competing lock before reporting HOST_BUSY. */
   lockTimeoutMs?: number;
-  /** Age at which an orphaned lock file (crashed writer) may be taken over. */
+  /** Deprecated compatibility option. Lock age never authorizes takeover. */
   staleLockMs?: number;
   /** Lock poll interval; tests lower it together with the timeouts. */
   lockPollIntervalMs?: number;
@@ -149,7 +150,6 @@ export class ResearchBootstrapStore {
   readonly stateFile: string;
   private readonly lockPath: string;
   private readonly lockTimeoutMs: number;
-  private readonly staleLockMs: number;
   private readonly lockPollIntervalMs: number;
   private readonly clock: () => Date;
 
@@ -157,12 +157,13 @@ export class ResearchBootstrapStore {
     if (typeof workspaceRoot !== 'string' || workspaceRoot.trim().length === 0) {
       throw new BootstrapError('INVALID_INPUT', 'workspaceRoot is required and comes from trusted host context');
     }
-    this.workspaceRoot = path.resolve(workspaceRoot);
+    const requestedRoot = path.resolve(workspaceRoot);
+    const selected = activeStore(requestedRoot);
+    this.workspaceRoot = selected ? path.join(requestedRoot, selected.root) : requestedRoot;
     this.bootstrapDir = path.join(this.workspaceRoot, '.dsh', 'research', 'bootstrap');
     this.stateFile = path.join(this.bootstrapDir, 'state.json');
     this.lockPath = path.join(this.bootstrapDir, '.writer.lock');
     this.lockTimeoutMs = options.lockTimeoutMs ?? 10_000;
-    this.staleLockMs = options.staleLockMs ?? 60_000;
     this.lockPollIntervalMs = options.lockPollIntervalMs ?? 25;
     this.clock = options.now ?? (() => new Date());
   }
@@ -175,6 +176,7 @@ export class ResearchBootstrapStore {
    * fall back to an empty state.
    */
   readState(): BootstrapState | null {
+    if (activeStore(this.workspaceRoot)) throw new BootstrapError('STATE_CORRUPT', 'STORE_MOVED: reopen the store after migration');
     let raw: string;
     try {
       raw = fs.readFileSync(this.stateFile, 'utf8');
@@ -214,6 +216,7 @@ export class ResearchBootstrapStore {
    * 4. full state validation, receipt append, atomic replace.
    */
   mutate<R>(request: MutationRequest<R>): MutationResult<R> {
+    if (activeStore(this.workspaceRoot)) throw new BootstrapError('STATE_WRITE_FAILED', 'STORE_MOVED: reopen the store after migration; the old source is read-only');
     if (typeof request.operationId !== 'string' || request.operationId.trim().length === 0 || request.operationId.length > OPERATION_ID_MAX) {
       throw new BootstrapError('INVALID_INPUT', `operationId must be a stable non-empty id of at most ${OPERATION_ID_MAX} characters`);
     }
@@ -298,9 +301,9 @@ export class ResearchBootstrapStore {
   }
 
   /**
-   * Cross-process writer lock: an `O_EXCL` lock file with bounded wait, stale takeover and owner
-   * verification on release. A crashed writer's lock is taken over after `staleLockMs`; a live
-   * competitor produces HOST_BUSY with its recorded pid so operators can see who holds it.
+   * Cross-process writer lock with bounded wait and owner verification on release.
+   * Age alone cannot distinguish a slow live writer from a crash. Abandoned locks
+   * require explicit owner-checked recovery; existing locks produce HOST_BUSY.
    */
   private acquireLock(): string {
     // The lock file lives beside the state file; make sure the folder exists before O_EXCL.
@@ -326,12 +329,9 @@ export class ResearchBootstrapStore {
         if (fd !== undefined) { try { fs.closeSync(fd); } catch { /* acquisition failed anyway */ } }
         const code = (error as NodeJS.ErrnoException).code;
         // EEXIST = a live competitor. EPERM/EACCES = Windows holding a fighting handle (or an
-        // antivirus scan) — treated the same: bounded wait, then stale takeover / HOST_BUSY.
+        // antivirus scan) — treated the same: bounded wait, then HOST_BUSY.
         // Any other error is a real failure and is thrown.
         if (code !== 'EEXIST' && code !== 'EPERM' && code !== 'EACCES') throw error;
-        if (this.lockIsStale()) {
-          try { fs.rmSync(this.lockPath, { force: true }); continue; } catch { /* fall through to wait */ }
-        }
         if (Date.now() >= deadline) {
           let holder = 'unknown';
           try { holder = String((JSON.parse(fs.readFileSync(this.lockPath, 'utf8')) as { pid?: number }).pid); } catch { /* unreadable lock */ }
@@ -339,15 +339,6 @@ export class ResearchBootstrapStore {
         }
         Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, this.lockPollIntervalMs);
       }
-    }
-  }
-
-  private lockIsStale(): boolean {
-    try {
-      const stats = fs.statSync(this.lockPath);
-      return Date.now() - stats.mtimeMs > this.staleLockMs;
-    } catch {
-      return false; // gone already — the next loop attempt will simply take it
     }
   }
 

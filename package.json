@@ -3,7 +3,7 @@
   "version": "0.1.0-beta.1",
   "private": true,
   "type": "module",
-  "description": "Beta release candidate: DSH host extension for the research workbench (paper library, research bootstrap, research cycle, workbench UI).",
+  "description": "Standalone research workbench and core with an optional DSH plugin compatibility tree.",
   "engines": {
     "node": ">=24.0.0"
   },
@@ -11,7 +11,6 @@
     "install:tools": "node scripts/release/install-tools.mjs",
     "install:host": "node scripts/release/link-host-modules.mjs",
     "install:all": "npm ci && npm run install:host && npm run install:tools",
-    "postinstall": "node scripts/release/link-host-modules.mjs --if-available",
     "typecheck": "npm run typecheck:backend && npm run typecheck:frontend && npm run typecheck:scripts",
     "typecheck:backend": "tsc --noEmit -p packages/evolver/tsconfig.typecheck.json",
     "typecheck:frontend": "tsc --noEmit -p packages/evolver-ui/tsconfig.json",
@@ -32,7 +31,18 @@
     "test:skills": "node --import ./scripts/release/host-test-loader.mjs --experimental-strip-types --test tests/integration/research-skill-entries.spec.ts tests/integration/general-wiki-workspace.spec.ts",
     "test:foundations": "node --import ./scripts/release/host-test-loader.mjs --test tests/integration/research-foundations.spec.ts tests/integration/research-foundations-host.spec.ts tests/frontend-redesign/research-foundations.test.ts",
     "research:doctor": "node scripts/research-foundations.mjs doctor",
-    "research:demo": "node scripts/research-foundations.mjs demo"
+    "research:demo": "node scripts/research-foundations.mjs demo",
+    "research": "node --experimental-strip-types packages/research-interfaces/src/cli.ts",
+    "research:team": "node research-pack/codex-role.mjs --all",
+    "research:mcp": "node --experimental-strip-types packages/research-interfaces/src/mcp.ts",
+    "research:workbench": "node --experimental-strip-types packages/research-interfaces/src/legacy-workbench.ts",
+    "research:diagnostic": "node --experimental-strip-types packages/research-interfaces/src/workbench.ts",
+    "check:research-boundary": "node scripts/check-research-boundary.mjs",
+    "check:research-contract": "node scripts/export-research-mcp-contract.mjs --check",
+    "typecheck:research": "tsc -p packages/research-interfaces/tsconfig.json && tsc -p apps/workbench/tsconfig.json",
+    "build:research": "node scripts/build-research.mjs",
+    "build:legacy-workbench": "node scripts/build-legacy-workbench.mjs",
+    "research:legacy-workbench": "node packages/research-interfaces/src/legacy-workbench.ts"
   },
   "dependencies": {
     "fflate": "0.8.3",

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>研究工作台</title>
+<style>
+  :root { color-scheme: light; --ink: #1d2430; --muted: #5d6880; --line: #d8deea; --panel: #fff; --bg: #f4f6fb; --accent: #2457d6; --warn: #8a4b08; --bad: #9d1c2f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.5 "Segoe UI", sans-serif; color: var(--ink); background: var(--bg); }
+  header { display: flex; gap: 16px; align-items: center; padding: 14px 20px; background: #172033; color: white; }
+  header h1 { margin: 0; font-size: 18px; }
+  header small { color: #c6d0e4; }
+  main { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 58px); }
+  nav { padding: 16px; border-right: 1px solid var(--line); background: #eef2f8; }
+  nav button, button { font: inherit; }
+  nav button { display: block; width: 100%; text-align: left; margin: 0 0 6px; padding: 8px 10px; border: 1px solid transparent; border-radius: 8px; background: transparent; cursor: pointer; }
+  nav button[aria-current="page"] { background: white; border-color: var(--line); }
+  section { padding: 20px; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
+  label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+  input, textarea, select { font: inherit; color: var(--ink); padding: 7px 8px; border: 1px solid var(--line); border-radius: 7px; background: white; }
+  textarea { min-height: 70px; }
+  button.action { background: var(--accent); color: white; border: 0; border-radius: 7px; padding: 8px 12px; cursor: pointer; }
+  button.action:disabled { opacity: .5; cursor: wait; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 16px; }
+  article { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  article h3 { margin: 0 0 6px; font-size: 16px; }
+  .meta { color: var(--muted); font-size: 12px; }
+  .flag { display: inline-block; margin-right: 6px; padding: 1px 6px; border-radius: 99px; background: #fff4df; color: var(--warn); }
+  .bad { background: #ffe4e8; color: var(--bad); }
+  .status { margin: 12px 0; padding: 8px 10px; border-radius: 8px; background: white; border: 1px solid var(--line); }
+  .status.error { border-color: #efb7c0; color: var(--bad); }
+  .empty { color: var(--muted); padding: 24px; border: 1px dashed var(--line); border-radius: 10px; }
+  svg { width: 100%; height: 420px; background: white; border: 1px solid var(--line); border-radius: 10px; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 360px; overflow: auto; } article p { overflow-wrap: anywhere; } form { margin-bottom: 16px; } blockquote { margin: 8px 0; padding-left: 12px; border-left: 3px solid var(--line); } @media(max-width: 700px) { main { grid-template-columns: 1fr; } nav { display:flex; flex-wrap:wrap; } nav button { width:auto; } header { flex-wrap:wrap; } } </style>
+</head>
+<body>
+<header>
+  <div><h1>研究工作台</h1><small>本地研究项目 · CLI / MCP 与已有 Agent 协作</small></div>
+  <label>项目<select id="project"></select></label>
+  <button class="action" id="refresh" type="button">重新读取</button>
+</header>
+<main>
+  <nav>
+    <button type="button" data-view="sources">文献 Wiki</button>
+    <button type="button" data-view="ideas">候选方案</button>
+    <button type="button" data-view="tree">研究树</button>
+    <button type="button" data-view="runs">实验记录</button>
+  </nav>
+  <section>
+    <div id="status" class="status" role="status">正在读取项目。</div>
+    <div id="view"></div>
+  </section>
+</main>
+<script src="/workbench-client.js" defer></script>
+</body>
+</html>

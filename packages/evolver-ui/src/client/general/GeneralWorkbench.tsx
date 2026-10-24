@@ -224,6 +224,7 @@ export function GeneralWorkbench(props: { initialPage?: Page; cycle?: ResearchCy
       </div>
       {legacyOpen && <div style={{ height: 700, marginTop: 20 }}>{typeof props.legacy === 'function' ? props.legacy(page) : props.legacy}</div>}
       <TakeoverPanel sessionId={props.sessionId} action={action} busy={busy} refresh={props.refresh} />
+      {identity && <ResearchFoundationsPanel sessionId={props.sessionId} researchId={identity}/>}
       <div className="bottom-note"><b>关于当前状态：</b>后端持久工作区；真实模型运行、已有文献证据、模拟数据和真实实验观察分别标记。规划与审查分别记录，执行成功不代表假设成立。</div>
     </div>;
   }
@@ -557,7 +558,6 @@ export function GeneralWorkbench(props: { initialPage?: Page; cycle?: ResearchCy
         {props.read && general && <div hidden={page !== 'tree'} className="page">{visited.has('tree') && treeContent()}</div>}
         {props.read && general && <div hidden={page !== 'agent'} className="page">{visited.has('agent') && agentContent()}</div>}
         {props.read && general && <div hidden={page !== 'wiki'} className="page wiki-page">{visited.has('wiki') && wikiContent()}</div>}
-        {research && identity && page === 'home' && <div className="page"><ResearchFoundationsPanel sessionId={props.sessionId} researchId={identity}/></div>}
         {props.read && !research && (page === 'tree' || page === 'agent' || page === 'wiki') && <div className="page"><div className="empty">请先新建或选择通用研究；现有论文 / 算法路径在历史功能中保留。</div></div>}
         </div>
       </div>

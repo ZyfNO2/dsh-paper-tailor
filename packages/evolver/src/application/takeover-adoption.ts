@@ -126,9 +126,13 @@ function childOperation(operationId: string, suffix: string): string {
 export class TakeoverAdoptionService {
   readonly store: ResearchBootstrapStore;
   private readonly readPdfText: TakeoverServiceOptions['readPdfText'];
+  private readonly options: TakeoverServiceOptions;
+  private readonly sourceWorkspaceRoot: string;
 
   constructor(store: ResearchBootstrapStore, options: TakeoverServiceOptions = {}) {
     this.store = store;
+    this.options = options;
+    this.sourceWorkspaceRoot = path.resolve(options.sourceWorkspaceRoot ?? store.workspaceRoot);
     this.readPdfText = options.readPdfText;
   }
 
@@ -136,7 +140,7 @@ export class TakeoverAdoptionService {
     if (!Number.isSafeInteger(input.baseRevision) || input.baseRevision < 0) throw new TakeoverError('INVALID_INPUT', 'baseRevision 必须是非负整数。');
     const items = this.normalizeItems(input.items);
     const relations = this.normalizeRelations(input.relations ?? []);
-    const takeover = new TakeoverService(this.store).read(input.takeoverId);
+    const takeover = new TakeoverService(this.store, this.options).read(input.takeoverId);
     if (takeover === null) throw new TakeoverError('NOT_FOUND', `没有接管记录 ${input.takeoverId}`);
     const scan = takeover.scans.find((entry) => entry.scanId === takeover.currentScanId);
     if (scan === undefined || takeover.snapshot.scanId !== scan.scanId) throw new TakeoverError('INVALID_INPUT', 'Snapshot 与当前扫描不一致，不能发布。');
@@ -175,7 +179,7 @@ export class TakeoverAdoptionService {
       }
     }
     if (takeover.researchId !== researchId) {
-      const bound = new TakeoverService(this.store).bindResearch({ operationId: childOperation(input.operationId, 'bind'), baseRevision: revision, takeoverId: takeover.takeoverId, researchId }, actorIdentity);
+      const bound = new TakeoverService(this.store, this.options).bindResearch({ operationId: childOperation(input.operationId, 'bind'), baseRevision: revision, takeoverId: takeover.takeoverId, researchId }, actorIdentity);
       revision = bound.revision;
     }
 
@@ -245,14 +249,14 @@ export class TakeoverAdoptionService {
   }
 
   private staleness(takeover: TakeoverRecord, items: TakeoverAdoptionRequestItem[]): string | null {
-    const freshness = new TakeoverService(this.store).checkFreshness(takeover.takeoverId);
+    const freshness = new TakeoverService(this.store, this.options).checkFreshness(takeover.takeoverId);
     if (freshness.stale) return `扫描监视项已变化：${freshness.changed.map((entry) => `${entry.relativePath}（${entry.reason}）`).join('、')}`;
     const scan = takeover.scans.find((entry) => entry.scanId === takeover.currentScanId)!;
     for (const item of items) {
       const entry = scan.entries.find((candidate) => candidate.entryId === item.entryId);
       if (entry === undefined) return `条目 ${item.entryId} 不在当前扫描中。`;
       let file: ReturnType<typeof readScopedFile>;
-      try { file = readScopedFile(this.store.workspaceRoot, entry.relativePath); }
+      try { file = readScopedFile(this.sourceWorkspaceRoot, entry.relativePath); }
       catch (error) { return error instanceof Error ? error.message : String(error); }
       if (file.bytesLength !== entry.bytes) return `${entry.relativePath} 的大小与扫描时不一致。`;
       if (entry.modifiedAt !== null && Math.abs(file.modifiedMs - Date.parse(entry.modifiedAt)) > 1) return `${entry.relativePath} 的修改时间与扫描时不一致。`;
@@ -283,7 +287,7 @@ export class TakeoverAdoptionService {
     const blank = (status: TakeoverAdoptionItem['status'], reason: string, extra: Partial<TakeoverAdoptionItem> = {}): TakeoverAdoptionItem => ({
       key: item.key, entryId: item.entryId, status, reason, sourceId: null, sha256: null, mode: 'none', knowledgeId: null, knowledgeVersion: null, nodeId: null, ...extra,
     });
-    const file = readScopedFile(this.store.workspaceRoot, entry.relativePath);
+    const file = readScopedFile(this.sourceWorkspaceRoot, entry.relativePath);
     const contentHash = sha256(file.bytes);
     const metadataOnly = item.role === 'metadata' || WEIGHT_KINDS.has(entry.kind) || file.bytes.length > DATA_LIMITS.maxFileBytes || entry.readStatus === 'metadata_only';
     if (metadataOnly) {

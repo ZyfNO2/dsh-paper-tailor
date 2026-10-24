@@ -1,3 +1,4 @@
+import { validateBootstrapExperimentLoop, type BootstrapExperimentLoop } from './bootstrap-experiment-loop.ts';
 import { validateInferencePlan, validateInferenceRun, type InferencePlan, type InferenceRun } from './general-inference-records.ts';
 import { validateGeneralImportedHistory, type GeneralImportedHistory } from './general-import.ts';
 import { validateMetricProtocol, validateMetricReport, validateMetricIdentityHistory, suggestMetricProtocol, type GeneralMetricProtocol, type GeneralMetricReport } from './general-metrics.ts';
@@ -27,6 +28,7 @@ export interface GeneralIdea {
   updatedAt: string;
 }
 export interface GeneralResearch {
+  externalLoop?: BootstrapExperimentLoop;
   inferencePlans: InferencePlan[]; inferenceRuns: InferenceRun[];
   importedHistory: GeneralImportedHistory[];
   editHistory: GeneralEditHistory;
@@ -128,7 +130,10 @@ function date(value: unknown, label: string): string {
 /** Strict extension validator; unknown properties and forged execution status fail closed. */
 export function validateGeneralResearch(value: unknown): GeneralResearch {
   // Read compatibility for generic drafts saved before materials were introduced.
-  const o = exact({ inferencePlans: [], inferenceRuns: [], importedHistory: [], editHistory: { past: [], future: [] }, factPacks: [], sourceAccess: [], metricProtocols: [], metricReports: [], resultReviews: [], resultDecisions: [], wiki: emptyWikiWorkspace(), knowledge: [], teamTaskDrafts: [], knowledgeRelations: [], knowledgeLayout: {}, requireHumanConfirmation: true, sources: [], datasets: [], plans: [], calculations: [], reviews: [], profileRevision: 1, profileHistory: [], graphHistory: [], nodeConfirmations: [], ...record(value, 'general') }, ['inferencePlans', 'inferenceRuns', 'importedHistory', 'editHistory', 'factPacks', 'sourceAccess', 'metricProtocols', 'metricReports', 'resultReviews', 'resultDecisions', 'knowledge', 'wiki', 'teamTaskDrafts', 'knowledgeRelations', 'knowledgeLayout', 'requireHumanConfirmation', 'schemaVersion', 'revision', 'domains', 'methods', 'entryMode', 'reference', 'constraints', 'pendingQuestions', 'ideas', 'ideaHistory', 'sources', 'datasets', 'plans', 'calculations', 'reviews', 'profileRevision', 'profileHistory', 'graph', 'graphHistory', 'nodeConfirmations', 'layout', 'limits'], 'general');
+  const input = record(value, 'general');
+  const { externalLoop: loopRaw, ...baseInput } = input;
+  const externalLoop = loopRaw === undefined ? undefined : validateBootstrapExperimentLoop(loopRaw);
+  const o = exact({ inferencePlans: [], inferenceRuns: [], importedHistory: [], editHistory: { past: [], future: [] }, factPacks: [], sourceAccess: [], metricProtocols: [], metricReports: [], resultReviews: [], resultDecisions: [], wiki: emptyWikiWorkspace(), knowledge: [], teamTaskDrafts: [], knowledgeRelations: [], knowledgeLayout: {}, requireHumanConfirmation: true, sources: [], datasets: [], plans: [], calculations: [], reviews: [], profileRevision: 1, profileHistory: [], graphHistory: [], nodeConfirmations: [], ...baseInput }, ['inferencePlans', 'inferenceRuns', 'importedHistory', 'editHistory', 'factPacks', 'sourceAccess', 'metricProtocols', 'metricReports', 'resultReviews', 'resultDecisions', 'knowledge', 'wiki', 'teamTaskDrafts', 'knowledgeRelations', 'knowledgeLayout', 'requireHumanConfirmation', 'schemaVersion', 'revision', 'domains', 'methods', 'entryMode', 'reference', 'constraints', 'pendingQuestions', 'ideas', 'ideaHistory', 'sources', 'datasets', 'plans', 'calculations', 'reviews', 'profileRevision', 'profileHistory', 'graph', 'graphHistory', 'nodeConfirmations', 'layout', 'limits'], 'general');
   const sources = array(o.sources, 'sources', 500).map(validateSource);
   const datasets = array(o.datasets, 'datasets', 2000).map(validateDataset);
   const sourceAccess = array(o.sourceAccess, 'sourceAccess', 2000).map(validateGeneralSourceAccess);
@@ -360,7 +365,7 @@ export function validateGeneralResearch(value: unknown): GeneralResearch {
   for (const board of wiki.boards) for (const card of board.cards) if (!knowledgeEntryIds.has(card.entryId)) invalid('whiteboard references missing knowledge');
   for (const entry of knowledge) for (const image of entry.images ?? []) if (!sources.some(s => s.sourceId === image.sourceId)) invalid('knowledge image references unknown source');
   return {
-    wiki, inferencePlans, inferenceRuns, importedHistory, editHistory: validateGeneralEditHistory(o.editHistory), factPacks, sourceAccess, metricProtocols, metricReports, resultReviews, resultDecisions, knowledge, requireHumanConfirmation: o.requireHumanConfirmation as boolean, schemaVersion: 1, revision: integer(o.revision, 'revision', 1, Number.MAX_SAFE_INTEGER), domains: strings(o.domains, 'domains', 20),
+    ...(externalLoop ? { externalLoop } : {}), wiki, inferencePlans, inferenceRuns, importedHistory, editHistory: validateGeneralEditHistory(o.editHistory), factPacks, sourceAccess, metricProtocols, metricReports, resultReviews, resultDecisions, knowledge, requireHumanConfirmation: o.requireHumanConfirmation as boolean, schemaVersion: 1, revision: integer(o.revision, 'revision', 1, Number.MAX_SAFE_INTEGER), domains: strings(o.domains, 'domains', 20),
     methods: array(o.methods, 'methods', 5).map(m => choice(m, GENERAL_METHODS, 'method')),
     entryMode: choice(o.entryMode, ['idea_only', 'design_first', 'existing_data'], 'entryMode'), reference,
     constraints: strings(o.constraints, 'constraints'), pendingQuestions: strings(o.pendingQuestions, 'pendingQuestions'), ideas, ideaHistory, sources, datasets, plans, calculations, reviews,

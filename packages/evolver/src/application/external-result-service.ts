@@ -16,14 +16,14 @@ import { DATA_LIMITS, type RawCell } from '../contracts/general-data.ts';
 import { isSafeRelativePath } from '../contracts/research-takeover.ts';
 import type { GeneralMetric, GeneralMetricProtocol, GeneralMetricReport } from '../contracts/general-metrics.ts';
 import { validateMetricIdentityHistory, validateMetricProtocol, validateMetricReport } from '../contracts/general-metrics.ts';
-import { validateExternalResultDecision, validateExternalResultReview, type ExternalResultAction, type ExternalResultReview } from '../contracts/external-result.ts';
+import { validateExternalResultDecision, validateExternalResultReview, type ExternalResultAction, type ExternalResultReview, type ExternalResultDecision } from '../contracts/external-result.ts';
 import { validateGeneralResearch, type GeneralResearch } from '../contracts/general-research.ts';
 import { validateGeneralGraph, validateGeneralNode } from '../contracts/general-workflow.ts';
 import { ResearchBootstrapStore, requireResearch, type MutationResult } from './research-bootstrap-store.ts';
 import { GeneralDataService } from './general-data-service.ts';
 import { GeneralMaterialStore, sha256 } from './general-material-store.ts';
 import { generalContextHash } from './general-analysis-service.ts';
-import { assertGeneralSourceAccess } from './general-source-access.ts';
+import { assertGeneralSourceAccess, generalSourceAllowed } from './general-source-access.ts';
 import { recordGeneralEdit } from './general-edit-history.ts';
 
 const NATURES = ['simulation', 'user_result'] as const;
@@ -67,6 +67,11 @@ export interface ExternalDecisionInput {
 }
 /** A user message read by the host from this session. The model cannot mint one. */
 export interface TrustedUserMessage { sessionId: string; messageId: string; text: string }
+/** User HTTP/CLI operation, never a fabricated native session/message. Injected only by its trusted transport. */
+export interface ExternalResultUserAction { kind: 'user_action'; identity: string; actionId: string; source: 'http' | 'cli'; text: string }
+function checkUserAction(action: ExternalResultUserAction, operationId: string) {
+  if (action.kind !== 'user_action' || !action.identity?.trim() || action.actionId !== operationId || !['http', 'cli'].includes(action.source) || !action.text?.trim()) throw new BootstrapError('POLICY_DENIED', 'Explicit transport-owned user operation required');
+}
 
 const CHOICE_WORDS: Record<ExternalDecisionInput['choice'], RegExp[]> = {
   accept: [/接受/, /采纳/, /就按这个/, /按这个做/],
@@ -113,14 +118,15 @@ function metricName(protocols: GeneralMetricProtocol[], report: GeneralMetricRep
 
 export class ExternalResultService {
   readonly store: ResearchBootstrapStore;
-  constructor(store: ResearchBootstrapStore) { this.store = store; }
+  readonly sourceWorkspaceRoot: string;
+  constructor(store: ResearchBootstrapStore, options: { sourceWorkspaceRoot?: string } = {}) { this.store = store; this.sourceWorkspaceRoot = fs.realpathSync(options.sourceWorkspaceRoot ?? store.workspaceRoot); }
 
-  register(input: ExternalResultInput, trusted: TrustedUserMessage | null = null): MutationResult<Record<string, unknown>> {
+  register(input: ExternalResultInput, trusted: TrustedUserMessage | ExternalResultUserAction | null = null): MutationResult<Record<string, unknown>> {
     const relativePath = input.relativePath.replace(/\\/g, '/').replace(/^\.\//, '');
     if (!isSafeRelativePath(relativePath) || relativePath.split('/').includes('.dsh')) throw new BootstrapError('INVALID_INPUT', '结果文件必须是工作区内的相对路径。');
     if (!NATURES.includes(input.nature)) throw new BootstrapError('INVALID_INPUT', '外部结果只能标为 simulation 或 user_result。');
-    const abs = path.resolve(this.store.workspaceRoot, relativePath);
-    const root = this.store.workspaceRoot;
+    const abs = path.resolve(this.sourceWorkspaceRoot, relativePath);
+    const root = this.sourceWorkspaceRoot;
     if (abs !== root && !abs.startsWith(root + path.sep)) throw new BootstrapError('POLICY_DENIED', '结果文件越出工作区。');
     const stat = fs.lstatSync(abs);
     if (stat.isSymbolicLink() || !stat.isFile()) throw new BootstrapError('POLICY_DENIED', '结果文件必须是普通文件。');
@@ -132,7 +138,8 @@ export class ExternalResultService {
     const asked = input.clarification?.trim() ?? '';
     if (asked) {
       if (!trusted?.text.trim() || trusted.text.trim() !== asked) throw new BootstrapError('POLICY_DENIED', '候选澄清必须是本会话用户原话，不能由模型编写。');
-      if (!trusted.sessionId.trim() || !trusted.messageId.trim()) throw new BootstrapError('POLICY_DENIED', '候选澄清缺少可信消息。');
+      if ('kind' in trusted) checkUserAction(trusted, input.operationId);
+      else if (!trusted.sessionId.trim() || !trusted.messageId.trim()) throw new BootstrapError('POLICY_DENIED', '候选澄清缺少可信消息。');
     }
     const values = (input.values ?? []).map(value => ({ ...value, unit: (value.unit as unknown) === 1 ? '1' : value.unit }));
     if (values.some(value => typeof value.unit !== 'string')) throw new BootstrapError('INVALID_INPUT', `指标「${values.find(value => typeof value.unit !== 'string')?.name ?? '?'}」的单位必须是字符串。文件没有声明单位时，mIoU 等比例可用 1，其余写「未知」。`);
@@ -263,16 +270,25 @@ export class ExternalResultService {
   decide(input: ExternalDecisionInput, relayedBy: string, trusted?: TrustedUserMessage | null): MutationResult<Record<string, unknown>> {
     if (!trusted?.sessionId?.trim() || !trusted.messageId?.trim() || !trusted.text?.trim()) throw new BootstrapError('POLICY_DENIED', '决定必须来自本会话的用户消息。模型提供的原话不能当作授权。');
     if (`agent:${trusted.sessionId}` !== relayedBy) throw new BootstrapError('POLICY_DENIED', '用户消息属于另一个会话，不能在这里采纳。');
-    const utterance = trusted.text.trim();
+    return this.decideAuthorized(input, { text: trusted.text, actorIdentity: 'host-message', relayedBy, provenance: 'trusted', messageId: trusted.messageId, sessionId: trusted.sessionId });
+  }
+
+  decideFromUser(input: ExternalDecisionInput, action: ExternalResultUserAction): MutationResult<Record<string, unknown>> {
+    checkUserAction(action, input.operationId);
+    return this.decideAuthorized(input, { text: action.text, actorIdentity: action.identity, relayedBy: `${action.source}:${action.identity}`, provenance: 'user_action', actionId: action.actionId, actionSource: action.source });
+  }
+
+  private decideAuthorized(input: ExternalDecisionInput, proof: { text: string; actorIdentity: string; relayedBy: string; provenance: 'trusted' | 'user_action'; messageId?: string; sessionId?: string; actionId?: string; actionSource?: 'http' | 'cli' }): MutationResult<Record<string, unknown>> {
+    const utterance = proof.text.trim();
     if ((input.utterance?.trim() ?? '') !== utterance) throw new BootstrapError('POLICY_DENIED', '参数里的原话和本会话用户消息不一致。');
-    const choice = choiceOf(utterance);
-    if (choice === null || choice !== input.choice) throw new BootstrapError('POLICY_DENIED', '用户原话必须明确且只对应接受、修改、拒绝或暂缓中的一项。否定、旧消息和文件里的“接受”都不能生成采纳。');
+    const choice = proof.provenance === 'trusted' ? choiceOf(utterance) : input.choice;
+    if (!['accept', 'modify', 'reject', 'defer'].includes(input.choice) || choice === null || choice !== input.choice) throw new BootstrapError('POLICY_DENIED', '用户原话必须明确且只对应接受、修改、拒绝或暂缓中的一项。否定、旧消息和文件里的“接受”都不能生成采纳。');
     const modifiedTitle = input.modifiedTitle?.trim() || null;
     if (input.choice === 'modify' && (!modifiedTitle || !utterance.includes(modifiedTitle))) throw new BootstrapError('POLICY_DENIED', '修改后的标题必须出现在用户原话里。');
     if (input.choice !== 'modify' && modifiedTitle) throw new BootstrapError('INVALID_INPUT', '只有修改才带替换标题。');
     return this.store.mutate({
       operationId: input.operationId, baseRevision: input.baseRevision, researchId: input.researchId, kind: 'decide_external_result',
-      requestPayload: { researchId: input.researchId, reviewId: input.reviewId, actionIndex: input.actionIndex, choice: input.choice, utterance, modifiedTitle, messageId: trusted.messageId, sessionId: trusted.sessionId },
+      requestPayload: { researchId: input.researchId, reviewId: input.reviewId, actionIndex: input.actionIndex, choice: input.choice, utterance, modifiedTitle, ...(proof.provenance === 'trusted' ? { messageId: proof.messageId, sessionId: proof.sessionId } : { actionId: proof.actionId, actionSource: proof.actionSource, actorIdentity: proof.actorIdentity }) },
       apply: context => {
         const research = requireResearch(context.state, input.researchId), g = research.general;
         if (!g) throw new BootstrapError('INVALID_INPUT', '需要通用研究。');
@@ -282,23 +298,24 @@ export class ExternalResultService {
         if (!utterance.includes(action.title) && !(modifiedTitle && utterance.includes(modifiedTitle))) throw new BootstrapError('POLICY_DENIED', '用户原话必须点名这条建议，不能把另一句接受套到当前建议上。');
         for (const other of context.state.researches) {
           for (const decision of other.general?.resultDecisions ?? []) {
-            if (decision.messageId !== trusted.messageId) continue;
+            if (proof.provenance !== 'trusted' || decision.messageId !== proof.messageId) continue;
             if (other.researchId !== input.researchId || decision.reviewId !== review.reviewId || decision.actionIndex !== input.actionIndex) throw new BootstrapError('POLICY_DENIED', '这条用户消息已经用于别的研究或别的建议，不能复用。');
           }
         }
-        const previous = g.resultDecisions.find(d => d.reviewId === input.reviewId && d.actionIndex === input.actionIndex && d.choice === input.choice && d.modifiedTitle === modifiedTitle);
-        const reused = (decision: { decisionId: string; nodeId: string | null; choice: ExternalDecisionInput['choice']; provenance?: 'trusted' | 'unverified' }) => ({ changed: false as const, result: { decisionId: decision.decisionId, nodeId: decision.nodeId, choice: decision.choice, reused: true, provenance: decision.provenance ?? 'unverified' as const, supersedes: null as string | null } });
-        if (previous && previous.messageId === trusted.messageId) return reused(previous);
-        if (input.choice === 'accept' || input.choice === 'modify') this.assertReviewCurrent(g, review);
-        if (previous && (input.choice === 'accept' || input.choice === 'modify')) return reused(previous);
-        const reports = review.reportIds.map(id => g.metricReports.find(r => r.reportId === id)!);
         const prior = [...g.resultDecisions].reverse().find(d => d.reviewId === review.reviewId && d.actionIndex === input.actionIndex);
+        const previous = [...g.resultDecisions].reverse().find(d => d.reviewId === input.reviewId && d.actionIndex === input.actionIndex && d.choice === input.choice && d.modifiedTitle === modifiedTitle);
+        const reused = (decision: { decisionId: string; nodeId: string | null; choice: ExternalDecisionInput['choice']; provenance?: ExternalResultDecision['provenance'] }) => ({ changed: false as const, result: { decisionId: decision.decisionId, nodeId: decision.nodeId, choice: decision.choice, reused: true, provenance: decision.provenance ?? 'unverified' as const, supersedes: null as string | null } });
+        if (previous && (proof.provenance === 'trusted' ? previous.messageId === proof.messageId : previous.actionId === proof.actionId && previous.actor.identity === proof.actorIdentity)) return reused(previous);
+        if (input.choice === 'accept' || input.choice === 'modify') this.assertReviewCurrent(g, review);
+        if (previous && previous.decisionId === prior?.decisionId && (input.choice === 'accept' || input.choice === 'modify')) return reused(previous);
+        const reports = review.reportIds.map(id => g.metricReports.find(r => r.reportId === id)!);
         let nodeId: string | null = null;
         if (input.choice === 'accept' || input.choice === 'modify') {
           const parents = [...new Set(reports.map(r => r.nodeId).filter((id): id is string => Boolean(id)))];
           if (!parents.length) throw new BootstrapError('POLICY_DENIED', '结果还没对应到实验，不能把建议写进研究图。');
           const title = input.choice === 'modify' ? modifiedTitle! : action.title;
-          const existing = prior?.nodeId ? g.graph.nodes.find(node => node.nodeId === prior.nodeId) : undefined;
+          const priorNode = [...g.resultDecisions].reverse().find(d => d.reviewId === review.reviewId && d.actionIndex === input.actionIndex && d.nodeId);
+          const existing = priorNode ? g.graph.nodes.find(node => node.nodeId === priorNode.nodeId) : undefined;
           const beforeGraph = structuredClone(g.graph), beforeLayout = structuredClone(g.layout);
           g.graphHistory.push(structuredClone(g.graph));
           if (existing) {
@@ -332,16 +349,23 @@ export class ExternalResultService {
         }
         const decision = validateExternalResultDecision({
           decisionId: context.mint('result-decision'), reviewId: review.reviewId, actionIndex: input.actionIndex, choice: input.choice, reason: utterance, utterance, modifiedTitle, nodeId,
-          actor: { kind: 'user', identity: 'host-message', relayedBy }, createdAt: context.now(),
-          messageId: trusted.messageId, sessionId: trusted.sessionId, provenance: 'trusted', supersedes: prior?.decisionId ?? null,
+          actor: { kind: 'user', identity: proof.actorIdentity, relayedBy: proof.relayedBy }, createdAt: context.now(),
+          ...(proof.provenance === 'trusted' ? { messageId: proof.messageId, sessionId: proof.sessionId, provenance: 'trusted' } : { actionId: proof.actionId, actionSource: proof.actionSource, provenance: 'user_action' }), supersedes: prior?.decisionId ?? null,
         });
         g.resultDecisions.push(decision);
         g.revision++;
         research.general = validateGeneralResearch(g);
         research.updatedAt = context.now();
-        return { changed: true, result: { decisionId: decision.decisionId, nodeId, choice: decision.choice, reused: false, provenance: 'trusted' as const, supersedes: prior?.decisionId ?? null } };
+        return { changed: true, result: { decisionId: decision.decisionId, nodeId, choice: decision.choice, reused: false, provenance: proof.provenance, supersedes: prior?.decisionId ?? null } };
       },
     });
+  }
+
+  reviewFreshness(researchId: string, reviewId: string) {
+    const general = this.research(researchId), review = general.resultReviews.find(item => item.reviewId === reviewId);
+    if (!review) throw new BootstrapError('NOT_FOUND', 'External result review is outside this research');
+    try { this.assertReviewCurrent(general, review); return { status: 'current' as const, reason: '输入版本仍一致；不是独立审查或科研收益证明。' }; }
+    catch (error) { if (error instanceof BootstrapError && ['SOURCE_STALE', 'POLICY_DENIED'].includes(error.code)) return { status: 'stale' as const, reason: error.message }; throw error; }
   }
 
   private research(researchId: string): GeneralResearch {
@@ -413,9 +437,9 @@ export class ExternalResultService {
     const hits: string[] = [];
     const materials = new GeneralMaterialStore(this.store.workspaceRoot);
     for (const source of g.sources) {
-      if (source.sourceId === sourceId) continue;
+      if (source.sourceId === sourceId || !generalSourceAllowed(g, source.sourceId)) continue;
       let body = '';
-      try { body = materials.readRaw(source).toString('utf8'); } catch { continue; }
+      body = materials.readRaw(source).toString('utf8');
       if (!body.includes(runId)) continue;
       const hinted = source.description.startsWith('external-path:') ? source.description.slice('external-path:'.length) : source.description.startsWith('takeover-path:') ? source.description.slice('takeover-path:'.length) : source.filename;
       hits.push(hinted.replace(/\\/g, '/'));
@@ -425,10 +449,11 @@ export class ExternalResultService {
       if (!scan) continue;
       for (const entry of scan.entries) {
         if (entry.readStatus !== 'read' || !isSafeRelativePath(entry.relativePath)) continue;
-        const file = path.resolve(this.store.workspaceRoot, entry.relativePath);
-        if (!file.startsWith(this.store.workspaceRoot + path.sep)) continue;
+        const file = path.resolve(this.sourceWorkspaceRoot, entry.relativePath);
+        if (!file.startsWith(this.sourceWorkspaceRoot + path.sep)) continue;
         let body = '';
-        try { if (fs.lstatSync(file).isSymbolicLink()) continue; body = fs.readFileSync(file, 'utf8'); } catch { continue; }
+        if (fs.lstatSync(file).isSymbolicLink() || fs.realpathSync(file) !== file) throw new BootstrapError('POLICY_DENIED', 'Result matching cannot follow changed takeover links');
+        body = fs.readFileSync(file, 'utf8');
         if (body.includes(runId)) hits.push(entry.relativePath.replace(/\\/g, '/'));
       }
     }

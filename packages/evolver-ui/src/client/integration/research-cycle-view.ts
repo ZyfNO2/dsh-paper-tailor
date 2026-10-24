@@ -4,11 +4,11 @@ import type { GeneralSchedule } from '../../../../evolver/src/contracts/general-
 export interface ResearchCycleData {
   schedules?: GeneralSchedule[];
   research: { researchId: string; bootstrapRevision: number; cycleRevision: number; activeRunId: string | null };
-  runs: Array<{ runId: string; nodeId?: string | null; concurrencyPolicy?: { maxActiveRuns: 2; authorizedBy: string }; chain?: { rootRunId: string; parentRunId: string | null; renewedFrom?: { runId: string; reason: string; authorizedBy: string } }; executionPolicy?: { maxAttempts: number; maxRounds?: number; deadline: string | null }; stopHistory?: Array<{ status: string; error: { code: string; message: string } | null; reason: string | null; recordedAt: string }>; selectedIdeaRef?: { ideaId: string }; status: string; round: number; startedAt: string; finishedAt: string | null; error: { message: string } | null }>;
+  runs: Array<{ externalHandoff?: { reviewMode: 'self_review'; preparedBy: string; preparedAt: string }; runId: string; nodeId?: string | null; concurrencyPolicy?: { maxActiveRuns: 2; authorizedBy: string }; chain?: { rootRunId: string; parentRunId: string | null; renewedFrom?: { runId: string; reason: string; authorizedBy: string } }; executionPolicy?: { maxAttempts: number; maxRounds?: number; deadline: string | null }; stopHistory?: Array<{ status: string; error: { code: string; message: string } | null; reason: string | null; recordedAt: string }>; selectedIdeaRef?: { ideaId: string }; status: string; round: number; startedAt: string; finishedAt: string | null; error: { message: string } | null }>;
   steps: Array<{ stepId: string; runId: string; nodeId: string | null; attemptId: string; assignedMemberId: string | null; nativeTask?: { teamId: string; taskId: string }; inputRefs: Array<{ kind: string; ref: { id?: string; sha256?: string } }>; outputRefs: Array<{ id: string; sha256: string }>; attemptHistory?: Array<{ attemptId: string; status: string; error: { code: string; message: string } | null; reason: string | null; recordedAt: string }>; role: string; status: string; blocking: string[]; error: { message: string } | null }>;
   runtime?: { available: boolean; reason: string | null; mode: string; members?: Array<{ id: string; name: string; status: string; model?: string; diagnostics: string[] }>; tasks?: Array<{ id: string; revision: number; status: string; ready: boolean; ownerName?: string; writeScopeWarnings: string[] }>; limits?: { maxMembers: number; maxRounds: number; maxModelStepsPerMember: number; maxToolCallsPerMember: number; deadlineMs: number; cost: string } };
   artifacts: Array<{ artifactId: string; kind: string; runId: string; ref: { id: string; sha256: string }; createdAt: string }>;
-  effectiveGraph: { nodes: Array<{ nodeId: string; kind: string; title: string; origin?: string; runId?: string; summary?: string; artifactRef?: { id: string; sha256: string } | null }>; edges: Array<{ edgeId: string; from: string; to: string; relation: string }> };
+  effectiveGraph: { nodes: Array<{ nodeId: string; kind: string; title: string; origin?: string; runId?: string; summary?: string; note?: string | null; artifactRef?: { id: string; sha256: string } | null }>; edges: Array<{ edgeId: string; from: string; to: string; relation: string }> };
   decisions: Array<{ runId?: string; decisionRef?: { id: string; sha256: string }; decision?: string; reason?: string; nextActions?: Array<{ actionId: string; kind: string; title: string; detail: string }> }>;
   nextActions: unknown[];
 }
@@ -28,7 +28,7 @@ export function withResearchCycle(snapshot: WorkbenchSnapshot, cycle: ResearchCy
   const kinds: Record<string, ResearchNodeView['kind']> = { proposal: 'scheme', experiment_plan: 'protocol', evidence_report: 'result', decision: 'conclusion', next_iteration: 'hypothesis', next_action: 'hypothesis' };
   const increments = cycle.effectiveGraph.nodes.filter((n) => n.origin === 'cycle' && !tree.nodes.some((base) => base.id === n.nodeId));
   const nodes: ResearchNodeView[] = [...tree.nodes.map((n) => ({ ...n })), ...increments.map((n) => ({ id: n.nodeId, kind: kinds[n.kind] ?? 'scheme', title: n.title,
-    status: n.kind === 'next_action' || n.kind === 'next_iteration' || !n.artifactRef ? 'planned' as const : 'done' as const, planningStatus: 'needs_validation' as const, summary: n.summary ?? '研究循环已登记的交付物；已有证据分析或模拟不等于真实训练。',
+    status: n.kind === 'next_action' || n.kind === 'next_iteration' || !n.artifactRef ? 'planned' as const : 'done' as const, planningStatus: 'needs_validation' as const, summary: n.summary ?? n.note ?? (n.kind === 'next_action' || n.kind === 'next_iteration' ? '待执行的后续建议；尚未产生实验观察。' : '研究循环已登记的交付物；已有证据分析或模拟不等于真实训练。'),
     branch: 'main' as const, childCount: 0, x: 0, y: 0, rationale: null, outcome: null, actor: null,
     links: n.artifactRef ? [{ kind: 'external' as const, key: n.artifactRef.id, label: n.kind, ref: n.artifactRef.sha256 }] : [],
     extraSections: [{ heading: '来源运行', body: n.runId ?? '未记录' }],
@@ -47,7 +47,7 @@ export function withResearchCycle(snapshot: WorkbenchSnapshot, cycle: ResearchCy
   for (const node of nodes) { const layer = depth(node.id), row = rows.get(layer) ?? 0; rows.set(layer, row + 1); node.x = 16 + layer * 224; node.y = 24 + row * 130; }
   return { ...snapshot, cycle, tree: { ...snapshot.tree, data: { ...tree, nodes,
     edges: cycle.effectiveGraph.edges.map((e) => ({ id: e.edgeId, sourceId: e.from, targetId: e.to, relation: e.relation === 'depends_on' ? '依赖：前置节点' : '派生', planned: true, reason: null })),
-    activity: [...tree.activity, ...cycle.runs.map((r) => ({ id: r.runId, time: r.finishedAt ?? r.startedAt, action: `研究循环 · 第 ${r.round} 轮`, actor: 'Agent Team', target: null, result: r.status, detail: r.error?.message ?? null }))],
+    activity: [...tree.activity, ...cycle.runs.map((r) => ({ id: r.runId, time: r.finishedAt ?? r.startedAt, action: `研究循环 · 第 ${r.round} 轮`, actor: r.externalHandoff ? '外部交接 · self_review' : 'Agent Team', target: null, result: r.status, detail: r.error?.message ?? null }))],
   } } };
 }
 

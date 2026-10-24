@@ -81,6 +81,10 @@ export function studioData(snapshot: WorkbenchSnapshot, read: BootstrapReadPaylo
     for (const n of snapshot.cycle?.effectiveGraph.nodes.filter(n => n.origin === 'cycle') ?? []) if (!nodes.some(x => x.id === n.nodeId)) nodes.push({ id: n.nodeId, title: n.title, body: n.summary ?? '', kind: n.kind, status: n.artifactRef ? '已登记产物' : '未来任务', tags: [], source: '研究循环', nodeIds: [], ideaIds: [], readable: true });
     for (const e of snapshot.cycle?.effectiveGraph.edges ?? []) if (!treeEdges.some(x => x.id === e.edgeId)) treeEdges.push({ id: e.edgeId, from: e.relation === 'depends_on' ? e.to : e.from, to: e.relation === 'depends_on' ? e.from : e.to, label: e.relation });
   }
+  for (const node of nodes.filter(n => n.id.startsWith('followup-'))) {
+    const latest = snapshot.cycle?.runs.filter(r => r.nodeId === node.id).at(-1);
+    if (latest) node.status = ({ queued: '等待接单', running: '运行中', waiting_result: '等待采纳', cancelling: '正在关闭', cancelled: '已取消', failed: '运行失败', interrupted: '运行中断', completed: '已记录产物' } as Record<string, string>)[latest.status] ?? '状态待核对';
+  }
   const candidates: StudioNode[] = (research?.ideas ?? []).map(i => ({ id: i.ideaId, title: i.title, body: i.hypothesis ?? i.rationale ?? '', kind: '候选方向', status: selectedIds.includes(i.ideaId) ? '已选择' : '候选', tags: [i.basis === 'grounded' ? '有登记依据' : '探索性'], source: 'Brainstorm 候选；尚不代表已入研究树', nodeIds: [], ideaIds: [i.ideaId], candidate: true, output: i.validationPlan ?? undefined, readable: true }));
   return { network, research, general, cards, knowledgeEdges: edges, nodes, treeEdges, candidates, papers, selectedIds };
 }

@@ -59,6 +59,9 @@ work/oxford-pet/
 # under <workspace>/.dsh/research/. Per the startup/acceptance spec they stay
 # on this machine and are never committed or published.
 .dsh/research/
+.research/
+/dist/
+/artifacts/
 
 # DSH startup logs record the desktop instance's boot token URL.
 artifacts/dsh-startup/

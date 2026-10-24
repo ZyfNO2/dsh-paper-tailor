@@ -44,7 +44,15 @@ def main():
               'status': 'failed', 'python': platform.python_version(), 'error': None, 'metrics': None}
     try:
         with (root/'stdout.log').open('wb') as out, (root/'stderr.log').open('wb') as err:
-            child = subprocess.Popen([sys.executable, str(profile/'runner.py'), str(source)], stdout=out, stderr=err)
+            # A detached Windows supervisor has no console to inherit. Prevent
+            # Python from allocating a new console for each bounded runner.
+            flags = subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
+            child = subprocess.Popen([sys.executable, str(profile/'runner.py'), str(source)],
+                                     stdin=subprocess.DEVNULL, stdout=out, stderr=err,
+                                     creationflags=flags)
+            atomic(root/'launch.json', {'pid': pid, 'processStart': start, 'token': data['token'],
+                                       'childPid': child.pid, 'creationFlags': flags,
+                                       'runnerStartedAt': time.time()})
             deadline = time.monotonic()+data['timeoutSeconds']
             while child.poll() is None:
                 control = root/'cancel.json'

@@ -477,6 +477,8 @@ function validateArtifactRecord(raw: unknown, label: string): CycleArtifactRecor
 }
 
 export interface CycleRun {
+  /** External clients submit artifacts; no native Team execution or independent review is implied. */
+  externalHandoff?: { reviewMode: 'self_review'; preparedBy: string; preparedAt: string; contractRevision: number };
   coordinationRevision?: number;
   stopHistory?: { status: string; error: { code: string; message: string } | null; reason: string | null; recordedAt: string }[];
   mode?: 'general';
@@ -510,7 +512,7 @@ export interface CycleRun {
 
 function validateRun(raw: unknown, label: string): CycleRun {
   const o = keys(raw, ['runId', 'researchId', 'taskId', 'baseGraphRef', 'bootstrapRevision', 'status', 'round', 'stepIds', 'decisionRefs',
-    'selectedIdeaRef', 'nodeId', 'stopReason', 'error', 'startedBy', 'startedAt', 'updatedAt', 'finishedAt', 'mode', 'generalInputRefs', 'executionPolicy', 'concurrencyPolicy', 'chain', 'stopHistory', 'coordinationRevision'], label);
+    'selectedIdeaRef', 'nodeId', 'stopReason', 'error', 'startedBy', 'startedAt', 'updatedAt', 'finishedAt', 'mode', 'generalInputRefs', 'executionPolicy', 'concurrencyPolicy', 'chain', 'stopHistory', 'coordinationRevision', 'externalHandoff'], label);
   let error: CycleRun['error'] = null;
   if (o.mode === undefined && o.generalInputRefs !== undefined) throw new CycleError('SCHEMA_VIOLATION', 'Generic input refs require an explicit research mode');
   let executionPolicy: CycleRun['executionPolicy'];
@@ -524,6 +526,7 @@ function validateRun(raw: unknown, label: string): CycleRun {
     error = { code: reqText(e.code, `${label}.error.code`, 100), message: reqText(e.message, `${label}.error.message`, CYCLE_BOUNDS.textMedium) };
   }
   return {
+    ...(o.externalHandoff === undefined ? {} : { externalHandoff: (() => { const value = keys(o.externalHandoff, ['reviewMode', 'preparedBy', 'preparedAt', 'contractRevision'], 'external handoff'); if (value.preparedBy !== o.startedBy) fail('SCHEMA_VIOLATION', 'External handoff belongs to the run authorizer'); return { reviewMode: reqEnum(value.reviewMode, ['self_review'] as const, 'reviewMode'), preparedBy: reqText(value.preparedBy, 'preparedBy', CYCLE_BOUNDS.textShort), preparedAt: reqIso(value.preparedAt, 'preparedAt'), contractRevision: reqInt(value.contractRevision, 'contractRevision', 1) }; })() }),
     ...(o.coordinationRevision === undefined ? {} : { coordinationRevision: reqInt(o.coordinationRevision, 'coordinationRevision', 1) }),
     ...(o.concurrencyPolicy === undefined ? {} : { concurrencyPolicy: (() => { if (o.mode !== 'general') fail('SCHEMA_VIOLATION', 'Concurrency requires generic mode'); const p = keys(o.concurrencyPolicy, ['maxActiveRuns', 'authorizedBy'], 'concurrency policy'); if (p.maxActiveRuns !== 2 || p.authorizedBy !== o.startedBy) fail('SCHEMA_VIOLATION', 'Concurrency grant must be bounded and belong to starter'); return { maxActiveRuns: 2 as const, authorizedBy: reqText(p.authorizedBy, 'concurrency authorizer', 200) }; })() }),
     ...(o.stopHistory === undefined ? {} : { stopHistory: reqArray(o.stopHistory, 'stop history', 100).map(v => { const h = keys(v, ['status', 'error', 'reason', 'recordedAt'], 'past stop'), e = h.error === null ? null : keys(h.error, ['code', 'message'], 'past stop error'); return { status: reqEnum(h.status, CYCLE_RUN_STATUSES, 'stop status'), error: e === null ? null : { code: reqText(e.code, 'error code', 100), message: reqText(e.message, 'error message', CYCLE_BOUNDS.textMedium) }, reason: optText(h.reason, 'past stop reason', CYCLE_BOUNDS.textMedium), recordedAt: reqIso(h.recordedAt, 'stop recordedAt') }; }) }),
@@ -856,6 +859,7 @@ export function validateCycleActor(raw: unknown): CycleActor {
  * input refs. Published as an immutable artifact before the step runs.
  */
 export interface CycleStepInputSnapshot {
+  paperTask?: { nodeId: string; title: string; detail: string | null; parentRunId: string; decisionRef: ArtifactRef };
   general?: { idea: unknown; task?: unknown; domains: string[]; methods: string[]; reference: unknown; constraints: string[]; requireHumanConfirmation: boolean };
   schemaVersion: 1;
   runId: string;

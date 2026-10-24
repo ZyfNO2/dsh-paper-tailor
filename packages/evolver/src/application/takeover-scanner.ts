@@ -49,6 +49,7 @@ const METRIC_NAME_HINTS = ['metrics', 'results', 'scores', 'log'] as const;
 const EXCLUDED_DIRECTORIES: readonly string[] = [
   '.git',
   '.dsh',
+  '.research',
   'node_modules',
   '.venv',
   'venv',
@@ -74,6 +75,7 @@ const CREDENTIAL_PATTERNS: readonly RegExp[] = [/^\.env/, /credential/, /secret/
 export const TAKEOVER_DEFAULT_EXCLUSIONS: readonly string[] = [
   '.git/**',
   '.dsh/**',
+  '.research/**',
   '**/node_modules/**',
   '**/.venv/**',
   '**/venv/**',

@@ -13,6 +13,7 @@ interface Snapshot {
   staleMeasurementIds: string[];
   availableSources: Array<{ sourceId: string; filename: string }>;
   prisma: Record<string, unknown> | null;
+  literature?: { total: number; legacySnapshots: number; noveltyStatus: string; latest: { attemptId: string; status: string; provider: string; query: string; error: { message: string } | null } | null };
   capabilities: {
     python: { available: boolean };
     docker: { available: boolean };
@@ -128,8 +129,14 @@ export function ResearchFoundationsPanel({
       body: JSON.stringify(value),
     });
     const data = await r.json();
-    if (!r.ok || data.ok === false)
-      throw new Error(data.error ?? data.reason ?? "动作失败");
+    if (!r.ok || data.ok === false) {
+      const original = new Error(data.error ?? data.reason ?? "动作失败");
+      if (data.searchAttempt) {
+        try { await load(); }
+        catch (readError) { throw new Error(`${original.message}；重新读取检索状态也失败：${String(readError)}`); }
+      }
+      throw original;
+    }
     return data.result;
   };
   const command = async (action: string, payload: unknown) => {
@@ -634,7 +641,8 @@ export function ResearchFoundationsPanel({
                 <button
                   disabled={busy || !query.trim()}
                   onClick={() =>
-                    void perform(async () =>
+                    void perform(async () => {
+                      setSearch(null);
                       setSearch(
                         await post({
                           action: "search_literature",
@@ -642,8 +650,8 @@ export function ResearchFoundationsPanel({
                           query,
                           page: "*",
                         }),
-                      ),
-                    )
+                      );
+                    })
                   }
                 >
                   检索并保存快照
@@ -671,6 +679,7 @@ export function ResearchFoundationsPanel({
                     </button>
                   </p>
                 ))}
+                {snapshot?.literature && <p className="rf-note">已保存 {snapshot.literature.total} 条检索记录，另有 {snapshot.literature.legacySnapshots} 份无调用记录的历史快照。新颖性状态：{snapshot.literature.noveltyStatus}。{snapshot.literature.latest && <>最近：{snapshot.literature.latest.provider} · {snapshot.literature.latest.query} · {snapshot.literature.latest.status} {snapshot.literature.latest.error?.message}</>} 检索失败或未完成不代表没有相似工作；成功取回元数据也不证明新颖性。</p>}
                 <div className="rf-scroll">
                   <table>
                     <thead>

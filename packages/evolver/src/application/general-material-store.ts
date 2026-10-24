@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import * as os from 'node:os';
 import { createHash, randomUUID } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
+import { activeStore } from '../../../research-core/src/active-store.ts';
 import { DATA_LIMITS, validateParsedMaterial, type ParsedMaterial, type MaterialSource } from '../contracts/general-data.ts';
 import { BootstrapError } from '../contracts/research-bootstrap.ts';
 import { parseTextMaterial, XLSX_PARSER_SCRIPT } from './general-material-parser.ts';
@@ -13,9 +14,13 @@ export interface MaterialStoreOptions { pythonPath?: string; parserTimeoutMs?: n
 export class GeneralMaterialStore {
   readonly workspaceRoot: string;
   readonly options: MaterialStoreOptions;
-  constructor(workspaceRoot: string, options: MaterialStoreOptions = {}) { this.workspaceRoot = path.resolve(workspaceRoot); this.options = options; }
+  constructor(workspaceRoot: string, options: MaterialStoreOptions = {}) {
+    const selected = activeStore(workspaceRoot);
+    this.workspaceRoot = selected ? path.resolve(workspaceRoot, selected.root) : path.resolve(workspaceRoot); this.options = options;
+  }
 
   private location(parts: string[], create = false): string {
+    if (activeStore(this.workspaceRoot)) throw new BootstrapError('POLICY_DENIED', 'STORE_MOVED: reopen material store after migration');
     if (!fs.existsSync(this.workspaceRoot)) throw new BootstrapError('SOURCE_MISSING', '工作区目录不存在。');
     if (fs.lstatSync(this.workspaceRoot).isSymbolicLink()) throw new BootstrapError('POLICY_DENIED', '资料存储不接受符号链接工作区。');
     let current = this.workspaceRoot;

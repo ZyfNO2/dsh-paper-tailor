@@ -1,0 +1,65 @@
+# Shared operations
+
+Never remove a writer lock or infer process death from its age. Native Bootstrap/Cycle and prototype stores now refuse age-based takeover. Ask the actual user to inspect `research writer-lock-preview --workspace ... --store bootstrap|cycle|prototype` (cycle also needs --research). Only that user may authorize `recover-writer-lock` with the exact preview hash and --authorize. It archives the old lock only after verifying a dead local PID and unchanged lock/state, without editing state or resuming work. Agents must not invoke this user recovery command or impersonate its CLI actor.
+
+Call `get_research_context` first. When authority is `bootstrap`, `.research/active-store.json` selects the original Bootstrap/domain stores under `.research/compat`; use the Bootstrap branch below. Only unmigrated prototypes use `.research/project.json`. Markdown and MCP text are views. Retry the same `operationId` only with the same payload. A different payload returns `IDEMPOTENCY_CONFLICT`. A stale `baseRevision` returns `REVISION_CONFLICT`.
+
+## Bootstrap branch (default workbench)
+
+- `import_material` (CLI `import`) imports a local file into the selected native general research using its original material service, lock/CAS and receipt. MCP paths stay workspace-relative; explicit CLI absolute files retain the existing user rule. The shared entry keeps its 5,000,000-byte limit. Since this tool has no evidence-nature field, the source is `unknown`; use native `workspace_action` import for an explicit nature/description/purpose. Parsing remains the original bounded parser, with attachments/failures preserved. Replaying the same operation does not duplicate the source. A new operation creates a new native source registration even for identical bytes (the raw blob is content-addressed); it does not restore permission on an older source or refresh old plan pins. No prototype project is created.
+
+- `search_wiki` searches the selected native general research's latest unarchived Wiki and method entries, by title/content with case-insensitive substring matching and offset/limit pagination. Native items retain `entryId`, `version`, `content`, `nature`, claims and source references; prototype items retain `cardId`, `revision`, `body`. Inspect the active authority instead of assuming both item types are identical. Matching entries are checked against current evidence-use permissions before pagination; a withdrawn matching source fails with POLICY_DENIED, including when requesting a later page. This is local text search, not model retrieval or a scientific-quality judgment.
+
+- `paper_query` lists original papers; pass paperId for exact page text. `paper_action` imports `{action:"import",filename,contentBase64}` or publishes `{action:"publish",paperId,input:{baseRevision,title,sections,components}}`. Every extracted quote must match its page. Knowledge remains provisional.
+- `workspace_query` reads research/graph/Wiki/data and migration history. `workspace_action` carries `{operationId,baseRevision,payload:{type,...}}`. General draft actions use the original services, including `start_general_wiki_task`; obtain context through route `wiki-task`, then publish through `publish_general_wiki_task`. A pending record is not a running Agent.
+- Paper planning uses `save_research_contract`, `publish_research_ideas`, `publish_research_graph`. The latter two accept actual prepared drafts; they do not launch an LLM. Contract and source revisions remain pinned. User selection and confirmations must happen before actions that require them. Do not set `confirm:true` or call CLI approval for a user.
+- For external candidate work, `begin_research_brainstorm` takes researchId/contractRevision and returns a native runId, owned by this transport identity. Begin only when this client actually starts work; it does not prove a model call. Publish using `publish_research_ideas` with that runId and actual ideas; an empty set requires `emptyResultReason`. `itemErrors` preserves rejected item details. Report a real failure with `fail_research_brainstorm` and runId/code/message. Never restart a terminal run or invent a modelIdentity. Retries with the same operationId/payload replay the original result, including failures. Another client's run and receipt cannot be taken over. The original UI's automatic wake buttons still need a connected execution adapter.
+- `foundation_query` reads protocols/jobs/measurements. `foundation_action` carries `{researchId,payload:{action,...}}`: search_literature uses fixed providers; ordinary draft commands carry operationId/baseRevision/payload. Agents cannot freeze, execute a worker, bind sources or make final eligibility decisions. Never supply executable paths, endpoints or identities in tool payloads.
+- Metadata search is not full text, scientific evidence or proof of novelty. PDF parser/provider credentials are launcher-owned. Unavailable tools and rate limits remain errors. A synthetic CPU profile is actual code execution on synthetic data, not a reproduced paper or verified research improvement.
+- After migration, old prototype tools refuse reads/writes instead of bypassing active source access. Use workspace tools. A prototype archive remains historical and requires current source reauthorization.
+- `cycle_query` reads registered cycle history and pinned artifacts. A standalone runtime is not a live native Team. For explicitly user-prepared external rounds, follow [EXTERNAL-HANDOFF.md](EXTERNAL-HANDOFF.md); use `external_cycle_action` to claim/read/publish/submit/fail the assigned attempt. User preparation/cancel/retry/apply stay outside agent tools. No scripted executor substitutes for a model.
+- The workbench is optional: all the above reads and agent operations use MCP/Core directly. User preparation and decisions can use the user CLI/API; do not impersonate that user by invoking approval commands from an agent. Closing the webpage does not terminate a separately running role client.
+- For existing result files use `register_external_result`, with operationId/baseRevision/researchId, workspace-relative path, nature simulation|user_result, label, actual run ID if present, values `{name,value,unit,row,column}` and conditions `{name,value,unit}`. Rows/columns start at zero; header is not a data row. Keep missing values null and provide an actual failure quote. The service verifies original cells/units/run identity and may leave association/comparability pending. Registration is not proof this system executed the experiment. Hidden stores and credentials are not result files; agents cannot supply human clarification.
+- Read `workspace_query` route `external-results` with researchId, inspect the actual pinned report/source/protocol versions, then submit this client's actual reasoning through `review_external_results`. Supply reportIds, judgment support|counter|insufficient|mixed, boundary/support/counterEvidence/gaps, and nextActions containing title/reason/prerequisite/condition/verification/resource. Do not embed a scripted review as if a model wrote it, invent model identity, rank failed/incomparable reports or omit evidence limitations. Current mode remains self_review. A current Codex conversation's review is distinct from a separate Codex CLI invocation; identify the actual execution source and retain its limitations.
+- User CLI/API `decide_external_result` records accept/modify/reject/defer only with explicit user authorization. It checks freshness and creates only unexecuted future nodes. Repeating the current acceptance deduplicates; changing a choice supersedes the latest decision and reuses the action's original future node. Agents cannot make that decision, forge host message/session fields or bypass revocation through an older review.
+
+## Shared experiment assignments in Bootstrap
+
+With an existing source-linked native general idea, `create_experiment_plan`, `export_assignment`, `get_assignment`, `record_experiment_result`, `submit_research_review` and `get_research_tree` use the selected Bootstrap research and its revision. Do not create a prototype project as a workaround. Plans pin the native idea/profile and source revisions/hashes. Never infer a change or mechanism the native candidate did not record; the bundle includes nativeIdea and explicitly labels unknown shared fields.
+
+The user approves a plan by its revision/hash in the optional workbench “实验计划与固定任务” panel or CLI `approve --capability export_assignment`. Agents can export only after that real approval. Export does not start execution. `get_assignment` supplies the frozen plan, native source pins, source read coverage and manifest template. Record actual source values using the plan split and units; retain original run-manifest and CSV. A repeat with the same operation and bytes is a replay across CLI/MCP. Self-review remains self_review; the user may accept its next step through the same optional panel or CLI accept_decision approval, creating only an unexecuted DAG node.
+
+Reading, result import and review recheck permissions and plan pins. Stale/revoked plans cannot be reused; the workbench hides their run/review contents and shows the blocking reason. Asset restore preserves records and bytes but clears these approvals and invalidates old profile pins. Source-only sharing packages are narrower than a full research asset backup.
+
+Native candidate/Wiki creation and live literature retrieval still use the native workspace/paper/foundation actions described above, rather than the older prototype-only tool names below.
+
+## Prototype branch only
+
+The numbered workflows in the six focused guides apply to this branch. Do not run their older tool names against an active Bootstrap workspace.
+
+- Import and result paths stay inside the workspace. Symlinks that leave it are refused.
+- `search_incomplete` is a failed or unconfigured search, not evidence of novelty.
+- `mock_not_executed` is control flow. It is not an observation.
+- `external_reported` means the file contained the value. It does not mean this project ran the experiment.
+- Comparable runs share plan pins, metric, unit, split and config. A decisive review must select at least two mutually aligned external runs; a peer outside that review cannot qualify one selected run.
+- `self_review` must stay visible. Do not relabel it as an independent review.
+- Old `.dsh/research` session and grant files are not approvals.
+- If `needsMigration` is true, read-only recovery is available. Ask the user to use Workbench “备份并升级格式” or the CLI `migrate`; do not seal a modified state file yourself.
+- Use `read_paper` to check coverage. `needs_parser` means no parsed full text is available. Use `upsert_knowledge` with exact UTF-8 byte citations and `search_wiki` to read current versions; never edit `project.json`.
+- After `export_assignment`, use `get_assignment` to retrieve the actual plan, source pins and manifest template. An assignment ID alone is not a usable handoff.
+- A review is a proposal. The user may accept its next step through Workbench; the resulting follow-up remains unexecuted. Never call CLI approval on the user's behalf.
+
+CLI approval, from the person at the terminal:
+
+```
+npm run research -- approve --workspace <dir> --base-revision <n> --subject <planId> --revision 1 --hash <planHash> --capability export_assignment
+```
+
+## Persisted literature requests (Bootstrap)
+
+Use foundation_action search_literature with a fixed provider/query/page; configuration and identity are launcher-owned. Each request gets its own attemptId. Errors remain tool failures (SEARCH_INCOMPLETE / noveltyStatus=search_incomplete), never an empty successful result. Read foundation_query literature or workspace_query route literature-searches with researchId and offset/limit; attemptId loads the exact pinned snapshot, snapshotId can load legacy snapshots without inventing an actor. Completed/empty metadata retrieval is noveltyStatus=not_verified; inspect nextPage and state incomplete coverage. Missing finished records remain unknown/running; do not infer a dead process from age. Only the user CLI/API may cancel_search with authorize:true, and closure does not prove a remote process stopped. Do not impersonate the user CLI. Current source permissions and immutable snapshot hashes still apply; keep failures and earlier pages visible.
+
+
+## Versioned MCP outputs
+
+The live tools/list now declares outputSchema and dsh.research/contractVersion=1.0.0 for each tool. See ../contracts/mcp-v1.json in the installed pack (contracts/ when reading the pack root). Read node packages/research-interfaces/src/mcp.ts --describe for the runtime descriptor; no workspace is required. Success text and structuredContent are the same JSON. SCHEMA_VIOLATION is a real failure: inspect authoritative receipts before retrying a write, because output validation happens after the domain action. Extensible native bridge objects are explicitly partial contracts, not proof of complete route schemas or source/identity validation.

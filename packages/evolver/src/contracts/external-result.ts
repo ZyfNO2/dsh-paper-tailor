@@ -40,7 +40,9 @@ export interface ExternalResultDecision {
   /** Host message that carried the choice. Absent on decisions saved before that check. */
   messageId?: string;
   sessionId?: string;
-  provenance?: 'trusted' | 'unverified';
+  provenance?: 'trusted' | 'unverified' | 'user_action';
+  actionId?: string;
+  actionSource?: 'http' | 'cli';
   supersedes?: string | null;
 }
 
@@ -97,12 +99,14 @@ export function validateExternalResultReview(v: unknown): ExternalResultReview {
   };
 }
 export function validateExternalResultDecision(v: unknown): ExternalResultDecision {
-  const d = object(v, ['decisionId', 'reviewId', 'actionIndex', 'choice', 'reason', 'utterance', 'modifiedTitle', 'nodeId', 'actor', 'createdAt', 'messageId', 'sessionId', 'provenance', 'supersedes'], 'external result decision', ['messageId', 'sessionId', 'provenance', 'supersedes']);
+  const d = object(v, ['decisionId', 'reviewId', 'actionIndex', 'choice', 'reason', 'utterance', 'modifiedTitle', 'nodeId', 'actor', 'createdAt', 'messageId', 'sessionId', 'provenance', 'supersedes', 'actionId', 'actionSource'], 'external result decision', ['messageId', 'sessionId', 'provenance', 'supersedes', 'actionId', 'actionSource']);
   const actor = object(d.actor, ['kind', 'identity', 'relayedBy'], 'decision actor');
   if (actor.kind !== 'user') throw new Error('External result decision actor must be the user');
   const choice = one(d.choice, ['accept', 'modify', 'reject', 'defer'] as const, 'decision choice');
   const modifiedTitle = d.modifiedTitle === null ? null : str(d.modifiedTitle, 'modified title', 300, true);
   if ((choice === 'modify') !== (modifiedTitle !== null)) throw new Error('Only a modified decision carries a replacement title');
+  if (d.provenance === 'user_action' && (d.messageId !== undefined || d.sessionId !== undefined)) throw new Error('A standalone user action cannot impersonate a host message');
+  if (d.provenance !== 'user_action' && (d.actionId !== undefined || d.actionSource !== undefined)) throw new Error('Standalone decision provenance must be explicit');
   return {
     decisionId: str(d.decisionId, 'decisionId', 200, true),
     reviewId: str(d.reviewId, 'reviewId', 200, true),
@@ -114,6 +118,7 @@ export function validateExternalResultDecision(v: unknown): ExternalResultDecisi
     nodeId: d.nodeId === null ? null : str(d.nodeId, 'decision node', 200, true),
     actor: { kind: 'user', identity: str(actor.identity, 'decision identity', 200, true), relayedBy: str(actor.relayedBy, 'relayedBy', 200, true) },
     createdAt: date(d.createdAt, 'decision createdAt'),
+    ...(d.provenance === 'user_action' ? { provenance: 'user_action' as const, actionId: str(d.actionId, 'actionId', 200, true), actionSource: one(d.actionSource, ['http', 'cli'] as const, 'actionSource'), supersedes: d.supersedes === null ? null : str(d.supersedes, 'supersedes', 200, true) } : {}),
     ...(d.messageId === undefined ? {} : {
       messageId: str(d.messageId, 'messageId', 200, true),
       sessionId: str(d.sessionId, 'sessionId', 200, true),

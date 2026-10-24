@@ -282,15 +282,25 @@ export class ResearchExecutionRuntime {
             path.join(root, "input.json"),
           ],
           {
-            detached: process.platform !== "win32",
+            // A short-lived CLI must not own the durable supervisor lifetime.
+            // windowsHide keeps the detached Windows worker non-interactive.
+            detached: true,
             stdio: ["ignore", log, log],
             windowsHide: true,
           },
         );
         fs.closeSync(log);
-        child.on("error", () => {});
+        child.once("error", (error) => {
+          try {
+            fs.appendFileSync(path.join(root, "supervisor.log"), `Spawn failure: ${error.stack ?? String(error)}\n`);
+            if (!terminal(this.job(researchId, jobId)))
+              this.service.updateJob(researchId, jobId, `spawn-error-${j.token}`, (job) => { job.status = "failed"; job.error = String(error); });
+          } catch (recordError) {
+            throw new AggregateError([error, recordError], "Portable worker spawn failed and failure recording failed");
+          }
+        });
         child.unref();
-        if (!child.pid) throw new Error("Failed to launch portable worker");
+        if (!child.pid) throw new Error(`Failed to launch portable worker; inspect ${path.join(root, "supervisor.log")}`);
         const pid = child.pid,
           start = processStart(pid);
         this.service.updateJob(

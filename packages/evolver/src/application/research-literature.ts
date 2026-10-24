@@ -202,10 +202,18 @@ export function saveSearchSnapshot(
   );
   const hash = digest(snapshot),
     file = path.join(root, `${hash}.json`);
+  if (fs.existsSync(file)) {
+    const stat = fs.lstatSync(file);
+    if (!stat.isFile() || stat.isSymbolicLink() || stat.size > 16 * 1024 * 1024)
+      throw new Error("Search snapshot cannot be a link/directory or oversized file");
+  }
   if (!fs.existsSync(file)) writeAtomic(file, snapshot);
+  const bytes = fs.readFileSync(file);
+  if (digest(JSON.parse(bytes.toString("utf8"))) !== hash)
+    throw new Error("Existing search snapshot content does not match its identity");
   return {
     snapshotId: hash,
-    sha256: createHash("sha256").update(fs.readFileSync(file)).digest("hex"),
+    sha256: createHash("sha256").update(bytes).digest("hex"),
     hits: snapshot.hits,
     nextPage: snapshot.nextPage,
     provider: snapshot.provider,

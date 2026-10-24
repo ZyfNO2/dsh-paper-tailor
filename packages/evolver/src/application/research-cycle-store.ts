@@ -9,7 +9,7 @@
  * Guarantees mirror the verified bootstrap store, because they solve the same
  * problems and have already survived real-host runs:
  * - Every write takes a real cross-process lock file (O_EXCL, bounded wait,
- *   stale takeover), then RE-READS the state and compares the base revision.
+ *   no age-based takeover), then RE-READS the state and compares the base revision.
  * - One atomic temp-file + rename replacement per change; a failed write leaves
  *   the previous state untouched.
  * - Receipt replay happens BEFORE the CAS: same operationId + same semantic
@@ -40,6 +40,7 @@ import {
 
 export interface ResearchCycleStoreOptions {
   lockTimeoutMs?: number;
+  /** Deprecated compatibility option. Lock age never authorizes takeover. */
   staleLockMs?: number;
   lockPollIntervalMs?: number;
   now?: () => Date;
@@ -88,7 +89,6 @@ export class ResearchCycleStore {
   readonly artifactsDir: string;
   private readonly lockPath: string;
   private readonly lockTimeoutMs: number;
-  private readonly staleLockMs: number;
   private readonly lockPollIntervalMs: number;
   private readonly clock: () => Date;
 
@@ -103,7 +103,6 @@ export class ResearchCycleStore {
     this.artifactsDir = path.join(this.cycleDir, 'artifacts');
     this.lockPath = path.join(this.cycleDir, '.writer.lock');
     this.lockTimeoutMs = options.lockTimeoutMs ?? 10_000;
-    this.staleLockMs = options.staleLockMs ?? 60_000;
     this.lockPollIntervalMs = options.lockPollIntervalMs ?? 25;
     this.clock = options.now ?? (() => new Date());
   }
@@ -273,7 +272,7 @@ export class ResearchCycleStore {
 
   /**
    * Cross-process writer lock with the same semantics as the bootstrap store:
-   * O_EXCL create, bounded wait, stale takeover, closed handle (Windows EPERM
+   * O_EXCL create, bounded wait, no age-based takeover, closed handle (Windows EPERM
    * lessons from the bootstrap store's BR-10 run are already baked in).
    */
   private acquireLock(): string {
@@ -294,9 +293,6 @@ export class ResearchCycleStore {
         if (fd !== undefined) { try { fs.closeSync(fd); } catch { /* acquisition failed anyway */ } }
         const code = (error as NodeJS.ErrnoException).code;
         if (code !== 'EEXIST' && code !== 'EPERM' && code !== 'EACCES') throw error;
-        if (this.lockIsStale()) {
-          try { fs.rmSync(this.lockPath, { force: true }); continue; } catch { /* fall through to wait */ }
-        }
         if (Date.now() >= deadline) {
           let holder = 'unknown';
           try { holder = String((JSON.parse(fs.readFileSync(this.lockPath, 'utf8')) as { pid?: number }).pid); } catch { /* unreadable lock */ }
@@ -304,15 +300,6 @@ export class ResearchCycleStore {
         }
         Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, this.lockPollIntervalMs);
       }
-    }
-  }
-
-  private lockIsStale(): boolean {
-    try {
-      const stats = fs.statSync(this.lockPath);
-      return Date.now() - stats.mtimeMs > this.staleLockMs;
-    } catch {
-      return false;
     }
   }
 

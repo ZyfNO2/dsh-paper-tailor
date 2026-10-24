@@ -20,7 +20,7 @@ export function interpretedCell(value: RawCell, field: DataField): { value: RawC
   if (!Number.isFinite(number) || !Number.isFinite(derived)) return { value: null, error: '非有限数值或转换溢出' };
   return { value: derived, error: null };
 }
-function initialFields(table: RawTable): DataField[] {
+export function initialFields(table: RawTable): DataField[] {
   const used = new Set<string>();
   return table.headers.map((header, column) => {
     // Display label is bounded; the complete original header remains in the parsed raw table.

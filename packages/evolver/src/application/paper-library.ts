@@ -1,6 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
+import { activeStore, migratedPaperOwner, restoredPaperOwner } from '../../../research-core/src/active-store.ts';
 
 import type { LibraryPaper, PaperSection, PaperComponent } from '../contracts/paper-library.ts';
 export type { LibraryPaper, PaperSection, PaperComponent } from '../contracts/paper-library.ts';
@@ -243,7 +244,12 @@ function evidenceDiagnostic(paper: LibraryPaper, input: PublishInput, submission
 export class PaperLibrary {
   readonly root: string;
   private readonly workspaceOwner?: string;
-  constructor(root: string, workspaceOwner?: string) { this.root = path.resolve(root); this.workspaceOwner = workspaceOwner; }
+  constructor(root: string, workspaceOwner?: string) {
+    const selected = workspaceOwner ? activeStore(workspaceOwner) : null;
+    const requested = path.resolve(root);
+    this.root = selected && requested === path.resolve(workspaceOwner!, '.dsh/research/papers') ? path.resolve(workspaceOwner!, selected.root, '.dsh/research/papers') : requested;
+    this.workspaceOwner = workspaceOwner;
+  }
   private folder(owner: string): string {
     if (typeof owner !== 'string' || !owner.trim()) throw new PaperLibraryError('OWNER_REQUIRED', 'missing session identity');
     if (this.workspaceOwner !== undefined) {
@@ -257,6 +263,7 @@ export class PaperLibrary {
     return path.join(this.folder(owner), `${id}.json`);
   }
   private commit(file: string, value: unknown): void {
+    if (this.workspaceOwner && activeStore(this.workspaceOwner) && this.root === path.resolve(this.workspaceOwner, '.dsh/research/papers')) throw new PaperLibraryError('STORE_MOVED', 'reopen the library after migration');
     fs.mkdirSync(path.dirname(file), { recursive: true });
     const temporary = `${file}.${randomUUID()}.tmp`;
     fs.writeFileSync(temporary, JSON.stringify(value, null, 2), { flag: 'wx' });
@@ -269,7 +276,7 @@ export class PaperLibrary {
   }
   get(owner: string, id: string): LibraryPaper {
     const value = JSON.parse(fs.readFileSync(this.file(owner, id), 'utf8')) as LibraryPaper;
-    if (value.owner !== owner || value.id !== id) throw new PaperLibraryError('OWNER_MISMATCH', 'stored paper identity differs');
+    if (value.id !== id || (value.owner !== owner && (!this.workspaceOwner || this.root !== path.resolve(this.workspaceOwner, '.research/compat/.dsh/research/papers') || (restoredPaperOwner(this.workspaceOwner, id) ?? migratedPaperOwner(this.workspaceOwner, id)) !== value.owner))) throw new PaperLibraryError('OWNER_MISMATCH', 'stored paper identity differs');
     const bytes = fs.readFileSync(this.original(owner, id));
     if (hash(bytes) !== value.sha256) throw new PaperLibraryError('SOURCE_CORRUPT', 'uploaded bytes changed');
     return value;
